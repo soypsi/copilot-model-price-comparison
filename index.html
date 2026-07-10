@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copilot Model Price Comparison</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --bg: #0f1115;
+      --fg: #f0f3f7;
+      --muted: #a9b2bd;
+      --line: #2b3138;
+      --accent: #6ea8fe;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #ffffff;
+        --fg: #111111;
+        --muted: #4d5865;
+        --line: #d7dce2;
+        --accent: #0057d9;
+      }
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      height: 100%;
+    }
+
+    .wrap {
+      box-sizing: border-box;
+      height: 100vh;
+      padding: 10px;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr;
+      gap: 8px;
+    }
+
+    .title {
+      font-size: 14px;
+      margin: 0;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .compare-button {
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+
+    .compare-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      padding: 4px 6px;
+      text-align: left;
+    }
+
+    thead tr.filters th {
+      top: 27px;
+      z-index: 1;
+      padding: 2px 4px 4px;
+    }
+
+    tbody td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      padding: 3px 6px;
+    }
+
+    th:last-child, td:last-child {
+      border-right: 0;
+    }
+
+    .sort {
+      cursor: pointer;
+      user-select: none;
+      color: inherit;
+      border: 0;
+      background: transparent;
+      font: inherit;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sort.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .filter {
+      width: 100%;
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit;
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 2px 4px;
+      min-width: 90px;
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-size: 13px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="title">
+      <span>Copilot model price comparison</span>
+      <span id="row-count" class="meta">Loading…</span>
+    </h1>
+    <div id="source" class="meta"></div>
+    <div class="actions">
+      <button id="compare-button" class="compare-button" type="button" disabled>
+        Compare selected models
+      </button>
+      <span id="selection-count" class="meta">Select two models</span>
+    </div>
+    <div class="table-wrap">
+      <table id="pricing-table" aria-label="Model pricing table"></table>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      columns: [],
+      rows: [],
+      sortColumn: "Provider",
+      sortDirection: "asc",
+      filters: {},
+      selectedModels: new Set(),
+    };
+
+    const table = document.getElementById("pricing-table");
+    const rowCount = document.getElementById("row-count");
+    const sourceEl = document.getElementById("source");
+    const compareButton = document.getElementById("compare-button");
+    const selectionCount = document.getElementById("selection-count");
+
+    function toThresholdTuple(value) {
+      const text = (value || "").trim();
+      if (!text || /not applicable/i.test(text)) return [3, Number.POSITIVE_INFINITY];
+      const match = text.match(/^(<=|>=|<|>|≤|≥)?\s*([0-9]+(?:\.[0-9]+)?)\s*([KMB])?/i);
+      if (!match) return [4, Number.POSITIVE_INFINITY];
+      const op = match[1] || "=";
+      const num = Number.parseFloat(match[2]);
+      const unit = (match[3] || "").toUpperCase();
+      const mult = unit === "K" ? 1_000 : unit === "M" ? 1_000_000 : unit === "B" ? 1_000_000_000 : 1;
+      const rank = op === "<=" || op === "≤" || op === "<" ? 0 : op === "=" ? 1 : 2;
+      return [rank, num * mult];
+    }
+
+    function toComparable(column, value) {
+      const text = (value || "").trim();
+      if (!text) return { kind: "text", value: "" };
+
+      if (/^\$\s*[0-9]+(?:\.[0-9]+)?$/.test(text)) {
+        return { kind: "number", value: Number.parseFloat(text.replace("$", "").trim()) };
+      }
+
+      if (column.toLowerCase().includes("threshold")) {
+        return { kind: "threshold", value: toThresholdTuple(text) };
+      }
+
+      return { kind: "text", value: text.toLowerCase() };
+    }
+
+    function compareRows(a, b) {
+      const col = state.sortColumn;
+      const dir = state.sortDirection === "asc" ? 1 : -1;
+      const av = toComparable(col, a[col]);
+      const bv = toComparable(col, b[col]);
+
+      if (av.kind === "threshold" && bv.kind === "threshold") {
+        if (av.value[0] !== bv.value[0]) return (av.value[0] - bv.value[0]) * dir;
+        if (av.value[1] !== bv.value[1]) return (av.value[1] - bv.value[1]) * dir;
+      } else if (av.kind === "number" && bv.kind === "number" && av.value !== bv.value) {
+        return (av.value - bv.value) * dir;
+      } else if (String(av.value) !== String(bv.value)) {
+        return (String(av.value) < String(bv.value) ? -1 : 1) * dir;
+      }
+
+      for (const fallback of ["Provider", "Model", "Tier", "Threshold (input tokens)"]) {
+        const left = String(a[fallback] || "").toLowerCase();
+        const right = String(b[fallback] || "").toLowerCase();
+        if (left !== right) return left < right ? -1 : 1;
+      }
+      return 0;
+    }
+
+    function filteredRows() {
+      const rows = state.selectedModels.size === 2
+        ? state.rows.filter((row) => state.selectedModels.has(modelIdFor(row)))
+        : state.rows;
+      return rows.filter((row) =>
+        state.columns.every((column) => {
+          const filter = (state.filters[column] || "").trim().toLowerCase();
+          if (!filter) return true;
+          const numericFilter = parseNumericFilter(filter);
+          if (numericFilter) {
+            const value = toComparable(column, row[column]);
+            if (value.kind !== "number") return false;
+            if (numericFilter.operator === ">") return value.value > numericFilter.number;
+            if (numericFilter.operator === ">=") return value.value >= numericFilter.number;
+            if (numericFilter.operator === "<") return value.value < numericFilter.number;
+            if (numericFilter.operator === "<=") return value.value <= numericFilter.number;
+            return value.value === numericFilter.number;
+          }
+          return String(row[column] || "").toLowerCase().includes(filter);
+        })
+      );
+    }
+
+    function parseNumericFilter(value) {
+      const match = value.match(/^(<=|>=|<|>|=)\s*\$?\s*(-?\d+(?:\.\d+)?)$/);
+      if (!match) return null;
+      return {
+        operator: match[1],
+        number: Number.parseFloat(match[2]),
+      };
+    }
+
+    function renderTable() {
+      const rows = filteredRows().sort(compareRows);
+      rowCount.textContent = `${rows.length} / ${state.rows.length} rows`;
+
+      const headerCells = [
+        "<th aria-label=\"Select\"></th>",
+        ...state.columns.map((column) => {
+        const active = state.sortColumn === column ? "active" : "";
+        const arrow = state.sortColumn === column ? (state.sortDirection === "asc" ? "▲" : "▼") : "";
+        return `<th><button class="sort ${active}" data-col="${column}">${column} ${arrow}</button></th>`;
+        }),
+      ].join("");
+
+      const filterCells = [
+        "<th></th>",
+        ...state.columns.map((column) => {
+        const value = state.filters[column] || "";
+        return `<th><input class="filter" data-col="${column}" value="${value.replace(/\"/g, "&quot;")}" placeholder="filter"></th>`;
+        }),
+      ].join("");
+
+      const bodyRows = rows.map((row) => {
+        const modelId = modelIdFor(row);
+        const checked = state.selectedModels.has(modelId) ? " checked" : "";
+        const cells = [
+          `<td><input class="model-select" type="checkbox" data-model-id="${escapeHtml(modelId)}"${checked} aria-label="Select ${escapeHtml(row.Model)}"></td>`,
+          ...state.columns.map((column) => {
+            const val = String(row[column] || "");
+            if (column === "Model") {
+              const url = `https://benchlm.ai/models/${slugify(val)}`;
+              return `<td><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
+            }
+            if (column === "Coding rank" && row._coding_model) {
+              const scores = Object.entries(row._category_scores || {})
+                .map(([name, score]) => `${name}: ${score ?? "n/a"}`)
+                .join(" | ");
+              const label = `#${val} ${row._coding_model} — ${scores}`;
+              return `<td title="${escapeHtml(label)}">${escapeHtml(val)}</td>`;
+            }
+            return `<td>${escapeHtml(val)}</td>`;
+          }),
+        ].join("");
+        return `<tr>${cells}</tr>`;
+      }).join("");
+
+      table.innerHTML = `
+        <thead>
+          <tr>${headerCells}</tr>
+          <tr class="filters">${filterCells}</tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+      `;
+
+      table.querySelectorAll("button.sort").forEach((el) => {
+        el.addEventListener("click", () => {
+          const col = el.getAttribute("data-col");
+          if (state.sortColumn === col) {
+            state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
+          } else {
+            state.sortColumn = col;
+            state.sortDirection = "asc";
+          }
+          renderTable();
+        });
+      });
+
+      table.querySelectorAll("input.filter").forEach((el) => {
+        el.addEventListener("input", () => {
+          const col = el.getAttribute("data-col");
+          const selectionStart = el.selectionStart;
+          const selectionEnd = el.selectionEnd;
+          state.filters[col] = el.value;
+          renderTable();
+          const replacement = Array.from(table.querySelectorAll("input.filter"))
+            .find((input) => input.getAttribute("data-col") === col);
+          if (replacement) {
+            replacement.focus();
+            replacement.setSelectionRange(selectionStart, selectionEnd);
+          }
+        });
+      });
+
+      table.querySelectorAll("input.model-select").forEach((el) => {
+        el.addEventListener("change", () => {
+          const modelId = el.getAttribute("data-model-id");
+          if (el.checked) {
+            if (state.selectedModels.size >= 2) {
+              el.checked = false;
+              return;
+            }
+            state.selectedModels.add(modelId);
+          } else {
+            state.selectedModels.delete(modelId);
+          }
+          renderTable();
+        });
+      });
+      updateCompareControls();
+    }
+
+    function modelIdFor(row) {
+      return `${row.Provider}::${row.Model}::${row.Tier || ""}::${row["Threshold (input tokens)"] || ""}`;
+    }
+
+    function slugify(value) {
+      return value
+        .normalize("NFKD")
+        .replace(/\./g, "-")
+        .replace(/[^\w\s-]/g, "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s_]+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
+    function updateCompareControls() {
+      const count = state.selectedModels.size;
+      selectionCount.textContent = count === 2 ? "Ready to compare" : `Select ${2 - count} more model${count === 1 ? "" : "s"}`;
+      compareButton.disabled = count !== 2;
+    }
+
+    compareButton.addEventListener("click", () => {
+      const selected = state.rows.filter((row) => state.selectedModels.has(modelIdFor(row)));
+      if (selected.length !== 2) return;
+      const [first, second] = selected;
+      const url = `https://benchlm.ai/compare/${slugify(first.Model)}-vs-${slugify(second.Model)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;");
+    }
+
+    function fail(message) {
+      rowCount.textContent = "";
+      table.outerHTML = `<p class="error">${escapeHtml(message)}</p>`;
+    }
+
+    async function init() {
+      try {
+        const response = await fetch("data/models.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        state.columns = data.columns || [];
+        state.rows = data.rows || [];
+        if (!state.columns.length) throw new Error("No columns in data file.");
+        sourceEl.innerHTML = `Source: <a href="${data.source_url}" target="_blank" rel="noreferrer">${data.source_url}</a>`;
+        renderTable();
+      } catch (error) {
+        fail(`Failed to load data/models.json: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
