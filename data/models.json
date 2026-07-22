@@ -35,7 +35,7 @@
         "coding": 80.55,
         "reasoning": null,
         "multimodalGrounded": 65.2,
-        "knowledge": 73.3,
+        "knowledge": 72.9,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
@@ -74,9 +74,9 @@
       "_category_scores": {
         "agentic": 35.9,
         "coding": 61.93,
-        "reasoning": 91.5,
+        "reasoning": 91,
         "multimodalGrounded": 28.4,
-        "knowledge": 62.2,
+        "knowledge": 62.1,
         "multilingual": 82.9,
         "instructionFollowing": 56.4,
         "math": 58.6
@@ -126,7 +126,7 @@
         "coding": 68.39,
         "reasoning": null,
         "multimodalGrounded": null,
-        "knowledge": 64.3,
+        "knowledge": 64.6,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 61.9
@@ -354,11 +354,27 @@
         "coding": 61.98,
         "reasoning": 76,
         "multimodalGrounded": 84,
-        "knowledge": 66.2,
+        "knowledge": 65.5,
         "multilingual": null,
-        "instructionFollowing": 82.7,
+        "instructionFollowing": 82.4,
         "math": 56
       }
+    },
+    {
+      "Provider": "Google",
+      "Model": "Gemini 3.6 Flash",
+      "Release status": "GA",
+      "Category": "Versatile",
+      "Tier": "Default",
+      "Threshold (input tokens)": "Not applicable",
+      "Input": "$1.50",
+      "Cached input": "$0.15",
+      "Cache write": "",
+      "Output": "$7.50",
+      "Total price": "$9.15",
+      "Coding rank": "",
+      "_coding_model": "",
+      "_category_scores": {}
     },
     {
       "Provider": "Microsoft",
@@ -541,11 +557,11 @@
       "_category_scores": {
         "agentic": 65.78,
         "coding": 71.41,
-        "reasoning": 94.9,
-        "multimodalGrounded": 69.8,
+        "reasoning": 94.3,
+        "multimodalGrounded": 70.1,
         "knowledge": 83.5,
         "multilingual": null,
-        "instructionFollowing": 85.7,
+        "instructionFollowing": null,
         "math": 71.3
       }
     },
@@ -566,11 +582,11 @@
       "_category_scores": {
         "agentic": 65.78,
         "coding": 71.41,
-        "reasoning": 94.9,
-        "multimodalGrounded": 69.8,
+        "reasoning": 94.3,
+        "multimodalGrounded": 70.1,
         "knowledge": 83.5,
         "multilingual": null,
-        "instructionFollowing": 85.7,
+        "instructionFollowing": null,
         "math": 71.3
       }
     },
@@ -592,7 +608,7 @@
         "agentic": 58.52,
         "coding": 72.56,
         "reasoning": null,
-        "multimodalGrounded": 65.7,
+        "multimodalGrounded": 65.9,
         "knowledge": 80.9,
         "multilingual": null,
         "instructionFollowing": null,
@@ -617,7 +633,7 @@
         "agentic": 58.52,
         "coding": 72.56,
         "reasoning": null,
-        "multimodalGrounded": 65.7,
+        "multimodalGrounded": 65.9,
         "knowledge": 80.9,
         "multilingual": null,
         "instructionFollowing": null,
@@ -645,7 +661,7 @@
         "multimodalGrounded": 84.3,
         "knowledge": 83.2,
         "multilingual": null,
-        "instructionFollowing": 86.8,
+        "instructionFollowing": null,
         "math": 97.1
       }
     },
@@ -670,7 +686,7 @@
         "multimodalGrounded": 84.3,
         "knowledge": 83.2,
         "multilingual": null,
-        "instructionFollowing": 86.8,
+        "instructionFollowing": null,
         "math": 97.1
       }
     },
@@ -695,7 +711,7 @@
         "multimodalGrounded": 74.9,
         "knowledge": 81.5,
         "multilingual": null,
-        "instructionFollowing": 83.6,
+        "instructionFollowing": null,
         "math": 97.1
       }
     },
@@ -720,7 +736,7 @@
         "multimodalGrounded": 74.9,
         "knowledge": 81.5,
         "multilingual": null,
-        "instructionFollowing": 83.6,
+        "instructionFollowing": null,
         "math": 97.1
       }
     }
