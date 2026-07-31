@@ -267,17 +267,19 @@
         state.columns.every((column) => {
           const filter = (state.filters[column] || "").trim().toLowerCase();
           if (!filter) return true;
+          const value = String(row[column] || "").trim();
+          if (filter === "!empty") return value !== "";
           const numericFilter = parseNumericFilter(filter);
           if (numericFilter) {
-            const value = toComparable(column, row[column]);
-            if (value.kind !== "number") return false;
-            if (numericFilter.operator === ">") return value.value > numericFilter.number;
-            if (numericFilter.operator === ">=") return value.value >= numericFilter.number;
-            if (numericFilter.operator === "<") return value.value < numericFilter.number;
-            if (numericFilter.operator === "<=") return value.value <= numericFilter.number;
-            return value.value === numericFilter.number;
+            const comparable = toComparable(column, row[column]);
+            if (comparable.kind !== "number") return false;
+            if (numericFilter.operator === ">") return comparable.value > numericFilter.number;
+            if (numericFilter.operator === ">=") return comparable.value >= numericFilter.number;
+            if (numericFilter.operator === "<") return comparable.value < numericFilter.number;
+            if (numericFilter.operator === "<=") return comparable.value <= numericFilter.number;
+            return comparable.value === numericFilter.number;
           }
-          return String(row[column] || "").toLowerCase().includes(filter);
+          return value.toLowerCase().includes(filter);
         })
       );
     }
@@ -308,7 +310,7 @@
         "<th></th>",
         ...state.columns.map((column) => {
         const value = state.filters[column] || "";
-        return `<th><input class="filter" data-col="${column}" value="${value.replace(/\"/g, "&quot;")}" placeholder="filter"></th>`;
+        return `<th><input class="filter" data-col="${column}" value="${value.replace(/\"/g, "&quot;")}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"></th>`;
         }),
       ].join("");
 
