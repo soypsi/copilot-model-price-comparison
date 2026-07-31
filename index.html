@@ -214,14 +214,23 @@
 
     function toComparable(column, value) {
       const text = (value || "").trim();
-      if (!text) return { kind: "text", value: "" };
-
-      if (/^\$\s*[0-9]+(?:\.[0-9]+)?$/.test(text)) {
-        return { kind: "number", value: Number.parseFloat(text.replace("$", "").trim()) };
-      }
 
       if (column.toLowerCase().includes("threshold")) {
+        if (!text) return { kind: "text", value: "" };
         return { kind: "threshold", value: toThresholdTuple(text) };
+      }
+
+      const numericValues = state.rows
+        .map((row) => (row[column] || "").trim())
+        .filter(Boolean);
+      const numericColumn = numericValues.length > 0 && numericValues.every((item) =>
+        /^\$?\s*[0-9]+(?:\.[0-9]+)?$/.test(item)
+      );
+      if (numericColumn) {
+        return {
+          kind: "number",
+          value: text ? Number.parseFloat(text.replace("$", "").trim()) : Number.NEGATIVE_INFINITY,
+        };
       }
 
       return { kind: "text", value: text.toLowerCase() };
