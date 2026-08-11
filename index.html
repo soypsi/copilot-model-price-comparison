@@ -254,6 +254,11 @@
     const selectionCount = document.getElementById("selection-count");
     const priceColumns = new Set(["Input", "Cached input", "Cache write", "Output", "Total price"]);
 
+    function cellValue(value) {
+      const text = String(value || "").trim();
+      return /^not applicable$/i.test(text) ? "" : text;
+    }
+
     function toThresholdTuple(value) {
       const text = (value || "").trim();
       if (!text || /not applicable/i.test(text)) return [3, Number.POSITIVE_INFINITY];
@@ -268,7 +273,7 @@
     }
 
     function toComparable(column, value) {
-      const text = (value || "").trim();
+      const text = cellValue(value);
 
       if (column.toLowerCase().includes("threshold")) {
         if (!text) return { kind: "text", value: "" };
@@ -276,7 +281,7 @@
       }
 
       const numericValues = state.rows
-        .map((row) => (row[column] || "").trim())
+        .map((row) => cellValue(row[column]))
         .filter(Boolean);
       const numericColumn = numericValues.length > 0 && numericValues.every((item) =>
         /^\$?\s*[0-9]+(?:\.[0-9]+)?$/.test(item)
@@ -322,7 +327,7 @@
         state.columns.every((column) => {
           const filter = (state.filters[column] || "").trim().toLowerCase();
           if (!filter) return true;
-          const value = String(row[column] || "").trim();
+          const value = cellValue(row[column]);
           if (filter === "!empty") return value !== "";
           const numericFilter = parseNumericFilter(filter);
           if (numericFilter) {
@@ -349,8 +354,8 @@
     }
 
     function priceValue(value) {
-      const text = String(value || "").trim();
-      if (!text || /not applicable/i.test(text)) return null;
+      const text = cellValue(value);
+      if (!text) return null;
       const number = Number.parseFloat(text.replace("$", "").trim());
       return Number.isFinite(number) ? number : null;
     }
@@ -399,7 +404,7 @@
         const cells = [
           `<td><input class="model-select" type="checkbox" data-model-id="${escapeHtml(modelId)}"${checked} aria-label="Select ${escapeHtml(row.Model)}"></td>`,
           ...state.columns.map((column) => {
-            const val = String(row[column] || "");
+            const val = cellValue(row[column]);
             const offset = state.sortColumn === column && priceColumns.has(column)
               ? priceOffset(rows, rows.indexOf(row), column)
               : "";
