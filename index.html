@@ -150,6 +150,32 @@
       min-width: 90px;
     }
 
+    .filter-wrap {
+      position: relative;
+    }
+
+    .filter {
+      padding-right: 20px;
+    }
+
+    .filter-clear {
+      position: absolute;
+      top: 50%;
+      right: 4px;
+      transform: translateY(-50%);
+      border: 0;
+      padding: 0;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      line-height: 1;
+    }
+
+    .filter-clear:disabled {
+      visibility: hidden;
+    }
+
     .error {
       color: #ff6b6b;
       font-size: 13px;
@@ -312,7 +338,9 @@
         "<th></th>",
         ...state.columns.map((column) => {
         const value = state.filters[column] || "";
-        return `<th><input class="filter" data-col="${column}" value="${value.replace(/\"/g, "&quot;")}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"></th>`;
+        const escapedValue = value.replace(/\"/g, "&quot;");
+        const disabled = value ? "" : " disabled";
+        return `<th><div class="filter-wrap"><input class="filter" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
         }),
       ].join("");
 
@@ -374,6 +402,17 @@
             replacement.focus();
             replacement.setSelectionRange(selectionStart, selectionEnd);
           }
+        });
+      });
+
+      table.querySelectorAll("button.filter-clear").forEach((el) => {
+        el.addEventListener("click", () => {
+          const col = el.getAttribute("data-col");
+          state.filters[col] = "";
+          renderTable();
+          const replacement = Array.from(table.querySelectorAll("input.filter"))
+            .find((input) => input.getAttribute("data-col") === col);
+          replacement?.focus();
         });
       });
 
