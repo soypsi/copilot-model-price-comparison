@@ -208,6 +208,13 @@ def sort_rows(rows: list[dict[str, str]], columns: list[str]) -> list[dict[str, 
     return sorted(rows, key=row_key)
 
 
+def parse_price(value: str) -> float:
+    cleaned = value.replace("$", "").replace(",", "").strip()
+    if not cleaned or cleaned.lower() == "not applicable":
+        return 0.0
+    return float(cleaned)
+
+
 def normalize_rows(
     rows: list[dict[str, str]],
     columns: list[str],
@@ -221,7 +228,7 @@ def normalize_rows(
             if column not in {"Total price", "Coding rank"}
         }
         total = sum(
-            float(normalized[column].replace("$", "").replace(",", "").strip())
+            parse_price(normalized[column])
             for column in ("Input", "Cached input", "Cache write", "Output")
             if normalized.get(column)
         )
