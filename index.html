@@ -154,8 +154,18 @@
       position: relative;
     }
 
+    .filter-wrap.active {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
     .filter {
       padding-right: 20px;
+    }
+
+    .filter.active {
+      border-color: var(--accent);
+      font-weight: 600;
     }
 
     .filter-clear {
@@ -170,6 +180,11 @@
       cursor: pointer;
       font: inherit;
       line-height: 1;
+    }
+
+    .filter-clear.active {
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .filter-clear:disabled {
@@ -340,7 +355,8 @@
         const value = state.filters[column] || "";
         const escapedValue = value.replace(/\"/g, "&quot;");
         const disabled = value ? "" : " disabled";
-        return `<th><div class="filter-wrap"><input class="filter" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
+        const active = value.trim() ? " active" : "";
+        return `<th><div class="filter-wrap${active}"><input class="filter${active}" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
         }),
       ].join("");
 
