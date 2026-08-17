@@ -38,7 +38,7 @@
       height: 100vh;
       padding: 10px;
       display: grid;
-      grid-template-rows: auto auto auto 1fr;
+      grid-template-rows: auto auto auto auto minmax(0, 1fr);
       gap: 8px;
     }
 
@@ -207,6 +207,50 @@
       font-size: 13px;
     }
 
+    .hidden-notice {
+      position: relative;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+      color: var(--fg);
+      font-size: 12px;
+      padding: 7px 9px;
+      cursor: help;
+    }
+
+    .hidden-models {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 3;
+      box-sizing: border-box;
+      width: min(420px, calc(100vw - 40px));
+      max-height: min(240px, 35vh);
+      overflow: auto;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--bg);
+      box-shadow: 0 4px 14px rgb(0 0 0 / 35%);
+      cursor: default;
+    }
+
+    .hidden-notice:hover .hidden-models,
+    .hidden-notice:focus .hidden-models {
+      display: block;
+    }
+
+    .hidden-models-title {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .hidden-models-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
     a {
       color: var(--accent);
       text-decoration: none;
@@ -230,6 +274,7 @@
       </button>
       <span id="selection-count" class="meta">Select two models</span>
     </div>
+    <div id="hidden-notice" class="hidden-notice" role="status" tabindex="0" hidden></div>
     <div class="table-wrap">
       <table id="pricing-table" aria-label="Model pricing table"></table>
     </div>
@@ -250,6 +295,7 @@
     const table = document.getElementById("pricing-table");
     const rowCount = document.getElementById("row-count");
     const sourceEl = document.getElementById("source");
+    const hiddenNotice = document.getElementById("hidden-notice");
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
     const priceColumns = new Set(["Input", "Cached input", "Cache write", "Output", "Total price"]);
@@ -319,29 +365,79 @@
       return 0;
     }
 
+    function filterMatches(column, row) {
+      const filter = (state.filters[column] || "").trim().toLowerCase();
+      if (!filter) return true;
+      const value = cellValue(row[column]);
+      if (filter === "!empty") return value !== "";
+      const numericFilter = parseNumericFilter(filter);
+      if (numericFilter) {
+        const comparable = toComparable(column, row[column]);
+        if (comparable.kind !== "number") return false;
+        if (numericFilter.operator === ">") return comparable.value > numericFilter.number;
+        if (numericFilter.operator === ">=") return comparable.value >= numericFilter.number;
+        if (numericFilter.operator === "<") return comparable.value < numericFilter.number;
+        if (numericFilter.operator === "<=") return comparable.value <= numericFilter.number;
+        return comparable.value === numericFilter.number;
+      }
+      return value.toLowerCase().includes(filter);
+    }
+
+    function hiddenReasons(row) {
+      const reasons = [];
+      if (state.selectedModels.size === 2 && !state.selectedModels.has(modelIdFor(row))) {
+        reasons.push("two-model comparison");
+      }
+      for (const column of state.columns) {
+        const filter = (state.filters[column] || "").trim();
+        if (filter && !filterMatches(column, row)) {
+          reasons.push(`${column}: ${filter}`);
+        }
+      }
+      return reasons;
+    }
+
+    function hiddenRows() {
+      return state.rows
+        .map((row) => ({ row, reasons: hiddenReasons(row) }))
+        .filter(({ reasons }) => reasons.length > 0);
+    }
+
     function filteredRows() {
-      const rows = state.selectedModels.size === 2
-        ? state.rows.filter((row) => state.selectedModels.has(modelIdFor(row)))
-        : state.rows;
-      return rows.filter((row) =>
-        state.columns.every((column) => {
-          const filter = (state.filters[column] || "").trim().toLowerCase();
-          if (!filter) return true;
-          const value = cellValue(row[column]);
-          if (filter === "!empty") return value !== "";
-          const numericFilter = parseNumericFilter(filter);
-          if (numericFilter) {
-            const comparable = toComparable(column, row[column]);
-            if (comparable.kind !== "number") return false;
-            if (numericFilter.operator === ">") return comparable.value > numericFilter.number;
-            if (numericFilter.operator === ">=") return comparable.value >= numericFilter.number;
-            if (numericFilter.operator === "<") return comparable.value < numericFilter.number;
-            if (numericFilter.operator === "<=") return comparable.value <= numericFilter.number;
-            return comparable.value === numericFilter.number;
-          }
-          return value.toLowerCase().includes(filter);
-        })
-      );
+      return state.rows.filter((row) => hiddenReasons(row).length === 0);
+    }
+
+    function updateHiddenNotice(hidden) {
+      if (!hidden.length) {
+        hiddenNotice.hidden = true;
+        hiddenNotice.textContent = "";
+        return;
+      }
+
+      const reasonCounts = new Map();
+      for (const { reasons } of hidden) {
+        for (const reason of reasons) {
+          reasonCounts.set(reason, (reasonCounts.get(reason) || 0) + 1);
+        }
+      }
+      const reasons = Array.from(reasonCounts, ([reason, count]) => `${reason} (${count})`).join(", ");
+      const models = hidden.map(({ row }) => {
+        const tier = row.Tier ? `, ${row.Tier}` : "";
+        const threshold = row["Threshold (input tokens)"]
+          ? `, ${row["Threshold (input tokens)"]}`
+          : "";
+        return `${row.Provider}: ${row.Model}${tier}${threshold}`;
+      });
+      hiddenNotice.hidden = false;
+      const modelItems = models.map((model) => `<li>${escapeHtml(model)}</li>`).join("");
+      hiddenNotice.innerHTML = `
+        <strong>${hidden.length} model${hidden.length === 1 ? "" : "s"} hidden</strong>
+        by ${escapeHtml(reasons)}. Hover or focus to list hidden models.
+        <span class="hidden-models" role="tooltip">
+          <strong class="hidden-models-title">Hidden models</strong>
+          <ul class="hidden-models-list">${modelItems}</ul>
+        </span>
+      `;
     }
 
     function parseNumericFilter(value) {
@@ -376,6 +472,7 @@
 
     function renderTable() {
       const rows = filteredRows().sort(compareRows);
+      updateHiddenNotice(hiddenRows());
       rowCount.textContent = `${rows.length} / ${state.rows.length} rows`;
 
       const headerCells = [
