@@ -191,15 +191,29 @@
       visibility: hidden;
     }
 
+    .numeric-column {
+      text-align: right;
+    }
+
+    .numeric-column .sort {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .numeric-column .filter {
+      text-align: right;
+    }
+
     .price-cell {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 8px;
     }
 
     .price-offset {
+      order: -1;
       opacity: 0.55;
-      text-align: right;
+      text-align: left;
     }
 
     .error {
@@ -299,6 +313,7 @@
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
     const priceColumns = new Set(["Input", "Cached input", "Cache write", "Output", "Total price"]);
+    const numericColumns = new Set(["Threshold (input tokens)", ...priceColumns, "Coding rank"]);
 
     function cellValue(value) {
       const text = String(value || "").trim();
@@ -480,7 +495,9 @@
         ...state.columns.map((column) => {
         const active = state.sortColumn === column ? "active" : "";
         const arrow = state.sortColumn === column ? (state.sortDirection === "asc" ? "▲" : "▼") : "";
-        return `<th><button class="sort ${active}" data-col="${column}">${column} ${arrow}</button></th>`;
+        const numeric = numericColumns.has(column) ? " numeric-column" : "";
+        const currencyNote = priceColumns.has(column) ? " title=\"Prices in USD\"" : "";
+        return `<th class="${numeric.trim()}"${currencyNote}><button class="sort ${active}" data-col="${column}">${column} ${arrow}</button></th>`;
         }),
       ].join("");
 
@@ -491,7 +508,8 @@
         const escapedValue = value.replace(/\"/g, "&quot;");
         const disabled = value ? "" : " disabled";
         const active = value.trim() ? " active" : "";
-        return `<th><div class="filter-wrap${active}"><input class="filter${active}" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
+        const numeric = numericColumns.has(column) ? " numeric-column" : "";
+        return `<th class="${numeric.trim()}"><div class="filter-wrap${active}"><input class="filter${active}" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
         }),
       ].join("");
 
@@ -502,6 +520,8 @@
           `<td><input class="model-select" type="checkbox" data-model-id="${escapeHtml(modelId)}"${checked} aria-label="Select ${escapeHtml(row.Model)}"></td>`,
           ...state.columns.map((column) => {
             const val = cellValue(row[column]);
+            const displayVal = priceColumns.has(column) ? val.replace(/^\$\s*/, "") : val;
+            const numeric = numericColumns.has(column) ? " numeric-column" : "";
             const offset = state.sortColumn === column && priceColumns.has(column)
               ? priceOffset(rows, rows.indexOf(row), column)
               : "";
@@ -514,12 +534,12 @@
                 .map(([name, score]) => `${name}: ${score ?? "n/a"}`)
                 .join(" | ");
               const label = `#${val} ${row._coding_model} — ${scores}`;
-              return `<td title="${escapeHtml(label)}">${escapeHtml(val)}</td>`;
+              return `<td class="${numeric.trim()}" title="${escapeHtml(label)}">${escapeHtml(displayVal)}</td>`;
             }
             if (priceColumns.has(column) && offset) {
-              return `<td><div class="price-cell"><span>${escapeHtml(val)}</span><span class="price-offset">${offset}</span></div></td>`;
+              return `<td class="${numeric.trim()}"><div class="price-cell"><span>${escapeHtml(displayVal)}</span><span class="price-offset">${offset}</span></div></td>`;
             }
-            return `<td>${escapeHtml(val)}</td>`;
+            return `<td class="${numeric.trim()}">${escapeHtml(displayVal)}</td>`;
           }),
         ].join("");
         return `<tr>${cells}</tr>`;
