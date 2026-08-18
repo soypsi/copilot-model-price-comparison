@@ -891,5 +891,53 @@
       }
     }
   ],
-  "updated_at": "2026-08-18T15:10:35Z"
+  "updated_at": "2026-08-18T15:10:35Z",
+  "changelog": [
+    {
+      "updated_at": "2026-07-10",
+      "changes": [
+        "Initial model pricing dataset: 33 models"
+      ]
+    },
+    {
+      "updated_at": "2026-07-20",
+      "changes": [
+        "Updated model pricing and coding rankings"
+      ]
+    },
+    {
+      "updated_at": "2026-07-22",
+      "changes": [
+        "New model: Google Gemini 3.6 Flash"
+      ]
+    },
+    {
+      "updated_at": "2026-07-27",
+      "changes": [
+        "New model: Anthropic Claude Opus 5"
+      ]
+    },
+    {
+      "updated_at": "2026-07-31",
+      "changes": [
+        "New models: xAI Grok 4.5 (Default), xAI Grok 4.5 (Long context)",
+        "Price reductions: GPT-5.6 Terra and GPT-5.6 Luna tiers"
+      ]
+    },
+    {
+      "updated_at": "2026-08-11",
+      "changes": [
+        "New model: Moonshot AI Kimi K3",
+        "Removed models: Google Gemini 3 Flash, Google Gemini 2.5 Pro",
+        "Updated cache-write pricing and totals"
+      ]
+    },
+    {
+      "updated_at": "2026-08-17",
+      "changes": [
+        "New models: Anthropic Claude Sonnet 5, Google Gemini 3.6 Flash1, Google Gemini 3.7 Flash1, Microsoft MAI-Code-1.1-Flash, xAI Grok 4.6",
+        "Removed models: Anthropic Claude Sonnet 51, Google Gemini 3.6 Flash"
+      ]
+    }
+  ]
 }

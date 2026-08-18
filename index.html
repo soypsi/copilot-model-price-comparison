@@ -38,7 +38,7 @@
       height: 100vh;
       padding: 10px;
       display: grid;
-      grid-template-rows: repeat(5, auto) minmax(0, 1fr);
+      grid-template-rows: repeat(5, auto) minmax(0, 1fr) auto;
       gap: 8px;
     }
 
@@ -216,6 +216,28 @@
       text-align: left;
     }
 
+    .changelog {
+      max-height: 25vh;
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      padding: 8px 2px 0;
+      font-size: 12px;
+    }
+
+    .changelog h2 {
+      font-size: 13px;
+      margin: 0 0 4px;
+    }
+
+    .changelog ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .changelog li + li {
+      margin-top: 3px;
+    }
+
     .error {
       color: #ff6b6b;
       font-size: 13px;
@@ -293,6 +315,7 @@
     <div class="table-wrap">
       <table id="pricing-table" aria-label="Model pricing table"></table>
     </div>
+    <section id="changelog" class="changelog" aria-labelledby="changelog-title" hidden></section>
   </div>
 
   <script>
@@ -311,6 +334,7 @@
     const rowCount = document.getElementById("row-count");
     const sourceEl = document.getElementById("source");
     const updatedEl = document.getElementById("updated");
+    const changelogEl = document.getElementById("changelog");
     const hiddenNotice = document.getElementById("hidden-notice");
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
@@ -495,6 +519,15 @@
       return "";
     }
 
+    function renderChangelog(changelog) {
+      if (!Array.isArray(changelog) || !changelog.length) return;
+      changelogEl.innerHTML = `<h2 id="changelog-title">Important changes</h2><ul>${changelog
+        .slice().reverse()
+        .map((entry) => `<li><strong>${escapeHtml(entry.updated_at)}</strong>: ${entry.changes.map(escapeHtml).join(" ")}</li>`)
+        .join("")}</ul>`;
+      changelogEl.hidden = false;
+    }
+
     function renderTable() {
       const rows = filteredRows().sort(compareRows);
       updateHiddenNotice(hiddenRows());
@@ -676,6 +709,7 @@
         if (!state.columns.length) throw new Error("No columns in data file.");
         sourceEl.innerHTML = `Source: <a href="${data.source_url}" target="_blank" rel="noreferrer">${data.source_url}</a>`;
         updatedEl.textContent = data.updated_at ? `Updated: ${data.updated_at}` : "";
+        renderChangelog(data.changelog);
         renderTable();
       } catch (error) {
         fail(`Failed to load data/models.json: ${error instanceof Error ? error.message : String(error)}`);

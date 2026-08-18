@@ -216,6 +216,35 @@ def parse_price(value: str) -> float:
     return float(cleaned)
 
 
+def row_key(row: dict[str, str]) -> tuple[str, ...]:
+    return tuple(row.get(column, "") for column in ("Provider", "Model", "Tier", "Threshold (input tokens)"))
+
+
+def change_summary(previous: list[dict[str, str]], current: list[dict[str, str]]) -> list[str]:
+    old = {row_key(row): row for row in previous}
+    new = {row_key(row): row for row in current}
+    changes = []
+
+    added = sorted({row["Model"] for key, row in new.items() if key not in old})
+    removed = sorted({row["Model"] for key, row in old.items() if key not in new})
+    if added:
+        changes.append(f"New models: {', '.join(added)}")
+    if removed:
+        changes.append(f"Removed models: {', '.join(removed)}")
+
+    prices = []
+    for key in sorted(old.keys() & new.keys()):
+        before, after = old[key].get("Total price", ""), new[key].get("Total price", "")
+        if before != after:
+            label = new[key]["Model"]
+            tier = new[key].get("Tier", "")
+            suffix = f" ({tier})" if tier else ""
+            prices.append(f"{label}{suffix}: {before} → {after}")
+    if prices:
+        changes.append(f"Price changes: {'; '.join(prices)}")
+    return changes
+
+
 def normalize_rows(
     rows: list[dict[str, str]],
     columns: list[str],
@@ -253,8 +282,16 @@ def main() -> None:
     rows = normalize_rows(parsed_rows, columns, leaderboard)
     rows = sort_rows(rows, columns)
 
+    updated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    previous = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else {}
+    changes = change_summary(previous.get("rows", []), rows)
+    changelog = previous.get("changelog", [])
+    if changes:
+        changelog.append({"updated_at": updated_at, "changes": changes})
+
     payload = {
-        "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "updated_at": updated_at,
+        "changelog": changelog,
         "source_url": SOURCE_URL,
         "leaderboard_url": LEADERBOARD_URL,
         "columns": columns,
