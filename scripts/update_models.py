@@ -62,10 +62,17 @@ class PricingTableParser(HTMLParser):
         self._in_cell = False
         self._cell_tag = ""
         self._cell_text = ""
+        self._ignored_depth = 0
 
         self.tables: list[ParsedTable] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if self._ignored_depth:
+            self._ignored_depth += 1
+            return
+        if tag == "sup":
+            self._ignored_depth = 1
+            return
         if tag in {"h2", "h3"}:
             self._heading_tag = tag
             self._current_heading_text = ""
@@ -91,6 +98,9 @@ class PricingTableParser(HTMLParser):
             self._cell_text += " / "
 
     def handle_endtag(self, tag: str) -> None:
+        if self._ignored_depth:
+            self._ignored_depth -= 1
+            return
         if self._heading_tag and tag == self._heading_tag:
             self._last_heading = normalize_whitespace(self._current_heading_text)
             self._heading_tag = ""
@@ -118,6 +128,8 @@ class PricingTableParser(HTMLParser):
             self._current_table = None
 
     def handle_data(self, data: str) -> None:
+        if self._ignored_depth:
+            return
         if self._heading_tag:
             self._current_heading_text += data
         elif self._in_cell:
