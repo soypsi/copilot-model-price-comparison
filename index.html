@@ -475,6 +475,14 @@
       const current = priceValue(rows[rowIndex][column]);
       if (current === null) return "";
 
+      if (column === "Total price" && state.selectedModels.size === 1) {
+        const selected = state.rows.find((row) => state.selectedModels.has(modelIdFor(row)));
+        const baseline = selected ? priceValue(selected[column]) : null;
+        if (baseline === null || baseline === 0) return "";
+        const offset = ((current - baseline) / baseline) * 100;
+        return `${offset >= 0 ? "+" : ""}${offset.toFixed(1)}%`;
+      }
+
       for (let index = rowIndex - 1; index >= 0; index -= 1) {
         const previous = priceValue(rows[index][column]);
         if (previous === null) continue;
@@ -522,9 +530,12 @@
             const val = cellValue(row[column]);
             const displayVal = priceColumns.has(column) ? val.replace(/^\$\s*/, "") : val;
             const numeric = numericColumns.has(column) ? " numeric-column" : "";
-            const offset = state.sortColumn === column && priceColumns.has(column)
-              ? priceOffset(rows, rows.indexOf(row), column)
-              : "";
+            const showOffset = priceColumns.has(column) && (
+              state.sortColumn === column
+              || (state.sortColumn === "Coding rank" && column === "Total price")
+              || (state.selectedModels.size === 1 && column === "Total price")
+            );
+            const offset = showOffset ? priceOffset(rows, rows.indexOf(row), column) : "";
             if (column === "Model") {
               const url = `https://benchlm.ai/models/${slugify(val)}`;
               return `<td><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
