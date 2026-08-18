@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime, timezone
 import unicodedata
 import urllib.request
 from dataclasses import dataclass, field
@@ -253,6 +254,7 @@ def main() -> None:
     rows = sort_rows(rows, columns)
 
     payload = {
+        "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "source_url": SOURCE_URL,
         "leaderboard_url": LEADERBOARD_URL,
         "columns": columns,

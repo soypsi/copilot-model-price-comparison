@@ -38,7 +38,7 @@
       height: 100vh;
       padding: 10px;
       display: grid;
-      grid-template-rows: auto auto auto auto minmax(0, 1fr);
+      grid-template-rows: repeat(5, auto) minmax(0, 1fr);
       gap: 8px;
     }
 
@@ -282,6 +282,7 @@
       <span id="row-count" class="meta">Loading…</span>
     </h1>
     <div id="source" class="meta"></div>
+    <div id="updated" class="meta"></div>
     <div class="actions">
       <button id="compare-button" class="compare-button" type="button" disabled>
         Compare selected models
@@ -309,6 +310,7 @@
     const table = document.getElementById("pricing-table");
     const rowCount = document.getElementById("row-count");
     const sourceEl = document.getElementById("source");
+    const updatedEl = document.getElementById("updated");
     const hiddenNotice = document.getElementById("hidden-notice");
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
@@ -673,6 +675,7 @@
         state.rows = data.rows || [];
         if (!state.columns.length) throw new Error("No columns in data file.");
         sourceEl.innerHTML = `Source: <a href="${data.source_url}" target="_blank" rel="noreferrer">${data.source_url}</a>`;
+        updatedEl.textContent = data.updated_at ? `Updated: ${data.updated_at}` : "";
         renderTable();
       } catch (error) {
         fail(`Failed to load data/models.json: ${error instanceof Error ? error.message : String(error)}`);
