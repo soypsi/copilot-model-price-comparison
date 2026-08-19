@@ -1,4 +1,53 @@
 {
+  "updated_at": "2026-08-19T04:01:19Z",
+  "changelog": [
+    {
+      "updated_at": "2026-07-10",
+      "changes": [
+        "Initial model pricing dataset: 33 models"
+      ]
+    },
+    {
+      "updated_at": "2026-07-20",
+      "changes": [
+        "Updated model pricing and coding rankings"
+      ]
+    },
+    {
+      "updated_at": "2026-07-22",
+      "changes": [
+        "New model: Google Gemini 3.6 Flash"
+      ]
+    },
+    {
+      "updated_at": "2026-07-27",
+      "changes": [
+        "New model: Anthropic Claude Opus 5"
+      ]
+    },
+    {
+      "updated_at": "2026-07-31",
+      "changes": [
+        "New models: xAI Grok 4.5 (Default), xAI Grok 4.5 (Long context)",
+        "Price reductions: GPT-5.6 Terra and GPT-5.6 Luna tiers"
+      ]
+    },
+    {
+      "updated_at": "2026-08-11",
+      "changes": [
+        "New model: Moonshot AI Kimi K3",
+        "Removed models: Google Gemini 3 Flash, Google Gemini 2.5 Pro",
+        "Updated cache-write pricing and totals"
+      ]
+    },
+    {
+      "updated_at": "2026-08-17",
+      "changes": [
+        "New models: Google Gemini 3.7 Flash, Microsoft MAI-Code-1.1-Flash, xAI Grok 4.6 (Default), xAI Grok 4.6 (Long context)",
+        "Price change: Google Gemini 3.6 Flash (Default) $9.15 \u2192 $4.575"
+      ]
+    }
+  ],
   "source_url": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
   "leaderboard_url": "https://benchlm.ai/api/data/leaderboard?category=coding",
   "columns": [
@@ -31,11 +80,11 @@
       "Coding rank": "2",
       "_coding_model": "Claude Fable 5",
       "_category_scores": {
-        "agentic": 75.82,
-        "coding": 80.81,
+        "agentic": 75.83,
+        "coding": 80.85,
         "reasoning": null,
         "multimodalGrounded": 63.5,
-        "knowledge": 69.6,
+        "knowledge": 69.5,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
@@ -98,7 +147,7 @@
       "_coding_model": "Claude Opus 4.6",
       "_category_scores": {
         "agentic": 58.2,
-        "coding": 61.74,
+        "coding": 61.78,
         "reasoning": null,
         "multimodalGrounded": 61.6,
         "knowledge": 82.7,
@@ -123,7 +172,7 @@
       "_coding_model": "Claude Opus 4.7",
       "_category_scores": {
         "agentic": 58.4,
-        "coding": 67.4,
+        "coding": 67.41,
         "reasoning": null,
         "multimodalGrounded": null,
         "knowledge": 65.5,
@@ -147,8 +196,8 @@
       "Coding rank": "7",
       "_coding_model": "Claude Opus 4.8",
       "_category_scores": {
-        "agentic": 61.18,
-        "coding": 71.18,
+        "agentic": 61.19,
+        "coding": 71.21,
         "reasoning": 71.2,
         "multimodalGrounded": 88,
         "knowledge": 87.6,
@@ -172,8 +221,8 @@
       "Coding rank": "7",
       "_coding_model": "Claude Opus 4.8",
       "_category_scores": {
-        "agentic": 61.18,
-        "coding": 71.18,
+        "agentic": 61.19,
+        "coding": 71.21,
         "reasoning": 71.2,
         "multimodalGrounded": 88,
         "knowledge": 87.6,
@@ -197,8 +246,8 @@
       "Coding rank": "4",
       "_coding_model": "Claude Opus 5",
       "_category_scores": {
-        "agentic": 79.71,
-        "coding": 78.11,
+        "agentic": 79.73,
+        "coding": 78.05,
         "reasoning": 90.8,
         "multimodalGrounded": 88.6,
         "knowledge": 93.4,
@@ -251,11 +300,11 @@
       "Cache write": "$3.75",
       "Output": "$15.00",
       "Total price": "$22.05",
-      "Coding rank": "35",
+      "Coding rank": "34",
       "_coding_model": "Claude Sonnet 4.6",
       "_category_scores": {
         "agentic": 52,
-        "coding": 57.48,
+        "coding": 57.42,
         "reasoning": null,
         "multimodalGrounded": 55.2,
         "knowledge": 76.9,
@@ -279,7 +328,7 @@
       "Coding rank": "9",
       "_coding_model": "Claude Sonnet 5",
       "_category_scores": {
-        "agentic": 65.13,
+        "agentic": 65.14,
         "coding": 68.52,
         "reasoning": null,
         "multimodalGrounded": 76.1,
@@ -349,11 +398,11 @@
       "Cache write": "",
       "Output": "$9.00",
       "Total price": "$10.65",
-      "Coding rank": "30",
+      "Coding rank": "29",
       "_coding_model": "Gemini 3.5 Flash",
       "_category_scores": {
-        "agentic": 46.31,
-        "coding": 61.01,
+        "agentic": 46.33,
+        "coding": 60.97,
         "reasoning": 68.6,
         "multimodalGrounded": 83.4,
         "knowledge": 63.3,
@@ -374,9 +423,18 @@
       "Cache write": "",
       "Output": "$3.75",
       "Total price": "$4.575",
-      "Coding rank": "",
-      "_coding_model": "",
-      "_category_scores": {}
+      "Coding rank": "15",
+      "_coding_model": "Gemini 3.6 Flash",
+      "_category_scores": {
+        "agentic": 38.8,
+        "coding": 64.96,
+        "reasoning": null,
+        "multimodalGrounded": null,
+        "knowledge": 71.2,
+        "multilingual": null,
+        "instructionFollowing": null,
+        "math": null
+      }
     },
     {
       "Provider": "Google",
@@ -390,9 +448,18 @@
       "Cache write": "",
       "Output": "$3.75",
       "Total price": "$4.575",
-      "Coding rank": "",
-      "_coding_model": "",
-      "_category_scores": {}
+      "Coding rank": "12",
+      "_coding_model": "Gemini 3.7 Flash",
+      "_category_scores": {
+        "agentic": 58.03,
+        "coding": 66.43,
+        "reasoning": null,
+        "multimodalGrounded": 76.9,
+        "knowledge": 69.2,
+        "multilingual": null,
+        "instructionFollowing": null,
+        "math": null
+      }
     },
     {
       "Provider": "Microsoft",
@@ -438,9 +505,18 @@
       "Cache write": "",
       "Output": "$4.00",
       "Total price": "$5.14",
-      "Coding rank": "",
-      "_coding_model": "",
-      "_category_scores": {}
+      "Coding rank": "50",
+      "_coding_model": "Kimi K2.7 Code",
+      "_category_scores": {
+        "agentic": 40.14,
+        "coding": 53.22,
+        "reasoning": null,
+        "multimodalGrounded": null,
+        "knowledge": null,
+        "multilingual": null,
+        "instructionFollowing": null,
+        "math": null
+      }
     },
     {
       "Provider": "Moonshot AI",
@@ -457,8 +533,8 @@
       "Coding rank": "5",
       "_coding_model": "Kimi K3",
       "_category_scores": {
-        "agentic": 73.87,
-        "coding": 77.92,
+        "agentic": 73.89,
+        "coding": 77.97,
         "reasoning": null,
         "multimodalGrounded": 87.9,
         "knowledge": 84.8,
@@ -520,11 +596,11 @@
       "Cache write": "Not applicable",
       "Output": "$15.00",
       "Total price": "$17.75",
-      "Coding rank": "33",
+      "Coding rank": "32",
       "_coding_model": "GPT-5.4",
       "_category_scores": {
-        "agentic": 57.88,
-        "coding": 58.73,
+        "agentic": 57.89,
+        "coding": 58.76,
         "reasoning": 73.2,
         "multimodalGrounded": 67.3,
         "knowledge": 77.3,
@@ -545,11 +621,11 @@
       "Cache write": "Not applicable",
       "Output": "$22.50",
       "Total price": "$28",
-      "Coding rank": "33",
+      "Coding rank": "32",
       "_coding_model": "GPT-5.4",
       "_category_scores": {
-        "agentic": 57.88,
-        "coding": 58.73,
+        "agentic": 57.89,
+        "coding": 58.76,
         "reasoning": 73.2,
         "multimodalGrounded": 67.3,
         "knowledge": 77.3,
@@ -605,8 +681,8 @@
       "Coding rank": "8",
       "_coding_model": "GPT-5.5",
       "_category_scores": {
-        "agentic": 65.21,
-        "coding": 71,
+        "agentic": 65.22,
+        "coding": 70.99,
         "reasoning": 85,
         "multimodalGrounded": 68.3,
         "knowledge": 79.3,
@@ -630,8 +706,8 @@
       "Coding rank": "8",
       "_coding_model": "GPT-5.5",
       "_category_scores": {
-        "agentic": 65.21,
-        "coding": 71,
+        "agentic": 65.22,
+        "coding": 70.99,
         "reasoning": 85,
         "multimodalGrounded": 68.3,
         "knowledge": 79.3,
@@ -655,8 +731,8 @@
       "Coding rank": "6",
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
-        "agentic": 53.3,
-        "coding": 73.02,
+        "agentic": 53.32,
+        "coding": 73.04,
         "reasoning": 57.8,
         "multimodalGrounded": 66.1,
         "knowledge": 81.6,
@@ -680,8 +756,8 @@
       "Coding rank": "6",
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
-        "agentic": 53.3,
-        "coding": 73.02,
+        "agentic": 53.32,
+        "coding": 73.04,
         "reasoning": 57.8,
         "multimodalGrounded": 66.1,
         "knowledge": 81.6,
@@ -705,8 +781,8 @@
       "Coding rank": "3",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
-        "agentic": 68.75,
-        "coding": 78.73,
+        "agentic": 68.77,
+        "coding": 78.76,
         "reasoning": 93,
         "multimodalGrounded": 84.8,
         "knowledge": 83.6,
@@ -730,8 +806,8 @@
       "Coding rank": "3",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
-        "agentic": 68.75,
-        "coding": 78.73,
+        "agentic": 68.77,
+        "coding": 78.76,
         "reasoning": 93,
         "multimodalGrounded": 84.8,
         "knowledge": 83.6,
@@ -755,8 +831,8 @@
       "Coding rank": "13",
       "_coding_model": "GPT-5.6 Terra",
       "_category_scores": {
-        "agentic": 59.21,
-        "coding": 65.36,
+        "agentic": 59.23,
+        "coding": 65.34,
         "reasoning": 83.8,
         "multimodalGrounded": 75.4,
         "knowledge": 82.2,
@@ -780,8 +856,8 @@
       "Coding rank": "13",
       "_coding_model": "GPT-5.6 Terra",
       "_category_scores": {
-        "agentic": 59.21,
-        "coding": 65.36,
+        "agentic": 59.23,
+        "coding": 65.34,
         "reasoning": 83.8,
         "multimodalGrounded": 75.4,
         "knowledge": 82.2,
@@ -802,11 +878,11 @@
       "Cache write": "",
       "Output": "$6.00",
       "Total price": "$8.5",
-      "Coding rank": "38",
+      "Coding rank": "36",
       "_coding_model": "Grok 4.5",
       "_category_scores": {
-        "agentic": 61.62,
-        "coding": 57.3,
+        "agentic": 61.64,
+        "coding": 57.33,
         "reasoning": 50.5,
         "multimodalGrounded": null,
         "knowledge": 71.1,
@@ -827,11 +903,11 @@
       "Cache write": "",
       "Output": "$12.00",
       "Total price": "$17",
-      "Coding rank": "38",
+      "Coding rank": "36",
       "_coding_model": "Grok 4.5",
       "_category_scores": {
-        "agentic": 61.62,
-        "coding": 57.3,
+        "agentic": 61.64,
+        "coding": 57.33,
         "reasoning": 50.5,
         "multimodalGrounded": null,
         "knowledge": 71.1,
@@ -855,11 +931,11 @@
       "Coding rank": "18",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 66.73,
+        "agentic": 66.76,
         "coding": 63.58,
         "reasoning": null,
         "multimodalGrounded": null,
-        "knowledge": 70.6,
+        "knowledge": 70.5,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
@@ -880,64 +956,15 @@
       "Coding rank": "18",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 66.73,
+        "agentic": 66.76,
         "coding": 63.58,
         "reasoning": null,
         "multimodalGrounded": null,
-        "knowledge": 70.6,
+        "knowledge": 70.5,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
       }
-    }
-  ],
-  "updated_at": "2026-08-18T15:10:35Z",
-  "changelog": [
-    {
-      "updated_at": "2026-07-10",
-      "changes": [
-        "Initial model pricing dataset: 33 models"
-      ]
-    },
-    {
-      "updated_at": "2026-07-20",
-      "changes": [
-        "Updated model pricing and coding rankings"
-      ]
-    },
-    {
-      "updated_at": "2026-07-22",
-      "changes": [
-        "New model: Google Gemini 3.6 Flash"
-      ]
-    },
-    {
-      "updated_at": "2026-07-27",
-      "changes": [
-        "New model: Anthropic Claude Opus 5"
-      ]
-    },
-    {
-      "updated_at": "2026-07-31",
-      "changes": [
-        "New models: xAI Grok 4.5 (Default), xAI Grok 4.5 (Long context)",
-        "Price reductions: GPT-5.6 Terra and GPT-5.6 Luna tiers"
-      ]
-    },
-    {
-      "updated_at": "2026-08-11",
-      "changes": [
-        "New model: Moonshot AI Kimi K3",
-        "Removed models: Google Gemini 3 Flash, Google Gemini 2.5 Pro",
-        "Updated cache-write pricing and totals"
-      ]
-    },
-    {
-      "updated_at": "2026-08-17",
-      "changes": [
-        "New models: Google Gemini 3.7 Flash, Microsoft MAI-Code-1.1-Flash, xAI Grok 4.6 (Default), xAI Grok 4.6 (Long context)",
-        "Price change: Google Gemini 3.6 Flash (Default) $9.15 \u2192 $4.575"
-      ]
     }
   ]
 }
