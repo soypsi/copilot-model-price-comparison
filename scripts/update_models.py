@@ -6,6 +6,8 @@ from __future__ import annotations
 import json
 import re
 from datetime import datetime, timezone
+from email.utils import format_datetime
+from html import escape
 import unicodedata
 import urllib.request
 from dataclasses import dataclass, field
@@ -16,6 +18,8 @@ from typing import Final
 SOURCE_URL: Final = "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing"
 LEADERBOARD_URL: Final = "https://benchlm.ai/api/data/leaderboard?category=coding"
 OUTPUT_PATH: Final = Path("data/models.json")
+RSS_PATH: Final = Path("important-changes.xml")
+SITE_URL: Final = "https://soypsi.github.io/copilot-model-price-comparison"
 NEXT_DATA_RE: Final = re.compile(
     r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
     re.DOTALL,
@@ -257,6 +261,42 @@ def change_summary(previous: list[dict[str, str]], current: list[dict[str, str]]
     return changes
 
 
+def changelog_date(value: str) -> str:
+    return value[:10]
+
+
+def write_rss(changelog: list[dict[str, object]]) -> None:
+    entries = list(reversed(changelog))
+    latest_date = entries[0]["updated_at"] if entries else datetime.now(timezone.utc).date().isoformat()
+    latest_datetime = datetime.fromisoformat(f"{latest_date}T00:00:00+00:00")
+    items = []
+    for index, entry in enumerate(entries):
+        date = str(entry["updated_at"])
+        published = datetime.fromisoformat(f"{date}T00:00:00+00:00")
+        changes = " ".join(str(change) for change in entry["changes"])
+        items.append(
+            f"""    <item>
+      <title>{escape(f"Important changes - {date}")}</title>
+      <link>{SITE_URL}/#changelog</link>
+      <guid isPermaLink="false">{SITE_URL}/#changelog-{date}-{index}</guid>
+      <pubDate>{format_datetime(published, usegmt=True)}</pubDate>
+      <description>{escape(changes)}</description>
+    </item>"""
+        )
+    feed = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Copilot model price comparison - Important changes</title>
+    <link>{SITE_URL}</link>
+    <description>Daily important changes to Copilot model pricing and coding rankings.</description>
+    <lastBuildDate>{format_datetime(latest_datetime, usegmt=True)}</lastBuildDate>
+{chr(10).join(items)}
+  </channel>
+</rss>
+"""
+    RSS_PATH.write_text(feed, encoding="utf-8")
+
+
 def normalize_rows(
     rows: list[dict[str, str]],
     columns: list[str],
@@ -297,9 +337,15 @@ def main() -> None:
     updated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     previous = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else {}
     changes = change_summary(previous.get("rows", []), rows)
-    changelog = previous.get("changelog", [])
+    changelog = [
+        {
+            "updated_at": changelog_date(str(entry["updated_at"])),
+            "changes": entry["changes"],
+        }
+        for entry in previous.get("changelog", [])
+    ]
     if changes:
-        changelog.append({"updated_at": updated_at, "changes": changes})
+        changelog.append({"updated_at": updated_at[:10], "changes": changes})
 
     payload = {
         "updated_at": updated_at,
@@ -312,6 +358,7 @@ def main() -> None:
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    write_rss(changelog)
     print(f"Wrote {len(rows)} rows to {OUTPUT_PATH}")
 
 

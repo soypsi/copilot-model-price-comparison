@@ -229,6 +229,11 @@
       margin: 0 0 4px;
     }
 
+    .changelog h2 a {
+      margin-left: 4px;
+      text-decoration: none;
+    }
+
     .changelog ul {
       margin: 0;
       padding-left: 18px;
@@ -521,9 +526,9 @@
 
     function renderChangelog(changelog) {
       if (!Array.isArray(changelog) || !changelog.length) return;
-      changelogEl.innerHTML = `<h2 id="changelog-title">Important changes</h2><ul>${changelog
+      changelogEl.innerHTML = `<h2 id="changelog-title">Important changes <a href="important-changes.xml" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to important changes RSS feed">📡</a></h2><ul>${changelog
         .slice().reverse()
-        .map((entry) => `<li><strong>${escapeHtml(entry.updated_at)}</strong>: ${entry.changes.map(escapeHtml).join(" ")}</li>`)
+        .map((entry) => `<li><strong>${escapeHtml(String(entry.updated_at).slice(0, 10))}</strong>: ${entry.changes.map(escapeHtml).join(" ")}</li>`)
         .join("")}</ul>`;
       changelogEl.hidden = false;
     }
