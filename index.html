@@ -205,15 +205,32 @@
     }
 
     .price-cell {
-      display: flex;
-      justify-content: flex-end;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto 1em;
       gap: 8px;
+      align-items: center;
     }
 
     .price-offset {
-      order: -1;
       opacity: 0.55;
       text-align: left;
+    }
+
+    .price-value {
+      text-align: right;
+    }
+
+    .price-trend {
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .price-trend-up {
+      color: #f85149;
+    }
+
+    .price-trend-down {
+      color: #3fb950;
     }
 
     .rank-cell {
@@ -548,6 +565,15 @@
       return "";
     }
 
+    function priceTrend(row, column) {
+      const diff = row._price_diffs?.[column];
+      if (typeof diff !== "number" || diff === 0) return "";
+      const formatted = `${diff > 0 ? "+" : "-"}$${Math.abs(diff).toFixed(3).replace(/\.?0+$/, "")}`;
+      const direction = diff > 0 ? "up" : "down";
+      const arrow = diff > 0 ? "↑" : "↓";
+      return `<span class="price-trend price-trend-${direction}" title="Price change: ${formatted}">${arrow}</span>`;
+    }
+
     function renderChangelog(changelog) {
       if (!Array.isArray(changelog) || !changelog.length) return;
       changelogEl.innerHTML = `<h2 id="changelog-title">Important changes <a href="important-changes.xml" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to important changes RSS feed">📡</a></h2><ul>${changelog
@@ -618,7 +644,10 @@
               return `<td class="${numeric.trim()}" title="${escapeHtml(label)}"><span class="rank-cell"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span></td>`;
             }
             if (priceColumns.has(column) && offset) {
-              return `<td class="${numeric.trim()}"><div class="price-cell"><span>${escapeHtml(displayVal)}</span><span class="price-offset">${offset}</span></div></td>`;
+              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${escapeHtml(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
+            }
+            if (priceColumns.has(column)) {
+              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset"></span><span class="price-value">${escapeHtml(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
             return `<td class="${numeric.trim()}">${escapeHtml(displayVal)}</td>`;
           }),

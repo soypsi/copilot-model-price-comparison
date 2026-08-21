@@ -38,6 +38,7 @@ PREFERRED_COLUMNS: Final = [
     "Total price",
     "Coding rank",
 ]
+PRICE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output", "Total price")
 
 
 def normalize_whitespace(value: str) -> str:
@@ -312,7 +313,7 @@ def normalize_rows(
         }
         total = sum(
             parse_price(normalized[column])
-            for column in ("Input", "Cached input", "Cache write", "Output")
+            for column in PRICE_COLUMNS[:-1]
             if normalized.get(column)
         )
         normalized["Total price"] = f"${total:.3f}".rstrip("0").rstrip(".")
@@ -327,6 +328,14 @@ def normalize_rows(
             if normalized["Coding rank"].isdigit() and previous_rank.isdigit()
             else ""
         )
+        normalized["_price_diffs"] = {
+            column: round(parse_price(normalized.get(column, "")) - parse_price(previous_rows.get(row_key(row), {}).get(column, "")), 6)
+            if normalized.get(column) and previous_rows.get(row_key(row), {}).get(column)
+            and normalized.get(column, "").lower() != "not applicable"
+            and previous_rows.get(row_key(row), {}).get(column, "").lower() != "not applicable"
+            else ""
+            for column in PRICE_COLUMNS
+        }
         normalized_rows.append(normalized)
     return normalized_rows
 

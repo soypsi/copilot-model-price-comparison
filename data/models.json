@@ -852,7 +852,14 @@
         "math": 96.9
       },
       "_coding_rank_previous": "3",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": -2.5,
+        "Cached input": -0.25,
+        "Cache write": -3.125,
+        "Output": -15,
+        "Total price": -20.875
+      }
     },
     {
       "Provider": "OpenAI",
@@ -879,7 +886,14 @@
         "math": 96.9
       },
       "_coding_rank_previous": "3",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": -5,
+        "Cached input": -0.5,
+        "Cache write": -6.25,
+        "Output": -22.5,
+        "Total price": -34.25
+      }
     },
     {
       "Provider": "OpenAI",
