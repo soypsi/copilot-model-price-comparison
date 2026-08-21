@@ -216,6 +216,30 @@
       text-align: left;
     }
 
+    .rank-cell {
+      display: inline-grid;
+      grid-template-columns: 4ch 1em;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .rank-value {
+      text-align: right;
+    }
+
+    .rank-trend {
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .rank-trend-up {
+      color: #3fb950;
+    }
+
+    .rank-trend-down {
+      color: #f85149;
+    }
+
     .changelog {
       max-height: 25vh;
       overflow: auto;
@@ -585,7 +609,13 @@
                 .map(([name, score]) => `${name}: ${score ?? "n/a"}`)
                 .join(" | ");
               const label = `#${val} ${row._coding_model} — ${scores}`;
-              return `<td class="${numeric.trim()}" title="${escapeHtml(label)}">${escapeHtml(displayVal)}</td>`;
+              const rankDiff = Number.isInteger(row._coding_rank_diff) ? row._coding_rank_diff : null;
+              const trend = rankDiff === null || rankDiff === 0 ? "" : (
+                rankDiff < 0
+                  ? `<span class="rank-trend rank-trend-up" title="Rank change: ${rankDiff}">↑</span>`
+                  : `<span class="rank-trend rank-trend-down" title="Rank change: +${rankDiff}">↓</span>`
+              );
+              return `<td class="${numeric.trim()}" title="${escapeHtml(label)}"><span class="rank-cell"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span></td>`;
             }
             if (priceColumns.has(column) && offset) {
               return `<td class="${numeric.trim()}"><div class="price-cell"><span>${escapeHtml(displayVal)}</span><span class="price-offset">${offset}</span></div></td>`;

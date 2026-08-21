@@ -301,6 +301,7 @@ def normalize_rows(
     rows: list[dict[str, str]],
     columns: list[str],
     leaderboard: list[dict],
+    previous_rows: dict[tuple[str, ...], dict[str, str]],
 ) -> list[dict[str, str]]:
     normalized_rows = []
     for row in rows:
@@ -319,6 +320,13 @@ def normalize_rows(
         normalized["Coding rank"] = str(match["rank"]) if match else ""
         normalized["_coding_model"] = match["model"] if match else ""
         normalized["_category_scores"] = match.get("categoryScores", {}) if match else {}
+        previous_rank = previous_rows.get(row_key(row), {}).get("Coding rank", "")
+        normalized["_coding_rank_previous"] = previous_rank
+        normalized["_coding_rank_diff"] = (
+            int(normalized["Coding rank"]) - int(previous_rank)
+            if normalized["Coding rank"].isdigit() and previous_rank.isdigit()
+            else ""
+        )
         normalized_rows.append(normalized)
     return normalized_rows
 
@@ -331,11 +339,12 @@ def main() -> None:
     leaderboard = leaderboard_payload.get("models", [])
 
     columns = build_columns(parsed_rows)
-    rows = normalize_rows(parsed_rows, columns, leaderboard)
+    previous = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else {}
+    previous_rows = {row_key(row): row for row in previous.get("rows", [])}
+    rows = normalize_rows(parsed_rows, columns, leaderboard, previous_rows)
     rows = sort_rows(rows, columns)
 
     updated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-    previous = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else {}
     changes = change_summary(previous.get("rows", []), rows)
     changelog = [
         {

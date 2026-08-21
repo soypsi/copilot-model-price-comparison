@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-21T17:22:51Z",
+  "updated_at": "2026-08-21T17:33:44Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -94,7 +94,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "2",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "Anthropic",
@@ -110,7 +112,9 @@
       "Total price": "$7.35",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Anthropic",
@@ -135,7 +139,9 @@
         "multilingual": 82.9,
         "instructionFollowing": 49.4,
         "math": 58.3
-      }
+      },
+      "_coding_rank_previous": "24",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Anthropic",
@@ -160,7 +166,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 59.6
-      }
+      },
+      "_coding_rank_previous": "26",
+      "_coding_rank_diff": -2
     },
     {
       "Provider": "Anthropic",
@@ -185,7 +193,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 61.7
-      }
+      },
+      "_coding_rank_previous": "10",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Anthropic",
@@ -210,7 +220,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 66.7
-      }
+      },
+      "_coding_rank_previous": "7",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Anthropic",
@@ -235,7 +247,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 66.7
-      }
+      },
+      "_coding_rank_previous": "7",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Anthropic",
@@ -260,7 +274,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "4",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Anthropic",
@@ -276,7 +292,9 @@
       "Total price": "$22.05",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Anthropic",
@@ -292,7 +310,9 @@
       "Total price": "$22.05",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Anthropic",
@@ -317,7 +337,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 49.3
-      }
+      },
+      "_coding_rank_previous": "35",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "Anthropic",
@@ -342,7 +364,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "9",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "Fine-tuned (GitHub)",
@@ -358,7 +382,9 @@
       "Total price": "$2.275",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Google",
@@ -374,7 +400,9 @@
       "Total price": "$14.2",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Google",
@@ -390,7 +418,9 @@
       "Total price": "$22.4",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Google",
@@ -415,7 +445,9 @@
         "multilingual": null,
         "instructionFollowing": 82.9,
         "math": 55.8
-      }
+      },
+      "_coding_rank_previous": "30",
+      "_coding_rank_diff": -7
     },
     {
       "Provider": "Google",
@@ -440,7 +472,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "15",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "Google",
@@ -465,7 +499,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "Microsoft",
@@ -481,7 +517,9 @@
       "Total price": "$5.325",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Microsoft",
@@ -497,7 +535,9 @@
       "Total price": "$1.42",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Moonshot AI",
@@ -513,7 +553,9 @@
       "Total price": "$5.14",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "Moonshot AI",
@@ -538,7 +580,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "5",
+      "_coding_rank_diff": -1
     },
     {
       "Provider": "OpenAI",
@@ -554,7 +598,9 @@
       "Total price": "$2.275",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "OpenAI",
@@ -579,7 +625,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "19",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "OpenAI",
@@ -604,7 +652,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 65.7
-      }
+      },
+      "_coding_rank_previous": "33",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "OpenAI",
@@ -629,7 +679,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 65.7
-      }
+      },
+      "_coding_rank_previous": "33",
+      "_coding_rank_diff": 1
     },
     {
       "Provider": "OpenAI",
@@ -645,7 +697,9 @@
       "Total price": "$5.325",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "OpenAI",
@@ -661,7 +715,9 @@
       "Total price": "$1.47",
       "Coding rank": "",
       "_coding_model": "",
-      "_category_scores": {}
+      "_category_scores": {},
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": ""
     },
     {
       "Provider": "OpenAI",
@@ -686,7 +742,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 71.1
-      }
+      },
+      "_coding_rank_previous": "8",
+      "_coding_rank_diff": -1
     },
     {
       "Provider": "OpenAI",
@@ -711,7 +769,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 71.1
-      }
+      },
+      "_coding_rank_previous": "8",
+      "_coding_rank_diff": -1
     },
     {
       "Provider": "OpenAI",
@@ -736,7 +796,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "6",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "OpenAI",
@@ -761,7 +823,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "6",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "OpenAI",
@@ -786,7 +850,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "3",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "OpenAI",
@@ -811,7 +877,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "3",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "OpenAI",
@@ -836,7 +904,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "13",
+      "_coding_rank_diff": -3
     },
     {
       "Provider": "OpenAI",
@@ -861,7 +931,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.9
-      }
+      },
+      "_coding_rank_previous": "13",
+      "_coding_rank_diff": -3
     },
     {
       "Provider": "xAI",
@@ -886,7 +958,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "37",
+      "_coding_rank_diff": 2
     },
     {
       "Provider": "xAI",
@@ -911,7 +985,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "37",
+      "_coding_rank_diff": 2
     },
     {
       "Provider": "xAI",
@@ -936,7 +1012,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "18",
+      "_coding_rank_diff": 0
     },
     {
       "Provider": "xAI",
@@ -961,7 +1039,9 @@
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
-      }
+      },
+      "_coding_rank_previous": "18",
+      "_coding_rank_diff": 0
     }
   ]
 }
