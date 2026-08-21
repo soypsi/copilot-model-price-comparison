@@ -220,6 +220,20 @@
       text-align: right;
     }
 
+    .price-number {
+      display: inline-grid;
+      grid-template-columns: 4ch auto 3ch;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .price-whole {
+      text-align: right;
+    }
+
+    .price-fraction {
+      text-align: left;
+    }
+
     .price-trend {
       font-weight: 700;
       text-align: center;
@@ -565,6 +579,13 @@
       return "";
     }
 
+    function priceValueMarkup(value) {
+      const match = value.match(/^(\d+)(?:\.(\d+))?$/);
+      if (!match) return escapeHtml(value);
+      const fraction = (match[2] || "").padEnd(3, "0").slice(0, 3);
+      return `<span class="price-number"><span class="price-whole">${match[1]}</span><span>.</span><span class="price-fraction">${fraction}</span></span>`;
+    }
+
     function priceTrend(row, column) {
       const diff = row._price_diffs?.[column];
       if (typeof diff !== "number" || diff === 0) return "";
@@ -644,10 +665,10 @@
               return `<td class="${numeric.trim()}" title="${escapeHtml(label)}"><span class="rank-cell"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span></td>`;
             }
             if (priceColumns.has(column) && offset) {
-              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${escapeHtml(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
+              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
             if (priceColumns.has(column)) {
-              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset"></span><span class="price-value">${escapeHtml(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
+              return `<td class="${numeric.trim()}"><div class="price-cell"><span class="price-offset"></span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
             return `<td class="${numeric.trim()}">${escapeHtml(displayVal)}</td>`;
           }),
