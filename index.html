@@ -801,6 +801,12 @@
       }
     }
 
+    if (["localhost", "127.0.0.1", "::1"].includes(location.hostname)) {
+      const reloadSource = new EventSource("/__reload");
+      reloadSource.onmessage = () => location.reload();
+      reloadSource.onerror = () => reloadSource.close();
+    }
+
     init();
   </script>
 </body>
