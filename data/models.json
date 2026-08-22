@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-21T17:33:44Z",
+  "updated_at": "2026-08-22T03:58:20Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -52,6 +52,12 @@
       "changes": [
         "Price changes: GPT-5.6 Sol (Default): $41.75 \u2192 $20.875; GPT-5.6 Sol (Long context): $68.5 \u2192 $34.25"
       ]
+    },
+    {
+      "updated_at": "2026-08-22",
+      "changes": [
+        "Price changes: GPT-5.6 Sol (Default): $20.875 \u2192 $14.7; GPT-5.6 Sol (Long context): $34.25 \u2192 $24.4"
+      ]
     }
   ],
   "source_url": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
@@ -96,7 +102,14 @@
         "math": null
       },
       "_coding_rank_previous": "2",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -114,7 +127,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -140,8 +160,15 @@
         "instructionFollowing": 49.4,
         "math": 58.3
       },
-      "_coding_rank_previous": "24",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "25",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -167,8 +194,15 @@
         "instructionFollowing": null,
         "math": 59.6
       },
-      "_coding_rank_previous": "26",
-      "_coding_rank_diff": -2
+      "_coding_rank_previous": "24",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -194,8 +228,15 @@
         "instructionFollowing": null,
         "math": 61.7
       },
-      "_coding_rank_previous": "10",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -221,8 +262,15 @@
         "instructionFollowing": null,
         "math": 66.7
       },
-      "_coding_rank_previous": "7",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "8",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -248,8 +296,15 @@
         "instructionFollowing": null,
         "math": 66.7
       },
-      "_coding_rank_previous": "7",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "8",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -275,8 +330,15 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "4",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "5",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -294,7 +356,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -312,7 +381,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -339,7 +415,14 @@
         "math": 49.3
       },
       "_coding_rank_previous": "35",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Anthropic",
@@ -366,7 +449,14 @@
         "math": null
       },
       "_coding_rank_previous": "9",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Fine-tuned (GitHub)",
@@ -384,7 +474,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Google",
@@ -402,7 +499,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Google",
@@ -420,7 +524,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Google",
@@ -446,8 +557,15 @@
         "instructionFollowing": 82.9,
         "math": 55.8
       },
-      "_coding_rank_previous": "30",
-      "_coding_rank_diff": -7
+      "_coding_rank_previous": "23",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Google",
@@ -473,8 +591,15 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "15",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "16",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Google",
@@ -501,7 +626,14 @@
         "math": null
       },
       "_coding_rank_previous": "12",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Microsoft",
@@ -519,7 +651,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Microsoft",
@@ -537,7 +676,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Moonshot AI",
@@ -555,7 +701,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "Moonshot AI",
@@ -581,8 +734,15 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "5",
-      "_coding_rank_diff": -1
+      "_coding_rank_previous": "4",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -600,7 +760,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -627,7 +794,14 @@
         "math": null
       },
       "_coding_rank_previous": "19",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -653,8 +827,15 @@
         "instructionFollowing": null,
         "math": 65.7
       },
-      "_coding_rank_previous": "33",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "34",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -680,8 +861,15 @@
         "instructionFollowing": null,
         "math": 65.7
       },
-      "_coding_rank_previous": "33",
-      "_coding_rank_diff": 1
+      "_coding_rank_previous": "34",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -699,7 +887,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -717,7 +912,14 @@
       "_coding_model": "",
       "_category_scores": {},
       "_coding_rank_previous": "",
-      "_coding_rank_diff": ""
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -743,8 +945,15 @@
         "instructionFollowing": null,
         "math": 71.1
       },
-      "_coding_rank_previous": "8",
-      "_coding_rank_diff": -1
+      "_coding_rank_previous": "7",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -770,8 +979,15 @@
         "instructionFollowing": null,
         "math": 71.1
       },
-      "_coding_rank_previous": "8",
-      "_coding_rank_diff": -1
+      "_coding_rank_previous": "7",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -798,7 +1014,14 @@
         "math": 96.9
       },
       "_coding_rank_previous": "6",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -825,7 +1048,14 @@
         "math": 96.9
       },
       "_coding_rank_previous": "6",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -834,11 +1064,11 @@
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
-      "Input": "$2.50",
-      "Cached input": "$0.25",
-      "Cache write": "$3.125",
-      "Output": "$15.00",
-      "Total price": "$20.875",
+      "Input": "$2.00",
+      "Cached input": "$0.20",
+      "Cache write": "$2.50",
+      "Output": "$10.00",
+      "Total price": "$14.7",
       "Coding rank": "3",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
@@ -854,11 +1084,11 @@
       "_coding_rank_previous": "3",
       "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": -2.5,
-        "Cached input": -0.25,
-        "Cache write": -3.125,
-        "Output": -15,
-        "Total price": -20.875
+        "Input": -0.5,
+        "Cached input": -0.05,
+        "Cache write": -0.625,
+        "Output": -5.0,
+        "Total price": -6.175
       }
     },
     {
@@ -868,11 +1098,11 @@
       "Category": "Powerful",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
-      "Input": "$5.00",
-      "Cached input": "$0.50",
-      "Cache write": "$6.25",
-      "Output": "$22.50",
-      "Total price": "$34.25",
+      "Input": "$4.00",
+      "Cached input": "$0.40",
+      "Cache write": "$5.00",
+      "Output": "$15.00",
+      "Total price": "$24.4",
       "Coding rank": "3",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
@@ -888,11 +1118,11 @@
       "_coding_rank_previous": "3",
       "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": -5,
-        "Cached input": -0.5,
-        "Cache write": -6.25,
-        "Output": -22.5,
-        "Total price": -34.25
+        "Input": -1.0,
+        "Cached input": -0.1,
+        "Cache write": -1.25,
+        "Output": -7.5,
+        "Total price": -9.85
       }
     },
     {
@@ -919,8 +1149,15 @@
         "instructionFollowing": null,
         "math": 96.9
       },
-      "_coding_rank_previous": "13",
-      "_coding_rank_diff": -3
+      "_coding_rank_previous": "10",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "OpenAI",
@@ -946,8 +1183,15 @@
         "instructionFollowing": null,
         "math": 96.9
       },
-      "_coding_rank_previous": "13",
-      "_coding_rank_diff": -3
+      "_coding_rank_previous": "10",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "xAI",
@@ -973,8 +1217,15 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "37",
-      "_coding_rank_diff": 2
+      "_coding_rank_previous": "39",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "xAI",
@@ -1000,8 +1251,15 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "37",
-      "_coding_rank_diff": 2
+      "_coding_rank_previous": "39",
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "xAI",
@@ -1028,7 +1286,14 @@
         "math": null
       },
       "_coding_rank_previous": "18",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     },
     {
       "Provider": "xAI",
@@ -1055,7 +1320,14 @@
         "math": null
       },
       "_coding_rank_previous": "18",
-      "_coding_rank_diff": 0
+      "_coding_rank_diff": 0,
+      "_price_diffs": {
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": "",
+        "Output": 0.0,
+        "Total price": 0.0
+      }
     }
   ]
 }
