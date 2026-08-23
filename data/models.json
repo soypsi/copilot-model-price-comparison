@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-22T03:58:20Z",
+  "updated_at": "2026-08-23T04:03:26Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -1084,11 +1084,11 @@
       "_coding_rank_previous": "3",
       "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": -0.5,
-        "Cached input": -0.05,
-        "Cache write": -0.625,
-        "Output": -5.0,
-        "Total price": -6.175
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
@@ -1118,11 +1118,11 @@
       "_coding_rank_previous": "3",
       "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": -1.0,
-        "Cached input": -0.1,
-        "Cache write": -1.25,
-        "Output": -7.5,
-        "Total price": -9.85
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
