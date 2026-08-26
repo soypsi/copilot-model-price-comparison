@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-25T04:02:37Z",
+  "updated_at": "2026-08-26T04:04:57Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -194,8 +194,8 @@
         "instructionFollowing": null,
         "math": 59.6
       },
-      "_coding_rank_previous": "24",
-      "_coding_rank_diff": 3,
+      "_coding_rank_previous": "27",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -414,8 +414,8 @@
         "instructionFollowing": null,
         "math": 49.3
       },
-      "_coding_rank_previous": "35",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "36",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -557,8 +557,8 @@
         "instructionFollowing": 82.9,
         "math": 55.8
       },
-      "_coding_rank_previous": "23",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "24",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -793,8 +793,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "19",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "20",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -827,8 +827,8 @@
         "instructionFollowing": null,
         "math": 65.7
       },
-      "_coding_rank_previous": "34",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "35",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -861,8 +861,8 @@
         "instructionFollowing": null,
         "math": 65.7
       },
-      "_coding_rank_previous": "34",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "35",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1285,8 +1285,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "18",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "19",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1319,8 +1319,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "18",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "19",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
