@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Copilot model price comparison - Important changes</title>
     <link>https://soypsi.github.io/copilot-model-price-comparison</link>
+    <atom:link href="https://soypsi.github.io/copilot-model-price-comparison/important-changes.xml" rel="self" type="application/rss+xml" />
     <description>Daily important changes to Copilot model pricing and coding rankings.</description>
     <lastBuildDate>Sat, 05 Sep 2026 00:00:00 GMT</lastBuildDate>
     <item>

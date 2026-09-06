@@ -285,10 +285,11 @@ def write_rss(changelog: list[dict[str, object]]) -> None:
     </item>"""
         )
     feed = f"""<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Copilot model price comparison - Important changes</title>
     <link>{SITE_URL}</link>
+    <atom:link href="{SITE_URL}/important-changes.xml" rel="self" type="application/rss+xml" />
     <description>Daily important changes to Copilot model pricing and coding rankings.</description>
     <lastBuildDate>{format_datetime(latest_datetime, usegmt=True)}</lastBuildDate>
 {chr(10).join(items)}
