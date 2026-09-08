@@ -1,5 +1,9 @@
 # Github Copilot Model Price Comparison
 
+## Screenshots
+
+[![Screenshot from https://soypsi.github.io/copilot-model-price-comparison/](../data/screenshot_small.png)](../data/screenshot.png)
+
 ## Project overview
 
 This repository is a dependency-free static GitHub Pages site. The UI, styles, and client-side behavior live in `index.html`; it loads the generated `data/models.json` file at runtime and renders a sortable, filterable pricing table with two-model comparison links to BenchLM.
