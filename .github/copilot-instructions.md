@@ -2,7 +2,7 @@
 
 ## Screenshots
 
-[![Screenshot from https://soypsi.github.io/copilot-model-price-comparison/](https://github.com/soypsi/copilot-model-price-comparison/data/screenshot_small.png)](https://github.com/soypsi/copilot-model-price-comparison/data/screenshot.png)
+[![Screenshot from https://soypsi.github.io/copilot-model-price-comparison/](https://github.com/soypsi/copilot-model-price-comparison/blob/main/data/screenshot_small.png)](https://github.com/soypsi/copilot-model-price-comparison/blob/main/data/screenshot.png)
 
 ## Project overview
 
