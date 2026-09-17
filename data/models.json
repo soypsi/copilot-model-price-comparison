@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T08:39:04Z",
+  "updated_at": "2026-09-17T08:42:37Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -254,8 +254,8 @@
         "instructionFollowing": 75.4,
         "math": 65.4
       },
-      "_coding_rank_previous": "12",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -288,8 +288,8 @@
         "instructionFollowing": 75.4,
         "math": 65.4
       },
-      "_coding_rank_previous": "12",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1254,8 +1254,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "11",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1288,8 +1288,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "11",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
