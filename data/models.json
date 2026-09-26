@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T08:52:56Z",
+  "updated_at": "2026-09-26T08:39:19Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -139,8 +139,8 @@
         "instructionFollowing": 75.7,
         "math": null
       },
-      "_coding_rank_previous": "3",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "4",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -597,8 +597,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "11",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "10",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -656,8 +656,8 @@
         "instructionFollowing": 75.1,
         "math": null
       },
-      "_coding_rank_previous": "49",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "48",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -749,8 +749,8 @@
         "instructionFollowing": 91.2,
         "math": null
       },
-      "_coding_rank_previous": "23",
-      "_coding_rank_diff": 3,
+      "_coding_rank_previous": "26",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -901,8 +901,8 @@
         "instructionFollowing": 91.9,
         "math": 69.4
       },
-      "_coding_rank_previous": "10",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -935,8 +935,8 @@
         "instructionFollowing": 91.9,
         "math": 69.4
       },
-      "_coding_rank_previous": "10",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1173,8 +1173,8 @@
         "instructionFollowing": null,
         "math": 85
       },
-      "_coding_rank_previous": "4",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "3",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1207,8 +1207,8 @@
         "instructionFollowing": null,
         "math": 85
       },
-      "_coding_rank_previous": "4",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "3",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1241,8 +1241,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "32",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "31",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1275,8 +1275,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "32",
-      "_coding_rank_diff": -1,
+      "_coding_rank_previous": "31",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
