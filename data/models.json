@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T02:41:12Z",
+  "updated_at": "2026-10-08T10:39:52Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -257,14 +257,14 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "",
-      "_coding_rank_diff": "",
+      "_coding_rank_previous": "20",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": "",
-        "Cached input": "",
-        "Cache write": "",
-        "Output": "",
-        "Total price": ""
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
@@ -291,14 +291,14 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "",
-      "_coding_rank_diff": "",
+      "_coding_rank_previous": "20",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": "",
-        "Cached input": "",
-        "Cache write": "",
-        "Output": "",
-        "Total price": ""
+        "Input": 0.0,
+        "Cached input": 0.0,
+        "Cache write": 0.0,
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
@@ -486,8 +486,8 @@
         "instructionFollowing": 46.6,
         "math": 48.8
       },
-      "_coding_rank_previous": "48",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "50",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -520,8 +520,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "22",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "24",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -558,10 +558,10 @@
       "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
-        "Cached input": -0.1,
+        "Cached input": 0.0,
         "Cache write": 0.0,
         "Output": 0.0,
-        "Total price": -0.1
+        "Total price": 0.0
       }
     },
     {
@@ -588,8 +588,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "21",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "23",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -681,8 +681,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "19",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "21",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -740,8 +740,8 @@
         "instructionFollowing": 91.2,
         "math": null
       },
-      "_coding_rank_previous": "28",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "30",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -774,8 +774,8 @@
         "instructionFollowing": 89.2,
         "math": 64.4
       },
-      "_coding_rank_previous": "45",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "46",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -808,8 +808,8 @@
         "instructionFollowing": 89.2,
         "math": 64.4
       },
-      "_coding_rank_previous": "45",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "46",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1096,8 +1096,8 @@
         "instructionFollowing": 85.7,
         "math": 96.8
       },
-      "_coding_rank_previous": "11",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1130,8 +1130,8 @@
         "instructionFollowing": 85.7,
         "math": 96.8
       },
-      "_coding_rank_previous": "11",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1232,8 +1232,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "34",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "36",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1266,8 +1266,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "34",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "36",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1436,8 +1436,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "25",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "27",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1470,8 +1470,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "25",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "27",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1504,8 +1504,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "22",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1538,8 +1538,8 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "22",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
