@@ -234,7 +234,13 @@ def parse_price(value: str) -> float:
 
 
 def row_key(row: dict[str, str]) -> tuple[str, ...]:
-    return tuple(row.get(column, "") for column in ("Provider", "Model", "Tier", "Threshold (input tokens)"))
+    tier = row.get("Tier", "")
+    threshold = row.get("Threshold (input tokens)", "")
+    # The pricing source started labeling formerly un-tiered rows as Default.
+    # Treat that metadata-only change as the same pricing row.
+    if not tier and not threshold:
+        tier, threshold = "Default", "Not applicable"
+    return row.get("Provider", ""), row.get("Model", ""), tier, threshold
 
 
 def change_summary(previous: list[dict[str, str]], current: list[dict[str, str]]) -> list[str]:
@@ -242,8 +248,10 @@ def change_summary(previous: list[dict[str, str]], current: list[dict[str, str]]
     new = {row_key(row): row for row in current}
     changes = []
 
-    added = sorted({row["Model"] for key, row in new.items() if key not in old})
-    removed = sorted({row["Model"] for key, row in old.items() if key not in new})
+    old_models = {(row.get("Provider", ""), row["Model"]) for row in previous}
+    new_models = {(row.get("Provider", ""), row["Model"]) for row in current}
+    added = sorted({model for provider, model in new_models - old_models})
+    removed = sorted({model for provider, model in old_models - new_models})
     if added:
         changes.append(f"New models: {', '.join(added)}")
     if removed:
