@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T10:41:10Z",
+  "updated_at": "2026-10-14T08:47:18Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -121,6 +121,12 @@
         "New models: Claude Haiku 5.5",
         "Price changes: Claude Sonnet 5.5 (Default): $14.7 \u2192 $14.6"
       ]
+    },
+    {
+      "updated_at": "2026-10-14",
+      "changes": [
+        "New models: Gemini 4 Argon"
+      ]
     }
   ],
   "source_url": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
@@ -155,17 +161,17 @@
       "Coding rank": "7",
       "_coding_model": "Claude Fable 5",
       "_category_scores": {
-        "agentic": 75.05,
-        "coding": 71.37,
+        "agentic": 74.82,
+        "coding": 71.36,
         "reasoning": 84.3,
         "multimodalGrounded": 66,
-        "knowledge": 81.88,
+        "knowledge": 82,
         "multilingual": null,
         "instructionFollowing": 77.1,
-        "math": null
+        "math": 96
       },
-      "_coding_rank_previous": "6",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "7",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -189,14 +195,14 @@
       "Coding rank": "3",
       "_coding_model": "Claude Fable 5.1",
       "_category_scores": {
-        "agentic": 79.21,
-        "coding": 76.94,
+        "agentic": 79.24,
+        "coding": 77.02,
         "reasoning": 85.2,
         "multimodalGrounded": null,
-        "knowledge": 85.58,
+        "knowledge": 86.3,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 96.8
       },
       "_coding_rank_previous": "3",
       "_coding_rank_diff": 0,
@@ -245,20 +251,20 @@
       "Cache write": "$0.125",
       "Output": "$0.50",
       "Total price": "$0.735",
-      "Coding rank": "40",
+      "Coding rank": "35",
       "_coding_model": "Claude Haiku 5.5",
       "_category_scores": {
-        "agentic": 59.44,
-        "coding": 51.29,
+        "agentic": 61.63,
+        "coding": 53.51,
         "reasoning": 82.7,
         "multimodalGrounded": null,
-        "knowledge": 65.24,
+        "knowledge": 67.97,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 79.1
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 20,
+      "_coding_rank_previous": "40",
+      "_coding_rank_diff": -5,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -279,20 +285,20 @@
       "Cache write": "$0.625",
       "Output": "$2.50",
       "Total price": "$3.675",
-      "Coding rank": "40",
+      "Coding rank": "35",
       "_coding_model": "Claude Haiku 5.5",
       "_category_scores": {
-        "agentic": 59.44,
-        "coding": 51.29,
+        "agentic": 61.63,
+        "coding": 53.51,
         "reasoning": 82.7,
         "multimodalGrounded": null,
-        "knowledge": 65.24,
+        "knowledge": 67.97,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 79.1
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 20,
+      "_coding_rank_previous": "40",
+      "_coding_rank_diff": -5,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -313,20 +319,20 @@
       "Cache write": "$6.25",
       "Output": "$25.00",
       "Total price": "$36.75",
-      "Coding rank": "21",
+      "Coding rank": "19",
       "_coding_model": "Claude Opus 4.8",
       "_category_scores": {
-        "agentic": 61.76,
-        "coding": 60.45,
+        "agentic": 62.22,
+        "coding": 60.79,
         "reasoning": 62.8,
         "multimodalGrounded": 91.2,
-        "knowledge": 70.06,
+        "knowledge": 71.37,
         "multilingual": null,
         "instructionFollowing": 75.4,
-        "math": 65.7
+        "math": 84.4
       },
-      "_coding_rank_previous": "19",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "21",
+      "_coding_rank_diff": -2,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -347,20 +353,20 @@
       "Cache write": "$12.50",
       "Output": "$50.00",
       "Total price": "$73.5",
-      "Coding rank": "21",
+      "Coding rank": "19",
       "_coding_model": "Claude Opus 4.8",
       "_category_scores": {
-        "agentic": 61.76,
-        "coding": 60.45,
+        "agentic": 62.22,
+        "coding": 60.79,
         "reasoning": 62.8,
         "multimodalGrounded": 91.2,
-        "knowledge": 70.06,
+        "knowledge": 71.37,
         "multilingual": null,
         "instructionFollowing": 75.4,
-        "math": 65.7
+        "math": 84.4
       },
-      "_coding_rank_previous": "19",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "21",
+      "_coding_rank_diff": -2,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -381,19 +387,19 @@
       "Cache write": "$6.25",
       "Output": "$25.00",
       "Total price": "$36.75",
-      "Coding rank": "8",
+      "Coding rank": "9",
       "_coding_model": "Claude Opus 5",
       "_category_scores": {
-        "agentic": 77.64,
-        "coding": 70.76,
+        "agentic": 77.58,
+        "coding": 70.86,
         "reasoning": 81,
         "multimodalGrounded": 92.2,
-        "knowledge": 81.14,
+        "knowledge": 81.63,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 91.6
       },
-      "_coding_rank_previous": "7",
+      "_coding_rank_previous": "8",
       "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
@@ -418,14 +424,14 @@
       "Coding rank": "2",
       "_coding_model": "Claude Opus 5.5",
       "_category_scores": {
-        "agentic": 88.96,
-        "coding": 82.85,
+        "agentic": 88.74,
+        "coding": 82.77,
         "reasoning": 86.1,
         "multimodalGrounded": 92.2,
-        "knowledge": 89.26,
+        "knowledge": 89.6,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 97.3
       },
       "_coding_rank_previous": "2",
       "_coding_rank_diff": 0,
@@ -477,7 +483,7 @@
       "Coding rank": "",
       "_coding_model": "",
       "_category_scores": {},
-      "_coding_rank_previous": "50",
+      "_coding_rank_previous": "",
       "_coding_rank_diff": "",
       "_price_diffs": {
         "Input": 0.0,
@@ -502,17 +508,17 @@
       "Coding rank": "25",
       "_coding_model": "Claude Sonnet 5",
       "_category_scores": {
-        "agentic": 65.07,
-        "coding": 58.02,
+        "agentic": 64.86,
+        "coding": 57.75,
         "reasoning": 82.2,
         "multimodalGrounded": 82,
-        "knowledge": 65.24,
+        "knowledge": 65.11,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 69.4
       },
-      "_coding_rank_previous": "24",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "25",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -536,14 +542,14 @@
       "Coding rank": "1",
       "_coding_model": "Claude Sonnet 5.5",
       "_category_scores": {
-        "agentic": 68.04,
-        "coding": 83.73,
+        "agentic": 68.31,
+        "coding": 83.56,
         "reasoning": 82.7,
         "multimodalGrounded": 86.7,
-        "knowledge": 82.52,
+        "knowledge": 82.97,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 95.2
       },
       "_coding_rank_previous": "1",
       "_coding_rank_diff": 0,
@@ -570,17 +576,17 @@
       "Coding rank": "24",
       "_coding_model": "Gemini 3.7 Flash",
       "_category_scores": {
-        "agentic": 57.98,
-        "coding": 58.13,
+        "agentic": 57.88,
+        "coding": 57.83,
         "reasoning": 81.6,
         "multimodalGrounded": 87.2,
-        "knowledge": 71.16,
+        "knowledge": 71.04,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 74.8
       },
-      "_coding_rank_previous": "23",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "24",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -601,26 +607,60 @@
       "Cache write": "",
       "Output": "$3.75",
       "Total price": "$4.575",
-      "Coding rank": "17",
+      "Coding rank": "18",
       "_coding_model": "Gemini 3.8 Flash",
       "_category_scores": {
-        "agentic": 65.39,
-        "coding": 61.58,
+        "agentic": 65.28,
+        "coding": 60.88,
         "reasoning": 74.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 73.22,
+        "knowledge": 73.24,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 69.7
       },
-      "_coding_rank_previous": "14",
-      "_coding_rank_diff": 3,
+      "_coding_rank_previous": "17",
+      "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
         "Cache write": "",
         "Output": 0.0,
         "Total price": 0.0
+      }
+    },
+    {
+      "Provider": "Google",
+      "Model": "Gemini 4 Argon",
+      "Release status": "GA",
+      "Category": "Powerful",
+      "Tier": "Default",
+      "Threshold (input tokens)": "Not applicable",
+      "Input": "$2.00",
+      "Cached input": "$0.10",
+      "Cache write": "",
+      "Output": "$10.00",
+      "Total price": "$12.1",
+      "Coding rank": "6",
+      "_coding_model": "Gemini 4 Argon",
+      "_category_scores": {
+        "agentic": 74.1,
+        "coding": 71.5,
+        "reasoning": 80.6,
+        "multimodalGrounded": null,
+        "knowledge": 78.93,
+        "multilingual": null,
+        "instructionFollowing": null,
+        "math": null
+      },
+      "_coding_rank_previous": "",
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": "",
+        "Cached input": "",
+        "Cache write": "",
+        "Output": "",
+        "Total price": ""
       }
     },
     {
@@ -660,20 +700,20 @@
       "Cache write": "",
       "Output": "$15.00",
       "Total price": "$18.3",
-      "Coding rank": "23",
+      "Coding rank": "22",
       "_coding_model": "Kimi K3",
       "_category_scores": {
-        "agentic": 68.97,
-        "coding": 59.27,
+        "agentic": 68.92,
+        "coding": 59.16,
         "reasoning": 70,
         "multimodalGrounded": 92.6,
-        "knowledge": 68.12,
+        "knowledge": 68.46,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_previous": "22",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "23",
+      "_coding_rank_diff": -1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -722,17 +762,17 @@
       "Coding rank": "31",
       "_coding_model": "GPT-5.3 Codex",
       "_category_scores": {
-        "agentic": 55.55,
-        "coding": 54.8,
+        "agentic": 55.22,
+        "coding": 54.47,
         "reasoning": 83.1,
         "multimodalGrounded": 80.1,
-        "knowledge": 65.42,
+        "knowledge": 65.32,
         "multilingual": null,
         "instructionFollowing": 92.6,
         "math": null
       },
-      "_coding_rank_previous": "30",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "31",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -756,17 +796,17 @@
       "Coding rank": "46",
       "_coding_model": "GPT-5.4",
       "_category_scores": {
-        "agentic": 51.06,
-        "coding": 48.06,
+        "agentic": 51.28,
+        "coding": 48.04,
         "reasoning": 64.2,
         "multimodalGrounded": 73.1,
-        "knowledge": 67.58,
+        "knowledge": 68.84,
         "multilingual": null,
         "instructionFollowing": 90.7,
-        "math": 64.9
+        "math": 82
       },
-      "_coding_rank_previous": "45",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "46",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -790,17 +830,17 @@
       "Coding rank": "46",
       "_coding_model": "GPT-5.4",
       "_category_scores": {
-        "agentic": 51.06,
-        "coding": 48.06,
+        "agentic": 51.28,
+        "coding": 48.04,
         "reasoning": 64.2,
         "multimodalGrounded": 73.1,
-        "knowledge": 67.58,
+        "knowledge": 68.84,
         "multilingual": null,
         "instructionFollowing": 90.7,
-        "math": 64.9
+        "math": 82
       },
-      "_coding_rank_previous": "45",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "46",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -871,20 +911,20 @@
       "Cache write": "Not applicable",
       "Output": "$30.00",
       "Total price": "$35.5",
-      "Coding rank": "16",
+      "Coding rank": "15",
       "_coding_model": "GPT-5.5",
       "_category_scores": {
-        "agentic": 60.99,
-        "coding": 61.62,
+        "agentic": 61.46,
+        "coding": 62.13,
         "reasoning": 70.4,
         "multimodalGrounded": 75.5,
-        "knowledge": 69.69,
+        "knowledge": 71.38,
         "multilingual": null,
         "instructionFollowing": 93.3,
-        "math": 69.9
+        "math": 91.2
       },
-      "_coding_rank_previous": "15",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "16",
+      "_coding_rank_diff": -1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -905,20 +945,20 @@
       "Cache write": "Not applicable",
       "Output": "$45.00",
       "Total price": "$56",
-      "Coding rank": "16",
+      "Coding rank": "15",
       "_coding_model": "GPT-5.5",
       "_category_scores": {
-        "agentic": 60.99,
-        "coding": 61.62,
+        "agentic": 61.46,
+        "coding": 62.13,
         "reasoning": 70.4,
         "multimodalGrounded": 75.5,
-        "knowledge": 69.69,
+        "knowledge": 71.38,
         "multilingual": null,
         "instructionFollowing": 93.3,
-        "math": 69.9
+        "math": 91.2
       },
-      "_coding_rank_previous": "15",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "16",
+      "_coding_rank_diff": -1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -939,20 +979,20 @@
       "Cache write": "$0.25",
       "Output": "$1.20",
       "Total price": "$1.67",
-      "Coding rank": "15",
+      "Coding rank": "16",
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
-        "agentic": 55.2,
-        "coding": 62.4,
+        "agentic": 54.48,
+        "coding": 61.81,
         "reasoning": 58.2,
         "multimodalGrounded": 79.6,
-        "knowledge": 65.51,
+        "knowledge": 64.48,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": 94.7
+        "math": 84
       },
-      "_coding_rank_previous": "13",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "15",
+      "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -973,20 +1013,20 @@
       "Cache write": "$0.50",
       "Output": "$1.80",
       "Total price": "$2.74",
-      "Coding rank": "15",
+      "Coding rank": "16",
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
-        "agentic": 55.2,
-        "coding": 62.4,
+        "agentic": 54.48,
+        "coding": 61.81,
         "reasoning": 58.2,
         "multimodalGrounded": 79.6,
-        "knowledge": 65.51,
+        "knowledge": 64.48,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": 94.7
+        "math": 84
       },
-      "_coding_rank_previous": "13",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "15",
+      "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1010,17 +1050,17 @@
       "Coding rank": "11",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
-        "agentic": 68.09,
-        "coding": 68.36,
+        "agentic": 67.38,
+        "coding": 67.64,
         "reasoning": 76.4,
         "multimodalGrounded": 89.8,
-        "knowledge": 78.27,
+        "knowledge": 76.93,
         "multilingual": null,
         "instructionFollowing": 89.1,
-        "math": 97.3
+        "math": 95.8
       },
-      "_coding_rank_previous": "9",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1044,17 +1084,17 @@
       "Coding rank": "11",
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
-        "agentic": 68.09,
-        "coding": 68.36,
+        "agentic": 67.38,
+        "coding": 67.64,
         "reasoning": 76.4,
         "multimodalGrounded": 89.8,
-        "knowledge": 78.27,
+        "knowledge": 76.93,
         "multilingual": null,
         "instructionFollowing": 89.1,
-        "math": 97.3
+        "math": 95.8
       },
-      "_coding_rank_previous": "9",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "11",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1078,17 +1118,17 @@
       "Coding rank": "14",
       "_coding_model": "GPT-5.6 Terra",
       "_category_scores": {
-        "agentic": 59.5,
-        "coding": 63.16,
+        "agentic": 58.87,
+        "coding": 62.18,
         "reasoning": 69.1,
         "multimodalGrounded": 84.5,
-        "knowledge": 71.1,
+        "knowledge": 69.91,
         "multilingual": null,
         "instructionFollowing": 87.1,
-        "math": 97.3
+        "math": 90.1
       },
-      "_coding_rank_previous": "12",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "14",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1112,17 +1152,17 @@
       "Coding rank": "14",
       "_coding_model": "GPT-5.6 Terra",
       "_category_scores": {
-        "agentic": 59.5,
-        "coding": 63.16,
+        "agentic": 58.87,
+        "coding": 62.18,
         "reasoning": 69.1,
         "multimodalGrounded": 84.5,
-        "knowledge": 71.1,
+        "knowledge": 69.91,
         "multilingual": null,
         "instructionFollowing": 87.1,
-        "math": 97.3
+        "math": 90.1
       },
-      "_coding_rank_previous": "12",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "14",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1146,14 +1186,14 @@
       "Coding rank": "4",
       "_coding_model": "GPT-6 Astra",
       "_category_scores": {
-        "agentic": 70.65,
-        "coding": 75.72,
+        "agentic": 70.64,
+        "coding": 75.67,
         "reasoning": 93.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 85.53,
+        "knowledge": 85.83,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": 85.5
+        "math": 97.3
       },
       "_coding_rank_previous": "4",
       "_coding_rank_diff": 0,
@@ -1180,14 +1220,14 @@
       "Coding rank": "4",
       "_coding_model": "GPT-6 Astra",
       "_category_scores": {
-        "agentic": 70.65,
-        "coding": 75.72,
+        "agentic": 70.64,
+        "coding": 75.67,
         "reasoning": 93.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 85.53,
+        "knowledge": 85.83,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": 85.5
+        "math": 97.3
       },
       "_coding_rank_previous": "4",
       "_coding_rank_diff": 0,
@@ -1211,20 +1251,20 @@
       "Cache write": "$0.125",
       "Output": "$0.50",
       "Total price": "$0.735",
-      "Coding rank": "34",
+      "Coding rank": "36",
       "_coding_model": "GPT-6 Luna",
       "_category_scores": {
-        "agentic": 55.45,
-        "coding": 53.27,
+        "agentic": 54.95,
+        "coding": 53.47,
         "reasoning": 59.6,
         "multimodalGrounded": 81.9,
-        "knowledge": 65.92,
+        "knowledge": 67.13,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 83.7
       },
-      "_coding_rank_previous": "36",
-      "_coding_rank_diff": -2,
+      "_coding_rank_previous": "34",
+      "_coding_rank_diff": 2,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1245,20 +1285,20 @@
       "Cache write": "$0.25",
       "Output": "$0.75",
       "Total price": "$1.22",
-      "Coding rank": "34",
+      "Coding rank": "36",
       "_coding_model": "GPT-6 Luna",
       "_category_scores": {
-        "agentic": 55.45,
-        "coding": 53.27,
+        "agentic": 54.95,
+        "coding": 53.47,
         "reasoning": 59.6,
         "multimodalGrounded": 81.9,
-        "knowledge": 65.92,
+        "knowledge": 67.13,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 83.7
       },
-      "_coding_rank_previous": "36",
-      "_coding_rank_diff": -2,
+      "_coding_rank_previous": "34",
+      "_coding_rank_diff": 2,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1282,17 +1322,17 @@
       "Coding rank": "12",
       "_coding_model": "GPT-6 Sol",
       "_category_scores": {
-        "agentic": 59.02,
-        "coding": 65.87,
+        "agentic": 60.13,
+        "coding": 66.44,
         "reasoning": 73.2,
         "multimodalGrounded": 86.6,
-        "knowledge": 77.78,
+        "knowledge": 79.44,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 97.3
       },
-      "_coding_rank_previous": "10",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1316,17 +1356,17 @@
       "Coding rank": "12",
       "_coding_model": "GPT-6 Sol",
       "_category_scores": {
-        "agentic": 59.02,
-        "coding": 65.87,
+        "agentic": 60.13,
+        "coding": 66.44,
         "reasoning": 73.2,
         "multimodalGrounded": 86.6,
-        "knowledge": 77.78,
+        "knowledge": 79.44,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 97.3
       },
-      "_coding_rank_previous": "10",
-      "_coding_rank_diff": 2,
+      "_coding_rank_previous": "12",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1347,20 +1387,20 @@
       "Cache write": "$2.50",
       "Output": "$10.00",
       "Total price": "$14.6",
-      "Coding rank": "9",
+      "Coding rank": "8",
       "_coding_model": "GPT-6.1 Sol",
       "_category_scores": {
-        "agentic": 73.02,
-        "coding": 70.12,
+        "agentic": 74.32,
+        "coding": 71.06,
         "reasoning": 90.5,
         "multimodalGrounded": 87.3,
-        "knowledge": 83.93,
+        "knowledge": 85.51,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 97.3
       },
-      "_coding_rank_previous": "8",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "9",
+      "_coding_rank_diff": -1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1381,20 +1421,20 @@
       "Cache write": "$5.00",
       "Output": "$15.00",
       "Total price": "$24.2",
-      "Coding rank": "9",
+      "Coding rank": "8",
       "_coding_model": "GPT-6.1 Sol",
       "_category_scores": {
-        "agentic": 73.02,
-        "coding": 70.12,
+        "agentic": 74.32,
+        "coding": 71.06,
         "reasoning": 90.5,
         "multimodalGrounded": 87.3,
-        "knowledge": 83.93,
+        "knowledge": 85.51,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 97.3
       },
-      "_coding_rank_previous": "8",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "9",
+      "_coding_rank_diff": -1,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1415,19 +1455,19 @@
       "Cache write": "",
       "Output": "$6.00",
       "Total price": "$8.5",
-      "Coding rank": "27",
+      "Coding rank": "28",
       "_coding_model": "Grok 4.5",
       "_category_scores": {
-        "agentic": 57.9,
-        "coding": 56.97,
+        "agentic": 57.51,
+        "coding": 56.07,
         "reasoning": 54.1,
         "multimodalGrounded": 82.9,
-        "knowledge": 68.25,
+        "knowledge": 67.18,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 62.9
       },
-      "_coding_rank_previous": "26",
+      "_coding_rank_previous": "27",
       "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
@@ -1449,19 +1489,19 @@
       "Cache write": "",
       "Output": "$12.00",
       "Total price": "$17",
-      "Coding rank": "27",
+      "Coding rank": "28",
       "_coding_model": "Grok 4.5",
       "_category_scores": {
-        "agentic": 57.9,
-        "coding": 56.97,
+        "agentic": 57.51,
+        "coding": 56.07,
         "reasoning": 54.1,
         "multimodalGrounded": 82.9,
-        "knowledge": 68.25,
+        "knowledge": 67.18,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 62.9
       },
-      "_coding_rank_previous": "26",
+      "_coding_rank_previous": "27",
       "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
@@ -1483,19 +1523,19 @@
       "Cache write": "",
       "Output": "$6.00",
       "Total price": "$8.5",
-      "Coding rank": "22",
+      "Coding rank": "23",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 68.54,
-        "coding": 59.32,
+        "agentic": 68.29,
+        "coding": 58.71,
         "reasoning": 61.4,
         "multimodalGrounded": null,
-        "knowledge": 69.43,
+        "knowledge": 69.02,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 70.1
       },
-      "_coding_rank_previous": "21",
+      "_coding_rank_previous": "22",
       "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
@@ -1517,19 +1557,19 @@
       "Cache write": "",
       "Output": "$12.00",
       "Total price": "$17",
-      "Coding rank": "22",
+      "Coding rank": "23",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 68.54,
-        "coding": 59.32,
+        "agentic": 68.29,
+        "coding": 58.71,
         "reasoning": 61.4,
         "multimodalGrounded": null,
-        "knowledge": 69.43,
+        "knowledge": 69.02,
         "multilingual": null,
         "instructionFollowing": null,
-        "math": null
+        "math": 70.1
       },
-      "_coding_rank_previous": "21",
+      "_coding_rank_previous": "22",
       "_coding_rank_diff": 1,
       "_price_diffs": {
         "Input": 0.0,
