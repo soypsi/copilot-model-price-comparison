@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17T07:51:08Z",
+  "updated_at": "2026-10-18T08:05:42Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -161,11 +161,11 @@
       "Coding rank": "7",
       "_coding_model": "Claude Fable 5",
       "_category_scores": {
-        "agentic": 75.88,
-        "coding": 71.26,
+        "agentic": 75.87,
+        "coding": 71.25,
         "reasoning": 84.3,
         "multimodalGrounded": 66,
-        "knowledge": 82.4,
+        "knowledge": 82.54,
         "multilingual": null,
         "instructionFollowing": 77.1,
         "math": 96
@@ -195,11 +195,11 @@
       "Coding rank": "3",
       "_coding_model": "Claude Fable 5.1",
       "_category_scores": {
-        "agentic": 80.86,
-        "coding": 76.81,
+        "agentic": 80.85,
+        "coding": 76.8,
         "reasoning": 85.2,
         "multimodalGrounded": null,
-        "knowledge": 86.75,
+        "knowledge": 86.88,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 96.8
@@ -258,7 +258,7 @@
         "coding": 52.97,
         "reasoning": 82.7,
         "multimodalGrounded": null,
-        "knowledge": 67.75,
+        "knowledge": 67.87,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 79.1
@@ -292,7 +292,7 @@
         "coding": 52.97,
         "reasoning": 82.7,
         "multimodalGrounded": null,
-        "knowledge": 67.75,
+        "knowledge": 67.87,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 79.1
@@ -326,7 +326,7 @@
         "coding": 60.67,
         "reasoning": 62.8,
         "multimodalGrounded": 91.2,
-        "knowledge": 71.91,
+        "knowledge": 72.03,
         "multilingual": null,
         "instructionFollowing": 75.4,
         "math": 84.4
@@ -360,7 +360,7 @@
         "coding": 60.67,
         "reasoning": 62.8,
         "multimodalGrounded": 91.2,
-        "knowledge": 71.91,
+        "knowledge": 72.03,
         "multilingual": null,
         "instructionFollowing": 75.4,
         "math": 84.4
@@ -390,11 +390,11 @@
       "Coding rank": "9",
       "_coding_model": "Claude Opus 5",
       "_category_scores": {
-        "agentic": 78.46,
+        "agentic": 78.45,
         "coding": 70.67,
         "reasoning": 81,
         "multimodalGrounded": 92.2,
-        "knowledge": 81.89,
+        "knowledge": 82.02,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 91.6
@@ -428,7 +428,7 @@
         "coding": 82.62,
         "reasoning": 86.1,
         "multimodalGrounded": 92.2,
-        "knowledge": 90.06,
+        "knowledge": 90.21,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -512,7 +512,7 @@
         "coding": 57.47,
         "reasoning": 82.2,
         "multimodalGrounded": 82,
-        "knowledge": 65.27,
+        "knowledge": 65.38,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 69.4
@@ -542,11 +542,11 @@
       "Coding rank": "1",
       "_coding_model": "Claude Sonnet 5.5",
       "_category_scores": {
-        "agentic": 69.27,
+        "agentic": 69.26,
         "coding": 84.15,
         "reasoning": 82.7,
         "multimodalGrounded": 86.7,
-        "knowledge": 82.45,
+        "knowledge": 82.59,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 95.2
@@ -580,7 +580,7 @@
         "coding": 57.57,
         "reasoning": 81.6,
         "multimodalGrounded": 87.2,
-        "knowledge": 71.19,
+        "knowledge": 71.31,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 74.8
@@ -614,7 +614,7 @@
         "coding": 60.97,
         "reasoning": 74.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 73.37,
+        "knowledge": 73.5,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 69.7
@@ -648,7 +648,7 @@
         "coding": 72.28,
         "reasoning": 80.6,
         "multimodalGrounded": null,
-        "knowledge": 80.31,
+        "knowledge": 80.44,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 92.8
@@ -707,7 +707,7 @@
         "coding": 58.94,
         "reasoning": 70,
         "multimodalGrounded": 92.6,
-        "knowledge": 68.7,
+        "knowledge": 68.81,
         "multilingual": null,
         "instructionFollowing": null,
         "math": null
@@ -766,7 +766,7 @@
         "coding": 53.54,
         "reasoning": 83.1,
         "multimodalGrounded": 80.1,
-        "knowledge": 65.28,
+        "knowledge": 65.39,
         "multilingual": null,
         "instructionFollowing": 92.6,
         "math": null
@@ -800,7 +800,7 @@
         "coding": 47.7,
         "reasoning": 64.2,
         "multimodalGrounded": 73.1,
-        "knowledge": 69.03,
+        "knowledge": 69.13,
         "multilingual": null,
         "instructionFollowing": 90.7,
         "math": 82
@@ -834,7 +834,7 @@
         "coding": 47.7,
         "reasoning": 64.2,
         "multimodalGrounded": 73.1,
-        "knowledge": 69.03,
+        "knowledge": 69.13,
         "multilingual": null,
         "instructionFollowing": 90.7,
         "math": 82
@@ -915,10 +915,10 @@
       "_coding_model": "GPT-5.5",
       "_category_scores": {
         "agentic": 62.69,
-        "coding": 62.04,
+        "coding": 62.03,
         "reasoning": 70.4,
         "multimodalGrounded": 75.5,
-        "knowledge": 71.99,
+        "knowledge": 72.1,
         "multilingual": null,
         "instructionFollowing": 93.3,
         "math": 91.2
@@ -949,10 +949,10 @@
       "_coding_model": "GPT-5.5",
       "_category_scores": {
         "agentic": 62.69,
-        "coding": 62.04,
+        "coding": 62.03,
         "reasoning": 70.4,
         "multimodalGrounded": 75.5,
-        "knowledge": 71.99,
+        "knowledge": 72.1,
         "multilingual": null,
         "instructionFollowing": 93.3,
         "math": 91.2
@@ -983,10 +983,10 @@
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
         "agentic": 56.01,
-        "coding": 61.61,
+        "coding": 61.6,
         "reasoning": 58.2,
         "multimodalGrounded": 79.6,
-        "knowledge": 64.68,
+        "knowledge": 64.79,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 84
@@ -1017,10 +1017,10 @@
       "_coding_model": "GPT-5.6 Luna",
       "_category_scores": {
         "agentic": 56.01,
-        "coding": 61.61,
+        "coding": 61.6,
         "reasoning": 58.2,
         "multimodalGrounded": 79.6,
-        "knowledge": 64.68,
+        "knowledge": 64.79,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 84
@@ -1051,10 +1051,10 @@
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
         "agentic": 68.73,
-        "coding": 67.44,
+        "coding": 67.43,
         "reasoning": 76.5,
         "multimodalGrounded": 89.8,
-        "knowledge": 77.22,
+        "knowledge": 77.35,
         "multilingual": null,
         "instructionFollowing": 89.1,
         "math": 95.8
@@ -1085,10 +1085,10 @@
       "_coding_model": "GPT-5.6 Sol",
       "_category_scores": {
         "agentic": 68.73,
-        "coding": 67.44,
+        "coding": 67.43,
         "reasoning": 76.5,
         "multimodalGrounded": 89.8,
-        "knowledge": 77.22,
+        "knowledge": 77.35,
         "multilingual": null,
         "instructionFollowing": 89.1,
         "math": 95.8
@@ -1122,7 +1122,7 @@
         "coding": 61.94,
         "reasoning": 69.1,
         "multimodalGrounded": 84.5,
-        "knowledge": 70.11,
+        "knowledge": 70.23,
         "multilingual": null,
         "instructionFollowing": 87.1,
         "math": 90.1
@@ -1156,7 +1156,7 @@
         "coding": 61.94,
         "reasoning": 69.1,
         "multimodalGrounded": 84.5,
-        "knowledge": 70.11,
+        "knowledge": 70.23,
         "multilingual": null,
         "instructionFollowing": 87.1,
         "math": 90.1
@@ -1190,7 +1190,7 @@
         "coding": 75.46,
         "reasoning": 93.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 86.02,
+        "knowledge": 86.16,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1224,7 +1224,7 @@
         "coding": 75.46,
         "reasoning": 93.3,
         "multimodalGrounded": 87.3,
-        "knowledge": 86.02,
+        "knowledge": 86.16,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1254,11 +1254,11 @@
       "Coding rank": "37",
       "_coding_model": "GPT-6 Luna",
       "_category_scores": {
-        "agentic": 56.4,
+        "agentic": 56.39,
         "coding": 53.26,
         "reasoning": 59.6,
         "multimodalGrounded": 81.9,
-        "knowledge": 67.4,
+        "knowledge": 67.52,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 83.7
@@ -1288,11 +1288,11 @@
       "Coding rank": "37",
       "_coding_model": "GPT-6 Luna",
       "_category_scores": {
-        "agentic": 56.4,
+        "agentic": 56.39,
         "coding": 53.26,
         "reasoning": 59.6,
         "multimodalGrounded": 81.9,
-        "knowledge": 67.4,
+        "knowledge": 67.52,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 83.7
@@ -1322,11 +1322,11 @@
       "Coding rank": "12",
       "_coding_model": "GPT-6 Sol",
       "_category_scores": {
-        "agentic": 58.22,
+        "agentic": 58.21,
         "coding": 66.36,
         "reasoning": 73.1,
         "multimodalGrounded": 86.6,
-        "knowledge": 80.45,
+        "knowledge": 80.59,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1356,11 +1356,11 @@
       "Coding rank": "12",
       "_coding_model": "GPT-6 Sol",
       "_category_scores": {
-        "agentic": 58.22,
+        "agentic": 58.21,
         "coding": 66.36,
         "reasoning": 73.1,
         "multimodalGrounded": 86.6,
-        "knowledge": 80.45,
+        "knowledge": 80.59,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1390,11 +1390,11 @@
       "Coding rank": "8",
       "_coding_model": "GPT-6.1 Sol",
       "_category_scores": {
-        "agentic": 76.18,
+        "agentic": 76.17,
         "coding": 70.93,
         "reasoning": 90.5,
         "multimodalGrounded": 87.3,
-        "knowledge": 85.9,
+        "knowledge": 86.05,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1424,11 +1424,11 @@
       "Coding rank": "8",
       "_coding_model": "GPT-6.1 Sol",
       "_category_scores": {
-        "agentic": 76.18,
+        "agentic": 76.17,
         "coding": 70.93,
         "reasoning": 90.5,
         "multimodalGrounded": 87.3,
-        "knowledge": 85.9,
+        "knowledge": 86.05,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 97.3
@@ -1459,10 +1459,10 @@
       "_coding_model": "Grok 4.5",
       "_category_scores": {
         "agentic": 58.88,
-        "coding": 55.68,
+        "coding": 55.69,
         "reasoning": 54.1,
         "multimodalGrounded": 82.9,
-        "knowledge": 67.38,
+        "knowledge": 67.49,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 62.9
@@ -1493,10 +1493,10 @@
       "_coding_model": "Grok 4.5",
       "_category_scores": {
         "agentic": 58.88,
-        "coding": 55.68,
+        "coding": 55.69,
         "reasoning": 54.1,
         "multimodalGrounded": 82.9,
-        "knowledge": 67.38,
+        "knowledge": 67.49,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 62.9
@@ -1526,11 +1526,11 @@
       "Coding rank": "23",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 69.8,
+        "agentic": 69.79,
         "coding": 58.54,
         "reasoning": 61.4,
         "multimodalGrounded": null,
-        "knowledge": 69.28,
+        "knowledge": 69.4,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 70.1
@@ -1560,11 +1560,11 @@
       "Coding rank": "23",
       "_coding_model": "Grok 4.6",
       "_category_scores": {
-        "agentic": 69.8,
+        "agentic": 69.79,
         "coding": 58.54,
         "reasoning": 61.4,
         "multimodalGrounded": null,
-        "knowledge": 69.28,
+        "knowledge": 69.4,
         "multilingual": null,
         "instructionFollowing": null,
         "math": 70.1
