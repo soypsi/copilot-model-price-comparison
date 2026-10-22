@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T08:38:42Z",
+  "updated_at": "2026-10-22T08:40:49Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -337,8 +337,8 @@
         "instructionFollowing": 75.4,
         "math": 84.4
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "21",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -371,8 +371,8 @@
         "instructionFollowing": 75.4,
         "math": 84.4
       },
-      "_coding_rank_previous": "20",
-      "_coding_rank_diff": 1,
+      "_coding_rank_previous": "21",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
