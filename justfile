@@ -9,3 +9,6 @@ update:
 serve-updated:
     just update
     python3 scripts/serve.py
+
+cicd-check:
+    uvx zizmor --gh-token $(gh auth token) --persona=auditor .github/workflows/pages.yml
