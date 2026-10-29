@@ -1,3 +1,5 @@
+    import { cachePriceValue, cellValue, contextValue, priceValue, toggleModelSelection } from "./model-utils.mjs";
+
     const state = {
       columns: [],
       rows: [],
@@ -45,15 +47,6 @@
       event.preventDefault();
       toggleRowSelection(event.target);
     });
-
-    function cellValue(value) {
-      const text = String(value || "").trim();
-      return /^not applicable$/i.test(text) ? "" : text;
-    }
-
-    function contextValue(row) {
-      return cellValue(row["Threshold (input tokens)"]);
-    }
 
     function categoryLabel(category) {
       return category
@@ -320,22 +313,6 @@
       };
     }
 
-    function priceValue(value) {
-      const text = cellValue(value);
-      if (!text) return null;
-      const number = Number.parseFloat(text.replace("$", "").trim());
-      return Number.isFinite(number) ? number : null;
-    }
-
-    function cachePriceValue(row) {
-      const values = ["Cached input", "Cache write"]
-        .map((column) => priceValue(row[column]))
-        .filter((value) => value !== null);
-      if (!values.length) return "";
-      const total = values.reduce((sum, value) => sum + value, 0);
-      return `$${total.toFixed(3).replace(/\.?0+$/, "")}`;
-    }
-
     function priceOffset(rows, rowIndex, column) {
       const current = priceValue(rows[rowIndex][column]);
       if (current === null) return "";
@@ -569,11 +546,7 @@
     function toggleRowSelection(row) {
       const modelId = row.dataset.modelId;
       if (!modelId) return;
-      if (state.selectedModels.has(modelId)) {
-        state.selectedModels.delete(modelId);
-      } else if (state.selectedModels.size < 2) {
-        state.selectedModels.add(modelId);
-      }
+      toggleModelSelection(state.selectedModels, modelId);
       renderTable();
     }
 
@@ -654,7 +627,7 @@
       }
     }
 
-    if (["localhost", "127.0.0.1", "::1"].includes(location.hostname)) {
+    if (location.port === "8000" && ["localhost", "127.0.0.1", "::1"].includes(location.hostname)) {
       const reloadSource = new EventSource("/__reload");
       reloadSource.onmessage = () => location.reload();
       reloadSource.onerror = () => reloadSource.close();

@@ -35,6 +35,9 @@ jobs:
       - name: Run updater unit tests
         run: python3 -m unittest tests/test_update_models.py -v
 
+      - name: Run client unit tests
+        run: node --test tests/test_model_utils.mjs
+
       - name: Refresh source data
         if: github.event_name != 'push'
         run: python3 scripts/update_models.py
