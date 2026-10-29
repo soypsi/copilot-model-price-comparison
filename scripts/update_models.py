@@ -336,7 +336,6 @@ def normalize_rows(
         normalized["_coding_model"] = match["model"] if match else ""
         normalized["_category_scores"] = match.get("categoryScores", {}) if match else {}
         previous_rank = previous_rows.get(row_key(row), {}).get("Coding rank", "")
-        normalized["_coding_rank_previous"] = previous_rank
         normalized["_coding_rank_diff"] = (
             int(normalized["Coding rank"]) - int(previous_rank)
             if normalized["Coding rank"].isdigit() and previous_rank.isdigit()
