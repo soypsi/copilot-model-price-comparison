@@ -22,9 +22,7 @@ RSS_PATH: Final = Path("important-changes.xml")
 INDEX_PATH: Final = Path("index.html")
 SITE_URL: Final = "https://soypsi.github.io/copilot-model-price-comparison"
 SHORT_COLUMN_NAMES: Final = {
-    "Threshold (input tokens)": "Tokens",
     "Total price": "Price",
-    "Coding rank": "Rank",
 }
 NEXT_DATA_RE: Final = re.compile(
     r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
@@ -59,9 +57,15 @@ STATIC_NUMERIC_COLUMNS: Final = {*PRICE_COLUMNS, "Coding rank", "Threshold (inpu
 
 def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
     has_cache_columns = "Cached input" in columns and "Cache write" in columns
+    category_names = list(dict.fromkeys(
+        name for row in rows for name, score in row.get("_category_scores", {}).items()
+        if name != "coding" and category_score_text(score)
+    ))
     display_columns = []
     for column in columns:
         display_columns.append(column)
+        if column == "Coding rank":
+            display_columns.extend(f"Score: {name}" for name in category_names)
         if column == "Cache write" and has_cache_columns:
             display_columns.append("Mobile cache")
     headers = ['<th aria-label="Select"></th>']
@@ -69,13 +73,25 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
         if column == "Mobile cache":
             headers.append('<th class="mobile-cache" title="Cached input and cache write prices">Cache</th>')
             continue
+        if column.startswith("Score: "):
+            category = column[7:]
+            headers.append(
+                f'<th class="numeric-column category-score-column" data-column="{escape(column)}">'
+                f'{escape(category_label(category).split()[0])}</th>'
+            )
+            continue
         name = escape(column)
-        short_name = SHORT_COLUMN_NAMES.get(column)
-        label = (
-            f'<span class="full-label">{name}</span><span class="short-label">{short_name}</span>'
-            if short_name
-            else name
-        )
+        if column == "Coding rank":
+            label = "Coding"
+        elif column == "Threshold (input tokens)":
+            label = "Context"
+        else:
+            short_name = SHORT_COLUMN_NAMES.get(column)
+            label = (
+                f'<span class="full-label">{name}</span><span class="short-label">{short_name}</span>'
+                if short_name
+                else name
+            )
         numeric = ' class="numeric-column"' if column in STATIC_NUMERIC_COLUMNS else ""
         headers.append(f'<th data-column="{name}"{numeric}>{label}</th>')
 
@@ -88,6 +104,14 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
                 value = escape(" / ".join(value for value in values if value))
                 cells.append(f'<td class="mobile-cache" title="Cached input / Cache write">{value}</td>')
                 continue
+            if column.startswith("Score: "):
+                category = column[7:]
+                score = row.get("_category_scores", {}).get(category)
+                cells.append(
+                    f'<td data-column="{escape(column)}" class="numeric-column category-score-column">'
+                    f'{escape(category_score_text(score))}</td>'
+                )
+                continue
             value = escape(str(row.get(column, "")))
             numeric = ' class="numeric-column"' if column in STATIC_NUMERIC_COLUMNS else ""
             cells.append(f'<td data-column="{escape(column)}"{numeric}>{value}</td>')
@@ -97,6 +121,15 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
         '<table id="pricing-table" aria-label="Model pricing table">'
         f"<thead><tr>{''.join(headers)}</tr></thead><tbody>{''.join(body)}</tbody></table>"
     )
+
+
+def category_label(category: str) -> str:
+    words = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", category).replace("_", " ").replace("-", " ")
+    return " ".join(word.capitalize() for word in words.split())
+
+
+def category_score_text(score: Any) -> str:
+    return "" if score is None or str(score).strip().lower() == "n/a" else str(score)
 
 
 def render_static_changelog(changelog: list[dict[str, Any]]) -> str:

@@ -77,12 +77,42 @@ class StaticPageTests(unittest.TestCase):
             "updated_at": "2026-10-29T06:38:17Z",
             "source_url": "https://example.test/pricing?a=1&b=2",
             "leaderboard_url": "https://example.test/leaderboard",
-            "columns": ["Model", "Cached input", "Cache write", "Total price"],
+            "columns": [
+                "Model",
+                "Threshold (input tokens)",
+                "Cached input",
+                "Cache write",
+                "Total price",
+                "Coding rank",
+            ],
             "rows": [{
                 "Model": "<Model>",
+                "Threshold (input tokens)": "Not applicable",
                 "Cached input": "$0.5",
                 "Cache write": "$1",
                 "Total price": "$2",
+                "Coding rank": "7",
+                "_category_scores": {
+                    "coding": 71.36,
+                    "agentic": 75.25,
+                    "reasoning": 84.3,
+                    "multimodalGrounded": 91,
+                    "multilingual": None,
+                },
+            }, {
+                "Model": "Other",
+                "Threshold (input tokens)": "100K",
+                "Cached input": "",
+                "Cache write": "",
+                "Total price": "$3",
+                "Coding rank": "8",
+                "_category_scores": {
+                    "coding": 70,
+                    "agentic": None,
+                    "reasoning": 80,
+                    "multimodalGrounded": 88,
+                    "multilingual": None,
+                },
             }],
             "changelog": [
                 {"updated_at": "2026-10-20", "changes": ["Older update"]},
@@ -95,6 +125,14 @@ class StaticPageTests(unittest.TestCase):
         self.assertIn("&lt;Model&gt;", page)
         self.assertNotIn("<Model>", page)
         self.assertIn("$0.5 / $1", page)
+        self.assertIn('data-column="Threshold (input tokens)" class="numeric-column">Context</th>', page)
+        self.assertIn('data-column="Coding rank" class="numeric-column">Coding</th>', page)
+        self.assertIn('data-column="Score: multimodalGrounded">Multimodal</th>', page)
+        self.assertIn('data-column="Score: agentic"', page)
+        self.assertIn(">75.25</td>", page)
+        self.assertIn('<td data-column="Score: agentic" class="numeric-column category-score-column"></td>', page)
+        self.assertNotIn('data-column="Score: multilingual"', page)
+        self.assertNotIn(">n/a</td>", page)
         self.assertIn("<strong>2026-10-29</strong>: Latest update", page)
         self.assertIn('<details class="changelog-older">', page)
         self.assertIn("a=1&amp;b=2", page)

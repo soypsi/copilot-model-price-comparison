@@ -6,6 +6,8 @@
       filters: {
         "Coding rank": "!empty",
       },
+      rankCategory: "coding",
+      categoryColumns: [],
       selectedModels: new Set(),
     };
 
@@ -18,17 +20,85 @@
     const hiddenNotice = document.getElementById("hidden-notice");
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
+    const rankCategorySelect = document.getElementById("rank-category");
     const priceColumns = new Set(["Input", "Cached input", "Cache write", "Output", "Total price"]);
     const numericColumns = new Set(["Threshold (input tokens)", ...priceColumns, "Coding rank"]);
     const shortColumnNames = new Map([
-      ["Threshold (input tokens)", "Tokens"],
       ["Total price", "Price"],
-      ["Coding rank", "Rank"],
     ]);
 
     function cellValue(value) {
       const text = String(value || "").trim();
       return /^not applicable$/i.test(text) ? "" : text;
+    }
+
+    function categoryLabel(category) {
+      return category
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+    }
+
+    function categoryScoreValue(score) {
+      return score == null || String(score).trim().toLowerCase() === "n/a" ? "" : String(score);
+    }
+
+    function shortCategoryLabel(category) {
+      return categoryLabel(category).split(/\s+/)[0];
+    }
+
+    function populateRankCategories(rows) {
+      const categories = Array.from(new Set(rows.flatMap((row) =>
+        Object.entries(row._category_scores || {})
+          .filter(([category, score]) => category !== "coding" && categoryScoreValue(score) !== "")
+          .map(([category]) => category)
+      )));
+      state.categoryColumns = categories.map((category) => `Score: ${category}`);
+      rankCategorySelect.innerHTML = categories
+        .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`)
+        .join("");
+      rankCategorySelect.insertAdjacentHTML("afterbegin", '<option value="coding">Coding</option>');
+      rankCategorySelect.value = state.rankCategory;
+      rankCategorySelect.closest("label").hidden = false;
+    }
+
+    function categoryForColumn(column) {
+      return column.startsWith("Score: ") ? column.slice(7) : "";
+    }
+
+    function rowValue(row, column) {
+      const category = categoryForColumn(column);
+      if (category) return categoryScoreValue(row._category_scores?.[category]);
+      if (
+        column === "Coding rank"
+        && window.matchMedia("(max-width: 2199px)").matches
+        && state.rankCategory !== "coding"
+      ) {
+        return categoryScoreValue(row._category_scores?.[state.rankCategory]);
+      }
+      return row[column];
+    }
+
+    function isNumericColumn(column) {
+      return numericColumns.has(column) || Boolean(categoryForColumn(column));
+    }
+
+    function effectiveColumn(column) {
+      return column === "Coding rank"
+        && window.matchMedia("(max-width: 2199px)").matches
+        && state.rankCategory !== "coding"
+        ? `Score: ${state.rankCategory}`
+        : column;
+    }
+
+    function rankCategoryLabel() {
+      return state.rankCategory === "coding" ? "Coding" : shortCategoryLabel(state.rankCategory);
+    }
+
+    function rankCategoryValue(row) {
+      return state.rankCategory === "coding"
+        ? cellValue(row["Coding rank"])
+        : categoryScoreValue(row._category_scores?.[state.rankCategory]);
     }
 
     function toThresholdTuple(value) {
@@ -53,7 +123,7 @@
       }
 
       const numericValues = state.rows
-        .map((row) => cellValue(row[column]))
+        .map((row) => cellValue(rowValue(row, column)))
         .filter(Boolean);
       const numericColumn = numericValues.length > 0 && numericValues.every((item) =>
         /^\$?\s*[0-9]+(?:\.[0-9]+)?$/.test(item)
@@ -71,8 +141,8 @@
     function compareRows(a, b) {
       const col = state.sortColumn;
       const dir = state.sortDirection === "asc" ? 1 : -1;
-      const av = toComparable(col, a[col]);
-      const bv = toComparable(col, b[col]);
+      const av = toComparable(col, rowValue(a, col));
+      const bv = toComparable(col, rowValue(b, col));
 
       if (av.kind === "threshold" && bv.kind === "threshold") {
         if (av.value[0] !== bv.value[0]) return (av.value[0] - bv.value[0]) * dir;
@@ -94,11 +164,11 @@
     function filterMatches(column, row) {
       const filter = (state.filters[column] || "").trim().toLowerCase();
       if (!filter) return true;
-      const value = cellValue(row[column]);
+      const value = cellValue(rowValue(row, column));
       if (filter === "!empty") return value !== "";
       const numericFilter = parseNumericFilter(filter);
       if (numericFilter) {
-        const comparable = toComparable(column, row[column]);
+        const comparable = toComparable(column, rowValue(row, column));
         if (comparable.kind !== "number") return false;
         if (numericFilter.operator === ">") return comparable.value > numericFilter.number;
         if (numericFilter.operator === ">=") return comparable.value >= numericFilter.number;
@@ -114,7 +184,7 @@
       if (state.selectedModels.size === 2 && !state.selectedModels.has(modelIdFor(row))) {
         reasons.push("two-model comparison");
       }
-      for (const column of state.columns) {
+      for (const column of [...state.columns, ...state.categoryColumns]) {
         const filter = (state.filters[column] || "").trim();
         if (filter && !filterMatches(column, row)) {
           reasons.push(`${column}: ${filter}`);
@@ -244,11 +314,11 @@
       const rows = filteredRows().sort(compareRows);
       updateHiddenNotice(hiddenRows());
       rowCount.textContent = `${rows.length} / ${state.rows.length} rows`;
-      const displayColumns = state.columns.flatMap((column) =>
-        column === "Cache write" && state.columns.includes("Cached input")
-          ? [column, "Mobile cache"]
-          : [column]
-      );
+      const displayColumns = state.columns.flatMap((column) => {
+        if (column === "Cache write" && state.columns.includes("Cached input")) return [column, "Mobile cache"];
+        if (column === "Coding rank") return [column, ...state.categoryColumns];
+        return [column];
+      });
 
       const headerCells = [
         "<th aria-label=\"Select\"></th>",
@@ -256,16 +326,24 @@
         if (column === "Mobile cache") {
           return "<th class=\"mobile-cache\" title=\"Cached input and cache write prices\">Cache</th>";
         }
-        const active = state.sortColumn === column ? "active" : "";
-        const arrow = state.sortColumn === column ? (state.sortDirection === "asc" ? "▲" : "▼") : "";
-        const numeric = numericColumns.has(column) ? " numeric-column" : "";
+        const sortColumn = effectiveColumn(column);
+        const active = state.sortColumn === sortColumn ? "active" : "";
+        const arrow = state.sortColumn === sortColumn ? (state.sortDirection === "asc" ? "▲" : "▼") : "";
+        const numeric = isNumericColumn(column) ? " numeric-column" : "";
+        const category = categoryForColumn(column);
         const currencyNote = priceColumns.has(column) ? " title=\"Prices in USD\"" : "";
         const name = escapeHtml(column);
         const shortName = shortColumnNames.get(column);
-        const label = shortName
-          ? `<span class="full-label">${name}</span><span class="short-label">${shortName}</span>`
-          : name;
-        return `<th class="${numeric.trim()}" data-column="${name}"${currencyNote}><button class="sort ${active}" data-col="${name}">${label} ${arrow}</button></th>`;
+        const header = category
+          ? escapeHtml(shortCategoryLabel(category))
+          : column === "Coding rank"
+            ? `<span class="wide-rank-label">Coding</span><span class="compact-rank-label">${escapeHtml(rankCategoryLabel())}</span>`
+            : column === "Threshold (input tokens)"
+              ? "Context"
+            : shortName
+              ? `<span class="full-label">${name}</span><span class="short-label">${shortName}</span>`
+              : name;
+        return `<th class="${numeric.trim()}${category ? " category-score-column" : ""}" data-column="${name}"${currencyNote}><button class="sort ${active}" data-col="${name}">${header} ${arrow}</button></th>`;
         }),
       ].join("");
 
@@ -277,9 +355,9 @@
         const escapedValue = value.replace(/\"/g, "&quot;");
         const disabled = value ? "" : " disabled";
         const active = value.trim() ? " active" : "";
-        const numeric = numericColumns.has(column) ? " numeric-column" : "";
+        const numeric = isNumericColumn(column) ? " numeric-column" : "";
         const name = escapeHtml(column);
-        return `<th class="${numeric.trim()}" data-column="${name}"><div class="filter-wrap${active}"><input class="filter${active}" data-col="${name}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${name}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${name}" aria-label="Clear ${name} filter"${disabled}>×</button></div></th>`;
+        return `<th class="${numeric.trim()}${categoryForColumn(column) ? " category-score-column" : ""}" data-column="${name}"><div class="filter-wrap${active}"><input class="filter${active}" data-col="${name}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${name}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${name}" aria-label="Clear ${name} filter"${disabled}>×</button></div></th>`;
         }),
       ].join("");
 
@@ -293,9 +371,14 @@
               const values = ["Cached input", "Cache write"].map((name) => cellValue(row[name])).filter(Boolean);
               return `<td class="mobile-cache" title="Cached input / Cache write">${escapeHtml(values.join(" / "))}</td>`;
             }
-            const val = cellValue(row[column]);
+            const category = categoryForColumn(column);
+            if (category) {
+              const score = row._category_scores?.[category];
+              return `<td class="numeric-column category-score-column" data-column="${escapeHtml(column)}">${escapeHtml(categoryScoreValue(score))}</td>`;
+            }
+            const val = cellValue(rowValue(row, column));
             const displayVal = priceColumns.has(column) ? val.replace(/^\$\s*/, "") : val;
-            const numeric = numericColumns.has(column) ? " numeric-column" : "";
+            const numeric = isNumericColumn(column) ? " numeric-column" : "";
             const name = escapeHtml(column);
             const showOffset = priceColumns.has(column) && (
               state.sortColumn === column
@@ -308,7 +391,8 @@
               return `<td data-column="${name}"><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
             }
             if (column === "Coding rank" && row._coding_model) {
-              const scores = Object.entries(row._category_scores || {})
+              const categoryScores = Object.entries(row._category_scores || {});
+              const scores = categoryScores
                 .map(([name, score]) => `${name}: ${score ?? "n/a"}`)
                 .join(" | ");
               const label = `#${val} ${row._coding_model} — ${scores}`;
@@ -318,7 +402,11 @@
                   ? `<span class="rank-trend rank-trend-up" title="Rank change: ${rankDiff}">↑</span>`
                   : `<span class="rank-trend rank-trend-down" title="Rank change: +${rankDiff}">↓</span>`
               );
-              return `<td class="${numeric.trim()}" data-column="${name}" title="${escapeHtml(label)}"><span class="rank-cell"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span></td>`;
+              const selectedValue = rankCategoryValue(row);
+              const selectedTitle = state.rankCategory === "coding"
+                ? label
+                : `${categoryLabel(state.rankCategory)}: ${selectedValue}`;
+              return `<td class="${numeric.trim()}" data-column="${name}" title="${escapeHtml(selectedTitle)}"><span class="rank-cell${state.rankCategory === "coding" ? "" : " category-selected"}"><span class="rank-main"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span><span class="selected-category-score">${escapeHtml(selectedValue)}</span></span></td>`;
             }
             if (priceColumns.has(column) && offset) {
               return `<td class="${numeric.trim()}" data-column="${name}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
@@ -343,10 +431,11 @@
       table.querySelectorAll("button.sort").forEach((el) => {
         el.addEventListener("click", () => {
           const col = el.getAttribute("data-col");
-          if (state.sortColumn === col) {
+          const sortColumn = effectiveColumn(col);
+          if (state.sortColumn === sortColumn) {
             state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
           } else {
-            state.sortColumn = col;
+            state.sortColumn = sortColumn;
             state.sortDirection = "asc";
           }
           renderTable();
@@ -428,6 +517,11 @@
       window.open(url, "_blank", "noopener,noreferrer");
     });
 
+    rankCategorySelect.addEventListener("change", () => {
+      state.rankCategory = rankCategorySelect.value;
+      renderTable();
+    });
+
     function escapeHtml(value) {
       return value
         .replaceAll("&", "&amp;")
@@ -453,6 +547,7 @@
         state.columns = data.columns || [];
         state.rows = data.rows || [];
         if (!state.columns.length) throw new Error("No columns in data file.");
+        populateRankCategories(state.rows);
         sourceEl.textContent = "Source: ";
         if (/^https?:\/\//.test(data.source_url)) {
           const link = sourceEl.appendChild(document.createElement("a"));
