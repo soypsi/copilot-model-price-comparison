@@ -24,10 +24,11 @@ NEXT_DATA_RE: Final = re.compile(
     r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
     re.DOTALL,
 )
+# Source-page columns we deliberately do not render.
+DROP_COLUMNS: Final = {"Release status"}
 PREFERRED_COLUMNS: Final = [
     "Provider",
     "Model",
-    "Release status",
     "Category",
     "Tier",
     "Threshold (input tokens)",
@@ -214,7 +215,7 @@ def parse_tables(rendered_page: str) -> list[dict[str, str]]:
 
 
 def build_columns(rows: list[dict[str, str]]) -> list[str]:
-    seen = set(PREFERRED_COLUMNS)
+    seen = set(PREFERRED_COLUMNS) | DROP_COLUMNS
     extras = sorted({key for row in rows for key in row.keys() if key not in seen})
     return PREFERRED_COLUMNS + extras
 

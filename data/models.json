@@ -146,7 +146,6 @@
   "columns": [
     "Provider",
     "Model",
-    "Release status",
     "Category",
     "Tier",
     "Threshold (input tokens)",
@@ -161,7 +160,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Fable 5",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -195,7 +193,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Fable 5.1",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -229,7 +226,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Haiku 4.5",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -254,7 +250,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Haiku 5.5",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 100K",
@@ -288,7 +283,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Haiku 5.5",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 100K",
@@ -322,7 +316,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Opus 4.8",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -356,7 +349,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Opus 4.8 (fast mode) (preview)",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -390,7 +382,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Opus 5",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -424,7 +415,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Opus 5.5",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -458,7 +448,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Sonnet 4",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -483,7 +472,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Sonnet 4.6",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -508,7 +496,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Sonnet 5",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -542,7 +529,6 @@
     {
       "Provider": "Anthropic",
       "Model": "Claude Sonnet 5.5",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -576,7 +562,6 @@
     {
       "Provider": "Google",
       "Model": "Gemini 3.8 Flash",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -610,7 +595,6 @@
     {
       "Provider": "Google",
       "Model": "Gemini 4 Argon",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -644,7 +628,6 @@
     {
       "Provider": "Microsoft",
       "Model": "MAI-Code-1.1-Flash",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "",
       "Threshold (input tokens)": "",
@@ -669,7 +652,6 @@
     {
       "Provider": "Moonshot AI",
       "Model": "Kimi K3",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "",
       "Threshold (input tokens)": "",
@@ -703,7 +685,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.3-Codex",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -737,7 +718,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.4 nano",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Default",
       "Threshold (input tokens)": "Not applicable",
@@ -762,7 +742,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Luna",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 200K",
@@ -796,7 +775,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Luna",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 200K",
@@ -830,7 +808,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -864,7 +841,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -898,7 +874,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Terra",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -932,7 +907,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-5.6 Terra",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -966,7 +940,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Astra",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -1000,7 +973,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Astra",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -1034,7 +1006,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Luna",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -1068,7 +1039,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Luna",
-      "Release status": "GA",
       "Category": "Lightweight",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -1102,7 +1072,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -1136,7 +1105,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -1170,7 +1138,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6.1 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -1204,7 +1171,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6.1 Sol",
-      "Release status": "GA",
       "Category": "Powerful",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -1238,7 +1204,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6.1 Terra",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 272K",
@@ -1263,7 +1228,6 @@
     {
       "Provider": "OpenAI",
       "Model": "GPT-6.1 Terra",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 272K",
@@ -1288,7 +1252,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.5",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 200K",
@@ -1322,7 +1285,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.5",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 200K",
@@ -1356,7 +1318,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.6",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 200K",
@@ -1390,7 +1351,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.6",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 200K",
@@ -1424,7 +1384,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.7",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Default",
       "Threshold (input tokens)": "\u2264 200K",
@@ -1449,7 +1408,6 @@
     {
       "Provider": "xAI",
       "Model": "Grok 4.7",
-      "Release status": "GA",
       "Category": "Versatile",
       "Tier": "Long context",
       "Threshold (input tokens)": "> 200K",

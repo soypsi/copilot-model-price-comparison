@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.update_models import change_summary
+from scripts.update_models import build_columns, change_summary
 
 
 class ChangeSummaryTests(unittest.TestCase):
@@ -49,6 +49,12 @@ class ChangeSummaryTests(unittest.TestCase):
                 "Price changes: Claude Sonnet 5.5 (Default): $14.7 → $14.6",
             ],
         )
+
+
+class BuildColumnsTests(unittest.TestCase):
+    def test_release_status_is_never_a_column(self):
+        rows = [{"Provider": "Anthropic", "Model": "Claude Fable 5", "Release status": "GA", "Novel": "x"}]
+        self.assertNotIn("Release status", build_columns(rows))
 
 
 if __name__ == "__main__":
