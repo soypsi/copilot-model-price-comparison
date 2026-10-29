@@ -10,5 +10,8 @@ serve-updated:
     just update
     python3 scripts/serve.py
 
+test:
+    python3 -m unittest tests/test_update_models.py -v
+
 cicd-check:
     uvx zizmor --gh-token $(gh auth token) --persona=auditor .github/workflows/pages.yml

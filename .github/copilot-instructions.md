@@ -25,13 +25,16 @@ just update
 
 # Refresh data, then serve the site locally
 just serve-updated
+
+# Run the updater unit tests
+just test
 ```
 
 `just serve` watches the repository files and reloads connected local browser tabs
 when the site or generated data changes. The auto-reload endpoint is only enabled
 for local development and is not used by the deployed GitHub Pages site.
 
-There is no configured build step, package manager, linter, or automated test suite. The site must be served over HTTP because `index.html` fetches `data/models.json`; opening the HTML file directly will not exercise the normal runtime path.
+The updater unit tests live in `tests/test_update_models.py` and run with `just test`; the Pages workflow runs them before refreshing data, so a failing test keeps the previously deployed site. Beyond that there is no configured build step, package manager, or linter. The site must be served over HTTP because `index.html` fetches `data/models.json`; opening the HTML file directly will not exercise the normal runtime path.
 
 ## Architecture and data flow
 
