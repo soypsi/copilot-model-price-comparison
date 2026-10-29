@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 from datetime import datetime, timezone
 from email.utils import format_datetime
@@ -61,6 +62,19 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
         name for row in rows for name, score in row.get("_category_scores", {}).items()
         if name != "coding" and category_score_text(score)
     ))
+    category_ranges = {}
+    for category in category_names:
+        scores = [
+            value for row in rows
+            if (value := numeric_category_score(row.get("_category_scores", {}).get(category))) is not None
+        ]
+        if scores:
+            category_ranges[category] = min(scores), max(scores)
+    coding_ranks = [
+        value for row in rows
+        if (value := numeric_category_score(row.get("Coding rank"))) is not None
+    ]
+    coding_rank_range = (min(coding_ranks), max(coding_ranks)) if coding_ranks else None
     display_columns = []
     for column in columns:
         display_columns.append(column)
@@ -107,9 +121,19 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
             if column.startswith("Score: "):
                 category = column[7:]
                 score = row.get("_category_scores", {}).get(category)
+                heat = category_score_heat_style(score, category_ranges.get(category))
                 cells.append(
-                    f'<td data-column="{escape(column)}" class="numeric-column category-score-column">'
+                    f'<td data-column="{escape(column)}" class="numeric-column category-score-column'
+                    f'{" score-heat-cell" if heat else ""}"{heat}>'
                     f'{escape(category_score_text(score))}</td>'
+                )
+                continue
+            if column == "Coding rank":
+                rank = str(row.get(column, ""))
+                heat = category_score_heat_style(rank, coding_rank_range, reverse=True)
+                cells.append(
+                    f'<td data-column="{escape(column)}" class="numeric-column'
+                    f'{" score-heat-cell" if heat else ""}"{heat}>{escape(rank)}</td>'
                 )
                 continue
             value = escape(str(row.get(column, "")))
@@ -129,7 +153,41 @@ def category_label(category: str) -> str:
 
 
 def category_score_text(score: Any) -> str:
-    return "" if score is None or str(score).strip().lower() == "n/a" else str(score)
+    if score is None or str(score).strip().lower() == "n/a":
+        return ""
+    try:
+        value = float(score)
+    except (TypeError, ValueError):
+        return str(score)
+    if not math.isfinite(value):
+        return ""
+    return str(math.floor(value + 0.5) if value >= 0 else math.ceil(value - 0.5))
+
+
+def numeric_category_score(score: Any) -> float | None:
+    if not category_score_text(score):
+        return None
+    try:
+        value = float(score)
+    except (TypeError, ValueError):
+        return None
+    return value if math.isfinite(value) else None
+
+
+def category_score_heat_style(
+    score: Any, score_range: tuple[float, float] | None, reverse: bool = False
+) -> str:
+    value = numeric_category_score(score)
+    if value is None or score_range is None:
+        return ""
+    minimum, maximum = score_range
+    normalized = 0.5 if minimum == maximum else (
+        max(minimum, min(maximum, value)) - minimum
+    ) / (maximum - minimum)
+    if reverse:
+        normalized = 1 - normalized
+    hue = normalized * 120
+    return f' style="--score-hue:{hue:g}deg"'
 
 
 def render_static_changelog(changelog: list[dict[str, Any]]) -> str:

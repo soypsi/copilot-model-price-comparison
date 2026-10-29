@@ -240,6 +240,10 @@
       background-color: color-mix(in srgb, var(--accent) 18%, var(--bg));
     }
 
+    .score-heat-cell {
+      background-color: hsl(var(--score-hue) 70% 50% / 30%);
+    }
+
     th:last-child, td:last-child {
       border-right: 0;
     }

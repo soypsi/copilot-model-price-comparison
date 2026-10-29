@@ -113,6 +113,20 @@ class StaticPageTests(unittest.TestCase):
                     "multimodalGrounded": 88,
                     "multilingual": None,
                 },
+            }, {
+                "Model": "Lower score",
+                "Threshold (input tokens)": "",
+                "Cached input": "",
+                "Cache write": "",
+                "Total price": "$4",
+                "Coding rank": "9",
+                "_category_scores": {
+                    "coding": 69,
+                    "agentic": 55,
+                    "reasoning": 81,
+                    "multimodalGrounded": 75,
+                    "multilingual": None,
+                },
             }],
             "changelog": [
                 {"updated_at": "2026-10-20", "changes": ["Older update"]},
@@ -129,7 +143,12 @@ class StaticPageTests(unittest.TestCase):
         self.assertIn('data-column="Coding rank" class="numeric-column">Coding</th>', page)
         self.assertIn('data-column="Score: multimodalGrounded">Multimodal</th>', page)
         self.assertIn('data-column="Score: agentic"', page)
-        self.assertIn(">75.25</td>", page)
+        self.assertIn(">75</td>", page)
+        self.assertNotIn(">75.25</td>", page)
+        self.assertIn('--score-hue:120deg', page)
+        self.assertIn('--score-hue:0deg', page)
+        self.assertIn('data-column="Coding rank" class="numeric-column score-heat-cell" style="--score-hue:120deg">7</td>', page)
+        self.assertIn(">84</td>", page)
         self.assertIn('<td data-column="Score: agentic" class="numeric-column category-score-column"></td>', page)
         self.assertNotIn('data-column="Score: multilingual"', page)
         self.assertNotIn(">n/a</td>", page)

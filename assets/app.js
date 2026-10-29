@@ -8,6 +8,8 @@
       },
       rankCategory: "coding",
       categoryColumns: [],
+      categoryRanges: {},
+      codingRankRange: null,
       selectedModels: new Set(),
     };
 
@@ -40,7 +42,31 @@
     }
 
     function categoryScoreValue(score) {
-      return score == null || String(score).trim().toLowerCase() === "n/a" ? "" : String(score);
+      if (score == null) return "";
+      const text = String(score).trim();
+      if (!text || text.toLowerCase() === "n/a") return "";
+      const value = Number(text);
+      return Number.isFinite(value) ? String(Math.round(value)) : text;
+    }
+
+    function heatStyle(value, range, reverse = false) {
+      const number = Number(value);
+      if (!Number.isFinite(number) || !range) return "";
+      const normalized = range[0] === range[1]
+        ? 0.5
+        : (Math.max(range[0], Math.min(range[1], number)) - range[0]) / (range[1] - range[0]);
+      const hue = (reverse ? 1 - normalized : normalized) * 120;
+      return ` style="--score-hue:${hue}deg"`;
+    }
+
+    function scoreHeatStyle(score, category) {
+      return categoryScoreValue(score)
+        ? heatStyle(score, state.categoryRanges[category])
+        : "";
+    }
+
+    function rankHeatStyle(rank) {
+      return cellValue(rank) ? heatStyle(rank, state.codingRankRange, true) : "";
     }
 
     function shortCategoryLabel(category) {
@@ -54,6 +80,20 @@
           .map(([category]) => category)
       )));
       state.categoryColumns = categories.map((category) => `Score: ${category}`);
+      state.categoryRanges = Object.fromEntries(categories.map((category) => {
+        const scores = rows
+          .map((row) => row._category_scores?.[category])
+          .filter((score) => categoryScoreValue(score) !== "")
+          .map(Number)
+          .filter(Number.isFinite);
+        return [category, scores.length ? [Math.min(...scores), Math.max(...scores)] : null];
+      }));
+      const ranks = rows
+        .map((row) => cellValue(row["Coding rank"]))
+        .filter(Boolean)
+        .map(Number)
+        .filter(Number.isFinite);
+      state.codingRankRange = ranks.length ? [Math.min(...ranks), Math.max(...ranks)] : null;
       rankCategorySelect.innerHTML = categories
         .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`)
         .join("");
@@ -376,7 +416,8 @@
             const category = categoryForColumn(column);
             if (category) {
               const score = row._category_scores?.[category];
-              return `<td class="numeric-column category-score-column" data-column="${escapeHtml(column)}">${escapeHtml(categoryScoreValue(score))}</td>`;
+              const heat = scoreHeatStyle(score, category);
+              return `<td class="numeric-column category-score-column${heat ? " score-heat-cell" : ""}" data-column="${escapeHtml(column)}"${heat}>${escapeHtml(categoryScoreValue(score))}</td>`;
             }
             const val = cellValue(rowValue(row, column));
             const displayVal = priceColumns.has(column) ? val.replace(/^\$\s*/, "") : val;
@@ -393,11 +434,12 @@
               return `<td data-column="${name}"><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
             }
             if (column === "Coding rank" && row._coding_model) {
+              const codingRank = cellValue(row["Coding rank"]);
               const categoryScores = Object.entries(row._category_scores || {});
               const scores = categoryScores
                 .map(([name, score]) => `${name}: ${score ?? "n/a"}`)
                 .join(" | ");
-              const label = `#${val} ${row._coding_model} — ${scores}`;
+              const label = `#${codingRank} ${row._coding_model} — ${scores}`;
               const rankDiff = Number.isInteger(row._coding_rank_diff) ? row._coding_rank_diff : null;
               const trend = rankDiff === null || rankDiff === 0 ? "" : (
                 rankDiff < 0
@@ -408,7 +450,11 @@
               const selectedTitle = state.rankCategory === "coding"
                 ? label
                 : `${categoryLabel(state.rankCategory)}: ${selectedValue}`;
-              return `<td class="${numeric.trim()}" data-column="${name}" title="${escapeHtml(selectedTitle)}"><span class="rank-cell${state.rankCategory === "coding" ? "" : " category-selected"}"><span class="rank-main"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span><span class="selected-category-score">${escapeHtml(selectedValue)}</span></span></td>`;
+              const selectedHeat = state.rankCategory !== "coding"
+                && window.matchMedia("(max-width: 2199px)").matches
+                ? scoreHeatStyle(row._category_scores?.[state.rankCategory], state.rankCategory)
+                : rankHeatStyle(codingRank);
+              return `<td class="${numeric.trim()}${selectedHeat ? " score-heat-cell" : ""}" data-column="${name}"${selectedHeat} title="${escapeHtml(selectedTitle)}"><span class="rank-cell${state.rankCategory === "coding" ? "" : " category-selected"}"><span class="rank-main"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span><span class="selected-category-score">${escapeHtml(selectedValue)}</span></span></td>`;
             }
             if (priceColumns.has(column) && offset) {
               return `<td class="${numeric.trim()}" data-column="${name}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
