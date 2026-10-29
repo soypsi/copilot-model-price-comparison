@@ -30,6 +30,12 @@
       ["Total price", "Price"],
     ]);
 
+    table.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element) || target.closest("a, input")) return;
+      target.closest("tbody tr")?.querySelector("input.model-select")?.click();
+    });
+
     function cellValue(value) {
       const text = String(value || "").trim();
       return /^not applicable$/i.test(text) ? "" : text;
