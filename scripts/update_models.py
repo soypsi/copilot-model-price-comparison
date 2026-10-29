@@ -39,6 +39,14 @@ PREFERRED_COLUMNS: Final = [
     "Total price",
     "Coding rank",
 ]
+# Multimodal (image) pricing columns folded into the regular price columns by summing.
+MERGE_COLUMNS: Final = {
+    "Cached image input": "Cached input",
+    "Cached text input": "Cached input",
+    "Image input": "Input",
+    "Text input": "Input",
+    "Image output": "Output",
+}
 PRICE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output", "Total price")
 
 
@@ -198,6 +206,17 @@ def extract_rendered_page(html: str) -> str:
         raise RuntimeError("Unexpected __NEXT_DATA__ shape; renderedPage is missing.") from exc
 
 
+def merge_price_columns(item: dict[str, str]) -> None:
+    sums: dict[str, float] = {}
+    for source, target in MERGE_COLUMNS.items():
+        value = item.pop(source, "")
+        if normalize_whitespace(value):
+            label = f"{item.get('Model', '')} {source}"
+            sums[target] = sums.get(target, 0.0) + parse_price(value, label)
+    for target, total in sums.items():
+        item[target] = f"${total:.2f}"
+
+
 def parse_tables(rendered_page: str) -> list[dict[str, str]]:
     parser = PricingTableParser()
     parser.feed(rendered_page)
@@ -214,6 +233,7 @@ def parse_tables(rendered_page: str) -> list[dict[str, str]]:
             padded = raw_row + [""] * (len(headers) - len(raw_row))
             item = {"Provider": table.heading}
             item.update(dict(zip(headers, padded)))
+            merge_price_columns(item)
             rows.append(item)
 
     if not rows:
