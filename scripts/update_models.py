@@ -290,7 +290,14 @@ def write_rss(changelog: list[dict[str, Any]]) -> None:
     latest_date = entries[0]["updated_at"] if entries else datetime.now(timezone.utc).date().isoformat()
     latest_datetime = datetime.fromisoformat(f"{latest_date}T00:00:00+00:00")
     items = []
-    for index, entry in enumerate(entries):
+    # GUIDs must stay stable when new entries are added, so number entries per date from oldest to newest.
+    per_date: dict[str, int] = {}
+    indexes = []
+    for entry in changelog:
+        date = str(entry["updated_at"])
+        indexes.append(per_date.get(date, 0))
+        per_date[date] = indexes[-1] + 1
+    for entry, index in zip(entries, reversed(indexes)):
         date = str(entry["updated_at"])
         published = datetime.fromisoformat(f"{date}T00:00:00+00:00")
         changes = " ".join(str(change) for change in entry["changes"])
