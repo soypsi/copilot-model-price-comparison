@@ -227,11 +227,14 @@ def sort_rows(rows: list[dict[str, str]], columns: list[str]) -> list[dict[str, 
     return sorted(rows, key=row_key)
 
 
-def parse_price(value: str) -> float:
+def parse_price(value: str, label: str = "") -> float:
     cleaned = value.replace("$", "").replace(",", "").strip()
     if not cleaned or cleaned.lower() == "not applicable":
         return 0.0
-    return float(cleaned)
+    try:
+        return float(cleaned)
+    except ValueError:
+        raise ValueError(f"Unparseable price {cleaned!r} in {label or 'unknown row'}") from None
 
 
 def row_key(row: dict[str, str]) -> tuple[str, ...]:
@@ -321,8 +324,9 @@ def normalize_rows(
             for column in columns
             if column not in {"Total price", "Coding rank"}
         }
+        label = f"{normalized.get('Provider', '')} {normalized.get('Model', '')}"
         total = sum(
-            parse_price(normalized[column])
+            parse_price(normalized[column], f"{label} {column}")
             for column in PRICE_COLUMNS[:-1]
             if normalized.get(column)
         )
@@ -339,7 +343,7 @@ def normalize_rows(
             else ""
         )
         normalized["_price_diffs"] = {
-            column: round(parse_price(normalized.get(column, "")) - parse_price(previous_rows.get(row_key(row), {}).get(column, "")), 6)
+            column: round(parse_price(normalized.get(column, ""), f"{label} {column}") - parse_price(previous_rows.get(row_key(row), {}).get(column, ""), f"committed {label} {column}"), 6)
             if normalized.get(column) and previous_rows.get(row_key(row), {}).get(column)
             and normalized.get(column, "").lower() != "not applicable"
             and previous_rows.get(row_key(row), {}).get(column, "").lower() != "not applicable"

@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.update_models import build_columns, change_summary
+from scripts.update_models import build_columns, change_summary, normalize_rows, parse_price
 
 
 class ChangeSummaryTests(unittest.TestCase):
@@ -49,6 +49,16 @@ class ChangeSummaryTests(unittest.TestCase):
                 "Price changes: Claude Sonnet 5.5 (Default): $14.7 → $14.6",
             ],
         )
+
+
+class ParsePriceTests(unittest.TestCase):
+    def test_unparseable_price_names_the_offending_cell(self):
+        rows = [{"Provider": "OpenAI", "Model": "GPT-5", "Tier": "Default", "Input": "1.25", "Output": "free"}]
+        with self.assertRaises(ValueError) as failure:
+            normalize_rows(rows, ["Provider", "Model", "Tier", "Input", "Output"], [], {})
+        message = str(failure.exception)
+        self.assertIn("'free'", message)
+        self.assertIn("OpenAI GPT-5 Output", message)
 
 
 class BuildColumnsTests(unittest.TestCase):
