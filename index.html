@@ -616,7 +616,8 @@
         const arrow = state.sortColumn === column ? (state.sortDirection === "asc" ? "▲" : "▼") : "";
         const numeric = numericColumns.has(column) ? " numeric-column" : "";
         const currencyNote = priceColumns.has(column) ? " title=\"Prices in USD\"" : "";
-        return `<th class="${numeric.trim()}"${currencyNote}><button class="sort ${active}" data-col="${column}">${column} ${arrow}</button></th>`;
+        const name = escapeHtml(column);
+        return `<th class="${numeric.trim()}"${currencyNote}><button class="sort ${active}" data-col="${name}">${name} ${arrow}</button></th>`;
         }),
       ].join("");
 
@@ -628,7 +629,8 @@
         const disabled = value ? "" : " disabled";
         const active = value.trim() ? " active" : "";
         const numeric = numericColumns.has(column) ? " numeric-column" : "";
-        return `<th class="${numeric.trim()}"><div class="filter-wrap${active}"><input class="filter${active}" data-col="${column}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${column}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${column}" aria-label="Clear ${column} filter"${disabled}>×</button></div></th>`;
+        const name = escapeHtml(column);
+        return `<th class="${numeric.trim()}"><div class="filter-wrap${active}"><input class="filter${active}" data-col="${name}" value="${escapedValue}" placeholder="filter" title="Filter by text, numeric comparisons like &lt;10 or &gt;=5, or !empty to exclude empty values" aria-label="Filter ${name}: text, numeric comparisons like less than 10, or !empty to exclude empty values"><button class="filter-clear${active}" type="button" data-col="${name}" aria-label="Clear ${name} filter"${disabled}>×</button></div></th>`;
         }),
       ].join("");
 
@@ -792,7 +794,14 @@
         state.columns = data.columns || [];
         state.rows = data.rows || [];
         if (!state.columns.length) throw new Error("No columns in data file.");
-        sourceEl.innerHTML = `Source: <a href="${data.source_url}" target="_blank" rel="noreferrer">${data.source_url}</a>`;
+        sourceEl.textContent = "Source: ";
+        if (/^https?:\/\//.test(data.source_url)) {
+          const link = sourceEl.appendChild(document.createElement("a"));
+          link.href = data.source_url;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+          link.textContent = data.source_url;
+        }
         updatedEl.textContent = data.updated_at ? `Updated: ${data.updated_at}` : "";
         renderChangelog(data.changelog);
         renderTable();
