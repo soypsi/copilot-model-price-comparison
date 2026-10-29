@@ -61,6 +61,10 @@ def watch_files(root: Path) -> None:
 
 
 class RequestHandler(SimpleHTTPRequestHandler):
+    def send_response(self, code: int, message: str | None = None) -> None:
+        super().send_response(code, message)
+        self.send_header("Cache-Control", "no-store")
+
     def do_GET(self) -> None:
         if urlparse(self.path).path == "/__reload":
             self.send_reload_events()
