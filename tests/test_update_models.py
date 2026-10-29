@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.update_models import build_columns, change_summary, normalize_rows
+from scripts.update_models import build_columns, change_summary, normalize_rows, render_static_page
 
 
 class ChangeSummaryTests(unittest.TestCase):
@@ -65,6 +65,41 @@ class BuildColumnsTests(unittest.TestCase):
     def test_release_status_is_never_a_column(self):
         rows = [{"Provider": "Anthropic", "Model": "Claude Fable 5", "Release status": "GA", "Novel": "x"}]
         self.assertNotIn("Release status", build_columns(rows))
+
+
+class StaticPageTests(unittest.TestCase):
+    def test_static_page_renders_escaped_table_and_changelog(self):
+        template = "".join(
+            f"<!-- STATIC:{name}:START --><!-- STATIC:{name}:END -->"
+            for name in ("ROW_COUNT", "SOURCE", "UPDATED", "TABLE", "CHANGELOG")
+        )
+        payload = {
+            "updated_at": "2026-10-29T06:38:17Z",
+            "source_url": "https://example.test/pricing?a=1&b=2",
+            "leaderboard_url": "https://example.test/leaderboard",
+            "columns": ["Model", "Cached input", "Cache write", "Total price"],
+            "rows": [{
+                "Model": "<Model>",
+                "Cached input": "$0.5",
+                "Cache write": "$1",
+                "Total price": "$2",
+            }],
+            "changelog": [
+                {"updated_at": "2026-10-20", "changes": ["Older update"]},
+                {"updated_at": "2026-10-29", "changes": ["Latest update"]},
+            ],
+        }
+
+        page = render_static_page(template, payload)
+
+        self.assertIn("&lt;Model&gt;", page)
+        self.assertNotIn("<Model>", page)
+        self.assertIn("$0.5 / $1", page)
+        self.assertIn("<strong>2026-10-29</strong>: Latest update", page)
+        self.assertIn('<details class="changelog-older">', page)
+        self.assertIn("a=1&amp;b=2", page)
+        self.assertIn("<!-- STATIC:TABLE:START -->", page)
+        self.assertNotIn("Loading…", page)
 
 
 if __name__ == "__main__":

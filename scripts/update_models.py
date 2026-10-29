@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Update model pricing data from GitHub Docs into data/models.json."""
+"""Update pricing data and render the static GitHub Pages site."""
 
 from __future__ import annotations
 
@@ -19,7 +19,13 @@ SOURCE_URL: Final = "https://docs.github.com/en/copilot/reference/copilot-billin
 LEADERBOARD_URL: Final = "https://benchlm.ai/api/data/leaderboard?category=coding"
 OUTPUT_PATH: Final = Path("data/models.json")
 RSS_PATH: Final = Path("important-changes.xml")
+INDEX_PATH: Final = Path("index.html")
 SITE_URL: Final = "https://soypsi.github.io/copilot-model-price-comparison"
+SHORT_COLUMN_NAMES: Final = {
+    "Threshold (input tokens)": "Tokens",
+    "Total price": "Price",
+    "Coding rank": "Rank",
+}
 NEXT_DATA_RE: Final = re.compile(
     r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
     re.DOTALL,
@@ -48,6 +54,106 @@ MERGE_COLUMNS: Final = {
     "Image output": "Output",
 }
 PRICE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output", "Total price")
+STATIC_NUMERIC_COLUMNS: Final = {*PRICE_COLUMNS, "Coding rank", "Threshold (input tokens)"}
+
+
+def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
+    has_cache_columns = "Cached input" in columns and "Cache write" in columns
+    display_columns = []
+    for column in columns:
+        display_columns.append(column)
+        if column == "Cache write" and has_cache_columns:
+            display_columns.append("Mobile cache")
+    headers = ['<th aria-label="Select"></th>']
+    for column in display_columns:
+        if column == "Mobile cache":
+            headers.append('<th class="mobile-cache" title="Cached input and cache write prices">Cache</th>')
+            continue
+        name = escape(column)
+        short_name = SHORT_COLUMN_NAMES.get(column)
+        label = (
+            f'<span class="full-label">{name}</span><span class="short-label">{short_name}</span>'
+            if short_name
+            else name
+        )
+        numeric = ' class="numeric-column"' if column in STATIC_NUMERIC_COLUMNS else ""
+        headers.append(f'<th data-column="{name}"{numeric}>{label}</th>')
+
+    body = []
+    for row in rows:
+        cells = ["<td></td>"]
+        for column in display_columns:
+            if column == "Mobile cache":
+                values = [str(row.get(name, "")).strip() for name in ("Cached input", "Cache write")]
+                value = escape(" / ".join(value for value in values if value))
+                cells.append(f'<td class="mobile-cache" title="Cached input / Cache write">{value}</td>')
+                continue
+            value = escape(str(row.get(column, "")))
+            numeric = ' class="numeric-column"' if column in STATIC_NUMERIC_COLUMNS else ""
+            cells.append(f'<td data-column="{escape(column)}"{numeric}>{value}</td>')
+        body.append(f"<tr>{''.join(cells)}</tr>")
+
+    return (
+        '<table id="pricing-table" aria-label="Model pricing table">'
+        f"<thead><tr>{''.join(headers)}</tr></thead><tbody>{''.join(body)}</tbody></table>"
+    )
+
+
+def render_static_changelog(changelog: list[dict[str, Any]]) -> str:
+    if not changelog:
+        return ""
+    entries = list(reversed(changelog))
+
+    def format_entry(entry: dict[str, Any]) -> str:
+        date = escape(str(entry.get("updated_at", ""))[:10])
+        changes = " ".join(escape(str(change)) for change in entry.get("changes", []))
+        return f"<li><strong>{date}</strong>: {changes}</li>"
+
+    latest = f"<ul>{format_entry(entries[0])}</ul>"
+    older_entries = entries[1:]
+    older = ""
+    if older_entries:
+        older = (
+            f'<details class="changelog-older"><summary>Older changes ({len(older_entries)})</summary>'
+            f"<ul>{''.join(format_entry(entry) for entry in older_entries)}</ul></details>"
+        )
+    return (
+        '<h2 id="changelog-title">Important changes '
+        '<a href="important-changes.xml" target="_blank" rel="noopener noreferrer" '
+        'aria-label="Subscribe to important changes RSS feed">📡</a></h2>'
+        f"{latest}{older}"
+    )
+
+
+def render_static_page(template: str, payload: dict[str, Any]) -> str:
+    source_url = escape(str(payload.get("source_url", "")), quote=True)
+    leaderboard_url = escape(str(payload.get("leaderboard_url", "")), quote=True)
+    updated_at = escape(str(payload.get("updated_at", "")))
+    rows = payload.get("rows", [])
+    regions = {
+        "ROW_COUNT": f"{len(rows)} pricing rows",
+        "SOURCE": (
+            f'Source: <a href="{source_url}" target="_blank" rel="noopener noreferrer">Pricing documentation</a>'
+            f' · <a href="{leaderboard_url}" target="_blank" rel="noopener noreferrer">Coding leaderboard</a>'
+        ),
+        "UPDATED": f"Updated: {updated_at}",
+        "TABLE": render_static_table(payload.get("columns", []), rows),
+        "CHANGELOG": render_static_changelog(payload.get("changelog", [])),
+    }
+    for name, content in regions.items():
+        start_marker = f"<!-- STATIC:{name}:START -->"
+        end_marker = f"<!-- STATIC:{name}:END -->"
+        if template.count(start_marker) != 1 or template.count(end_marker) != 1:
+            raise RuntimeError(f"Expected one pair of static {name} markers in index.html.")
+        start = template.index(start_marker) + len(start_marker)
+        end = template.index(end_marker, start)
+        template = template[:start] + content + template[end:]
+    return template
+
+
+def write_static_page(payload: dict[str, Any]) -> None:
+    template = INDEX_PATH.read_text(encoding="utf-8")
+    INDEX_PATH.write_text(render_static_page(template, payload), encoding="utf-8")
 
 
 def normalize_whitespace(value: str) -> str:
@@ -424,6 +530,7 @@ def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
     write_rss(changelog)
+    write_static_page(payload)
     print(f"Wrote {len(rows)} rows to {OUTPUT_PATH}")
 
 
