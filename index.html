@@ -420,6 +420,10 @@
       margin-top: 3px;
     }
 
+    .changelog-older {
+      overflow: auto;
+    }
+
     .error {
       color: #ff6b6b;
       font-size: 13px;
@@ -513,6 +517,7 @@
     };
 
     const table = document.getElementById("pricing-table");
+    const tableWrap = document.querySelector(".table-wrap");
     const rowCount = document.getElementById("row-count");
     const sourceEl = document.getElementById("source");
     const updatedEl = document.getElementById("updated");
@@ -726,8 +731,20 @@
       if (!Array.isArray(changelog) || !changelog.length) return;
       const entries = changelog.slice().reverse();
       const formatEntry = (entry) => `<li><strong>${escapeHtml(String(entry.updated_at).slice(0, 10))}</strong>: ${entry.changes.map(escapeHtml).join(" ")}</li>`;
-      changelogEl.innerHTML = `<h2 id="changelog-title">Important changes <a href="important-changes.xml" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to important changes RSS feed">📡</a></h2><ul>${formatEntry(entries[0])}</ul>${entries.length > 1 ? `<details><summary>Older changes (${entries.length - 1})</summary><ul>${entries.slice(1).map(formatEntry).join("")}</ul></details>` : ""}`;
+      changelogEl.innerHTML = `<h2 id="changelog-title">Important changes <a href="important-changes.xml" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to important changes RSS feed">📡</a></h2><ul>${formatEntry(entries[0])}</ul>${entries.length > 1 ? `<details class="changelog-older"><summary>Older changes (${entries.length - 1})</summary><ul>${entries.slice(1).map(formatEntry).join("")}</ul></details>` : ""}`;
       changelogEl.hidden = false;
+    }
+
+    function updateChangelogSpace() {
+      const older = changelogEl.querySelector(".changelog-older");
+      if (!older) return;
+      older.open = false;
+      older.style.maxHeight = "";
+      const available = tableWrap.clientHeight - table.scrollHeight;
+      const summaryHeight = older.querySelector("summary").getBoundingClientRect().height;
+      if (available < summaryHeight + 20) return;
+      older.open = true;
+      older.style.maxHeight = `${available + summaryHeight}px`;
     }
 
     function renderTable() {
@@ -886,6 +903,7 @@
         });
       });
       updateCompareControls();
+      updateChangelogSpace();
     }
 
     function modelIdFor(row) {
@@ -929,6 +947,8 @@
       rowCount.textContent = "";
       table.outerHTML = `<p class="error">${escapeHtml(message)}</p>`;
     }
+
+    window.addEventListener("resize", updateChangelogSpace);
 
     async function init() {
       try {
