@@ -151,7 +151,14 @@ def fetch_html(url: str) -> str:
 def fetch_json(url: str) -> dict:
     request = urllib.request.Request(url, headers={"User-Agent": "copilot-model-price-comparison/1.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
-        return json.load(response)
+        return parse_json(response.read().decode("utf-8", errors="replace"), f"JSON fetched from {url}")
+
+
+def parse_json(text: str, context: str) -> Any:
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"{context} is not valid JSON: {exc}") from exc
 
 
 def model_key(value: str) -> str:
@@ -184,7 +191,7 @@ def extract_rendered_page(html: str) -> str:
     if not match:
         raise RuntimeError("Could not find __NEXT_DATA__ JSON in source page.")
 
-    data = json.loads(match.group(1))
+    data = parse_json(match.group(1), "The __NEXT_DATA__ payload of the source page")
     try:
         return data["props"]["pageProps"]["articleContext"]["renderedPage"]
     except KeyError as exc:
@@ -361,7 +368,7 @@ def main() -> None:
     leaderboard = leaderboard_payload.get("models", [])
 
     columns = build_columns(parsed_rows)
-    previous = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else {}
+    previous = parse_json(OUTPUT_PATH.read_text(encoding="utf-8"), f"Committed {OUTPUT_PATH}") if OUTPUT_PATH.exists() else {}
     previous_rows = {row_key(row): row for row in previous.get("rows", [])}
     rows = normalize_rows(parsed_rows, columns, leaderboard, previous_rows)
     rows = sort_rows(rows, columns)
