@@ -88,16 +88,7 @@
       display: none;
     }
 
-    @media (max-width: 1400px) {
-      th[data-column="Cached input"], td[data-column="Cached input"],
-      th[data-column="Cache write"], td[data-column="Cache write"] {
-        display: none;
-      }
-
-      .mobile-cache {
-        display: table-cell;
-      }
-
+    @media (max-width: 2199px) {
       table {
         table-layout: fixed;
       }
@@ -107,8 +98,24 @@
         text-overflow: ellipsis;
       }
 
-      th:first-child, td:first-child {
-        width: 36px;
+      th[data-column="Provider"], td[data-column="Provider"] { width: 9%; }
+      th[data-column="Model"], td[data-column="Model"] { width: 18%; }
+      th[data-column="Category"], td[data-column="Category"] { width: 8%; }
+      th[data-column="Threshold (input tokens)"], td[data-column="Threshold (input tokens)"] { width: 8%; }
+      th[data-column="Input"], td[data-column="Input"],
+      th[data-column="Cached input"], td[data-column="Cached input"],
+      th[data-column="Cache write"], td[data-column="Cache write"],
+      th[data-column="Output"], td[data-column="Output"] { width: 3.5%; }
+      th[data-column="Total price"], td[data-column="Total price"] { width: 8%; }
+      th[data-column="Coding rank"], td[data-column="Coding rank"] { width: 5%; }
+      th[data-column^="Score: "], td[data-column^="Score: "] { width: 4.5%; }
+
+      .full-label {
+        display: none;
+      }
+
+      .short-label {
+        display: inline;
       }
 
       .sort {
@@ -127,6 +134,21 @@
       }
     }
 
+    @media (max-width: 1400px) {
+      th[data-column="Cached input"], td[data-column="Cached input"],
+      th[data-column="Cache write"], td[data-column="Cache write"] {
+        display: none;
+      }
+
+      .mobile-cache {
+        display: table-cell;
+      }
+
+      th.mobile-cache, td.mobile-cache {
+        width: 7%;
+      }
+    }
+
     @media (max-width: 1050px) {
       .mobile-cache {
         display: none;
@@ -137,16 +159,6 @@
       th[data-column="Input"], td[data-column="Input"],
       th[data-column="Output"], td[data-column="Output"] {
         display: none;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .full-label {
-        display: none;
-      }
-
-      .short-label {
-        display: inline;
       }
     }
 
@@ -161,12 +173,6 @@
       }
     }
 
-    @media (max-width: 640px) {
-      th[data-column="Tier"], td[data-column="Tier"] {
-        display: none;
-      }
-    }
-
     @media (max-width: 560px) {
       th[data-column="Category"], td[data-column="Category"] {
         display: none;
@@ -176,10 +182,6 @@
     @media (max-width: 480px) {
       th[data-column="Provider"], td[data-column="Provider"] {
         display: none;
-      }
-
-      th:first-child, td:first-child {
-        width: 28px;
       }
 
       th[data-column="Model"], td[data-column="Model"] {
@@ -238,6 +240,11 @@
 
     tbody tr.single-selected-row > td {
       background-color: color-mix(in srgb, var(--accent) 18%, var(--bg));
+    }
+
+    tbody tr:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
     }
 
     .score-heat-cell {
@@ -425,7 +432,7 @@
       display: none;
     }
 
-    @media (max-width: 2199px) {
+    @media (max-width: 1200px) {
       .rank-category-control {
         display: flex;
       }
@@ -453,7 +460,7 @@
       }
     }
 
-    @media (min-width: 2200px) {
+    @media (min-width: 1201px) {
       .rank-category-control {
         display: none;
       }

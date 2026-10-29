@@ -24,21 +24,35 @@
     const compareButton = document.getElementById("compare-button");
     const selectionCount = document.getElementById("selection-count");
     const rankCategorySelect = document.getElementById("rank-category");
+    const compactRankColumns = window.matchMedia("(max-width: 1200px)");
     const priceColumns = new Set(["Input", "Cached input", "Cache write", "Output", "Total price"]);
     const numericColumns = new Set(["Threshold (input tokens)", ...priceColumns, "Coding rank"]);
     const shortColumnNames = new Map([
       ["Total price", "Price"],
+      ["Cached input", "Cache"],
+      ["Cache write", "Write"],
     ]);
 
     table.addEventListener("click", (event) => {
       const target = event.target;
-      if (!(target instanceof Element) || target.closest("a, input")) return;
-      target.closest("tbody tr")?.querySelector("input.model-select")?.click();
+      if (!(target instanceof Element) || target.closest("a, button, input, select, textarea")) return;
+      const row = target.closest("tbody tr[data-model-id]");
+      if (row) toggleRowSelection(row);
+    });
+
+    table.addEventListener("keydown", (event) => {
+      if (!(event.target instanceof HTMLTableRowElement) || !["Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      toggleRowSelection(event.target);
     });
 
     function cellValue(value) {
       const text = String(value || "").trim();
       return /^not applicable$/i.test(text) ? "" : text;
+    }
+
+    function contextValue(row) {
+      return cellValue(row["Threshold (input tokens)"]);
     }
 
     function categoryLabel(category) {
@@ -130,7 +144,7 @@
       if (category) return categoryScoreValue(row._category_scores?.[category]);
       if (
         column === "Coding rank"
-        && window.matchMedia("(max-width: 2199px)").matches
+        && compactRankColumns.matches
         && state.rankCategory !== "coding"
       ) {
         return categoryScoreValue(row._category_scores?.[state.rankCategory]);
@@ -144,7 +158,7 @@
 
     function effectiveColumn(column) {
       return column === "Coding rank"
-        && window.matchMedia("(max-width: 2199px)").matches
+        && compactRankColumns.matches
         && state.rankCategory !== "coding"
         ? `Score: ${state.rankCategory}`
         : column;
@@ -223,7 +237,9 @@
     function filterMatches(column, row) {
       const filter = (state.filters[column] || "").trim().toLowerCase();
       if (!filter) return true;
-      const value = cellValue(rowValue(row, column));
+      const value = column === "Threshold (input tokens)"
+        ? contextValue(row)
+        : cellValue(rowValue(row, column));
       if (filter === "!empty") return value !== "";
       const numericFilter = parseNumericFilter(filter);
       if (numericFilter) {
@@ -311,6 +327,15 @@
       return Number.isFinite(number) ? number : null;
     }
 
+    function cachePriceValue(row) {
+      const values = ["Cached input", "Cache write"]
+        .map((column) => priceValue(row[column]))
+        .filter((value) => value !== null);
+      if (!values.length) return "";
+      const total = values.reduce((sum, value) => sum + value, 0);
+      return `$${total.toFixed(3).replace(/\.?0+$/, "")}`;
+    }
+
     function priceOffset(rows, rowIndex, column) {
       const current = priceValue(rows[rowIndex][column]);
       if (current === null) return "";
@@ -374,13 +399,13 @@
       updateHiddenNotice(hiddenRows());
       rowCount.textContent = `${rows.length} / ${state.rows.length} rows`;
       const displayColumns = state.columns.flatMap((column) => {
+        if (column === "Tier") return [];
         if (column === "Cache write" && state.columns.includes("Cached input")) return [column, "Mobile cache"];
         if (column === "Coding rank") return [column, ...state.categoryColumns];
         return [column];
       });
 
       const headerCells = [
-        "<th aria-label=\"Select\"></th>",
         ...displayColumns.map((column) => {
         if (column === "Mobile cache") {
           return "<th class=\"mobile-cache\" title=\"Cached input and cache write prices\">Cache</th>";
@@ -407,7 +432,6 @@
       ].join("");
 
       const filterCells = [
-        "<th></th>",
         ...displayColumns.map((column) => {
         if (column === "Mobile cache") return "<th class=\"mobile-cache\"></th>";
         const value = state.filters[column] || "";
@@ -423,14 +447,11 @@
       const bodyRows = rows.map((row) => {
         const modelId = modelIdFor(row);
         const isSelected = state.selectedModels.has(modelId);
-        const checked = isSelected ? " checked" : "";
         const rowClass = isSelected && state.selectedModels.size === 1 ? ' class="single-selected-row"' : "";
         const cells = [
-          `<td><input class="model-select" type="checkbox" data-model-id="${escapeHtml(modelId)}"${checked} aria-label="Select ${escapeHtml(row.Model)}"></td>`,
           ...displayColumns.map((column) => {
             if (column === "Mobile cache") {
-              const values = ["Cached input", "Cache write"].map((name) => cellValue(row[name])).filter(Boolean);
-              return `<td class="mobile-cache" title="Cached input / Cache write">${escapeHtml(values.join(" / "))}</td>`;
+              return `<td class="mobile-cache numeric-column" title="Cached input + cache write">${escapeHtml(cachePriceValue(row))}</td>`;
             }
             const category = categoryForColumn(column);
             if (category) {
@@ -438,10 +459,13 @@
               const heat = scoreHeatStyle(score, category);
               return `<td class="numeric-column category-score-column${heat ? " score-heat-cell" : ""}" data-column="${escapeHtml(column)}"${heat}>${escapeHtml(categoryScoreValue(score))}</td>`;
             }
-            const val = cellValue(rowValue(row, column));
+            const val = column === "Threshold (input tokens)"
+              ? contextValue(row)
+              : cellValue(rowValue(row, column));
             const displayVal = priceColumns.has(column) ? val.replace(/^\$\s*/, "") : val;
             const numeric = isNumericColumn(column) ? " numeric-column" : "";
             const name = escapeHtml(column);
+            const title = column === "Threshold (input tokens)" ? ` title="${escapeHtml(val)}"` : "";
             const showOffset = priceColumns.has(column) && (
               state.sortColumn === column
               || (state.sortColumn === "Coding rank" && column === "Total price")
@@ -472,7 +496,7 @@
                 ? label
                 : `${categoryLabel(state.rankCategory)}: ${selectedValue}`;
               const selectedHeat = state.rankCategory !== "coding"
-                && window.matchMedia("(max-width: 2199px)").matches
+                && compactRankColumns.matches
                 ? scoreHeatStyle(row._category_scores?.[state.rankCategory], state.rankCategory)
                 : rankHeatStyle(codingRank);
               return `<td class="${numeric.trim()}${selectedHeat ? " score-heat-cell" : ""}" data-column="${name}"${selectedHeat} title="${escapeHtml(selectedTitle)}"><span class="rank-cell${state.rankCategory === "coding" ? "" : " category-selected"}"><span class="rank-main"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span><span class="selected-category-score">${escapeHtml(selectedValue)}</span></span></td>`;
@@ -483,10 +507,10 @@
             if (priceColumns.has(column)) {
               return `<td class="${priceCellClass}" data-column="${name}"${priceHeat}><div class="price-cell"><span class="price-offset"></span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
-            return `<td class="${numeric.trim()}" data-column="${name}">${escapeHtml(displayVal)}</td>`;
+            return `<td class="${numeric.trim()}" data-column="${name}"${title}>${escapeHtml(displayVal)}</td>`;
           }),
         ].join("");
-        return `<tr${rowClass}>${cells}</tr>`;
+        return `<tr data-model-id="${escapeHtml(modelId)}" tabindex="0" aria-selected="${isSelected}"${rowClass}>${cells}</tr>`;
       }).join("");
 
       table.innerHTML = `
@@ -538,23 +562,19 @@
         });
       });
 
-      table.querySelectorAll("input.model-select").forEach((el) => {
-        el.addEventListener("change", () => {
-          const modelId = el.getAttribute("data-model-id");
-          if (el.checked) {
-            if (state.selectedModels.size >= 2) {
-              el.checked = false;
-              return;
-            }
-            state.selectedModels.add(modelId);
-          } else {
-            state.selectedModels.delete(modelId);
-          }
-          renderTable();
-        });
-      });
       updateCompareControls();
       updateChangelogSpace();
+    }
+
+    function toggleRowSelection(row) {
+      const modelId = row.dataset.modelId;
+      if (!modelId) return;
+      if (state.selectedModels.has(modelId)) {
+        state.selectedModels.delete(modelId);
+      } else if (state.selectedModels.size < 2) {
+        state.selectedModels.add(modelId);
+      }
+      renderTable();
     }
 
     function modelIdFor(row) {

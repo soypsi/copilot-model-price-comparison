@@ -24,6 +24,8 @@ INDEX_PATH: Final = Path("index.html")
 SITE_URL: Final = "https://soypsi.github.io/copilot-model-price-comparison"
 SHORT_COLUMN_NAMES: Final = {
     "Total price": "Price",
+    "Cached input": "Cache",
+    "Cache write": "Write",
 }
 NEXT_DATA_RE: Final = re.compile(
     r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
@@ -56,6 +58,26 @@ PRICE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output", "Total
 STATIC_NUMERIC_COLUMNS: Final = {*PRICE_COLUMNS, "Coding rank", "Threshold (input tokens)"}
 
 
+def context_display_value(row: dict[str, Any]) -> str:
+    context = str(row.get("Threshold (input tokens)") or "").strip()
+    if context.lower() == "not applicable":
+        context = ""
+    return context
+
+
+def mobile_cache_price(row: dict[str, Any]) -> str:
+    columns = ("Cached input", "Cache write")
+    values = [str(row.get(column) or "").strip() for column in columns]
+    if not any(value and value.lower() != "not applicable" for value in values):
+        return ""
+    total = math.fsum(
+        parse_price(value, f"mobile cache {column}")
+        for column, value in zip(columns, values)
+        if value
+    )
+    return f"${total:.3f}".rstrip("0").rstrip(".")
+
+
 def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
     has_cache_columns = "Cached input" in columns and "Cache write" in columns
     category_names = list(dict.fromkeys(
@@ -77,12 +99,14 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
     coding_rank_range = (min(coding_ranks), max(coding_ranks)) if coding_ranks else None
     display_columns = []
     for column in columns:
+        if column == "Tier":
+            continue
         display_columns.append(column)
         if column == "Coding rank":
             display_columns.extend(f"Score: {name}" for name in category_names)
         if column == "Cache write" and has_cache_columns:
             display_columns.append("Mobile cache")
-    headers = ['<th aria-label="Select"></th>']
+    headers = []
     for column in display_columns:
         if column == "Mobile cache":
             headers.append('<th class="mobile-cache" title="Cached input and cache write prices">Cache</th>')
@@ -111,12 +135,11 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
 
     body = []
     for row in rows:
-        cells = ["<td></td>"]
+        cells = []
         for column in display_columns:
             if column == "Mobile cache":
-                values = [str(row.get(name, "")).strip() for name in ("Cached input", "Cache write")]
-                value = escape(" / ".join(value for value in values if value))
-                cells.append(f'<td class="mobile-cache" title="Cached input / Cache write">{value}</td>')
+                value = escape(mobile_cache_price(row))
+                cells.append(f'<td class="mobile-cache" title="Cached input + cache write">{value}</td>')
                 continue
             if column.startswith("Score: "):
                 category = column[7:]
@@ -136,9 +159,15 @@ def render_static_table(columns: list[str], rows: list[dict[str, Any]]) -> str:
                     f'{" score-heat-cell" if heat else ""}"{heat}>{escape(rank)}</td>'
                 )
                 continue
-            value = escape(str(row.get(column, "")))
+            raw_value = (
+                context_display_value(row)
+                if column == "Threshold (input tokens)"
+                else str(row.get(column, ""))
+            )
+            value = escape(raw_value)
             numeric = ' class="numeric-column"' if column in STATIC_NUMERIC_COLUMNS else ""
-            cells.append(f'<td data-column="{escape(column)}"{numeric}>{value}</td>')
+            title = f' title="{escape(raw_value, quote=True)}"' if column == "Threshold (input tokens)" else ""
+            cells.append(f'<td data-column="{escape(column)}"{numeric}{title}>{value}</td>')
         body.append(f"<tr>{''.join(cells)}</tr>")
 
     return (

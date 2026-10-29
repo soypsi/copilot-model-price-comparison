@@ -79,6 +79,7 @@ class StaticPageTests(unittest.TestCase):
             "leaderboard_url": "https://example.test/leaderboard",
             "columns": [
                 "Model",
+                "Tier",
                 "Threshold (input tokens)",
                 "Cached input",
                 "Cache write",
@@ -87,6 +88,7 @@ class StaticPageTests(unittest.TestCase):
             ],
             "rows": [{
                 "Model": "<Model>",
+                "Tier": "Default",
                 "Threshold (input tokens)": "Not applicable",
                 "Cached input": "$0.5",
                 "Cache write": "$1",
@@ -101,6 +103,7 @@ class StaticPageTests(unittest.TestCase):
                 },
             }, {
                 "Model": "Other",
+                "Tier": "Long context",
                 "Threshold (input tokens)": "100K",
                 "Cached input": "",
                 "Cache write": "",
@@ -138,8 +141,16 @@ class StaticPageTests(unittest.TestCase):
 
         self.assertIn("&lt;Model&gt;", page)
         self.assertNotIn("<Model>", page)
-        self.assertIn("$0.5 / $1", page)
+        self.assertIn('class="mobile-cache" title="Cached input + cache write">$1.5</td>', page)
+        self.assertNotIn('<th aria-label="Select"></th>', page)
+        self.assertNotIn('<td></td><td data-column="Model"', page)
+        self.assertNotIn('data-column="Tier"', page)
         self.assertIn('data-column="Threshold (input tokens)" class="numeric-column">Context</th>', page)
+        self.assertNotIn(">Default</td>", page)
+        self.assertNotIn(">Long context</td>", page)
+        self.assertIn('data-column="Threshold (input tokens)" class="numeric-column" title="">', page)
+        self.assertIn('title="100K">100K</td>', page)
+        self.assertIn('<span class="full-label">Cached input</span><span class="short-label">Cache</span>', page)
         self.assertIn('data-column="Coding rank" class="numeric-column">Coding</th>', page)
         self.assertIn('data-column="Score: multimodalGrounded">Multimodal</th>', page)
         self.assertIn('data-column="Score: agentic"', page)
