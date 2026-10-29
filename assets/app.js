@@ -10,6 +10,7 @@
       categoryColumns: [],
       categoryRanges: {},
       codingRankRange: null,
+      totalPriceRange: null,
       selectedModels: new Set(),
     };
 
@@ -69,6 +70,16 @@
       return cellValue(rank) ? heatStyle(rank, state.codingRankRange, true) : "";
     }
 
+    function totalPriceHeatStyle(row) {
+      const sortColumn = effectiveColumn(state.sortColumn);
+      if (sortColumn !== "Coding rank" && !categoryForColumn(sortColumn)) return "";
+      const price = priceValue(row["Total price"]);
+      if (price === null) return "";
+      const logPrice = state.totalPriceRange?.[0] > 0 ? Math.log : Math.log1p;
+      const priceRange = state.totalPriceRange?.map(logPrice) ?? null;
+      return heatStyle(logPrice(price), priceRange, true);
+    }
+
     function shortCategoryLabel(category) {
       return categoryLabel(category).split(/\s+/)[0];
     }
@@ -94,6 +105,8 @@
         .map(Number)
         .filter(Number.isFinite);
       state.codingRankRange = ranks.length ? [Math.min(...ranks), Math.max(...ranks)] : null;
+      const prices = rows.map((row) => priceValue(row["Total price"])).filter((price) => price !== null);
+      state.totalPriceRange = prices.length ? [Math.min(...prices), Math.max(...prices)] : null;
       rankCategorySelect.innerHTML = categories
         .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`)
         .join("");
@@ -429,6 +442,8 @@
               || (state.selectedModels.size === 1 && column === "Total price")
             );
             const offset = showOffset ? priceOffset(rows, rows.indexOf(row), column) : "";
+            const priceHeat = column === "Total price" ? totalPriceHeatStyle(row) : "";
+            const priceCellClass = `${numeric.trim()}${priceHeat ? " score-heat-cell" : ""}`;
             if (column === "Model") {
               const url = `https://benchlm.ai/models/${slugify(val)}`;
               return `<td data-column="${name}"><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
@@ -457,10 +472,10 @@
               return `<td class="${numeric.trim()}${selectedHeat ? " score-heat-cell" : ""}" data-column="${name}"${selectedHeat} title="${escapeHtml(selectedTitle)}"><span class="rank-cell${state.rankCategory === "coding" ? "" : " category-selected"}"><span class="rank-main"><span class="rank-value">${escapeHtml(displayVal)}</span>${trend}</span><span class="selected-category-score">${escapeHtml(selectedValue)}</span></span></td>`;
             }
             if (priceColumns.has(column) && offset) {
-              return `<td class="${numeric.trim()}" data-column="${name}"><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
+              return `<td class="${priceCellClass}" data-column="${name}"${priceHeat}><div class="price-cell"><span class="price-offset">${offset}</span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
             if (priceColumns.has(column)) {
-              return `<td class="${numeric.trim()}" data-column="${name}"><div class="price-cell"><span class="price-offset"></span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
+              return `<td class="${priceCellClass}" data-column="${name}"${priceHeat}><div class="price-cell"><span class="price-offset"></span><span class="price-value">${priceValueMarkup(displayVal)}</span>${priceTrend(row, column)}</div></td>`;
             }
             return `<td class="${numeric.trim()}" data-column="${name}">${escapeHtml(displayVal)}</td>`;
           }),
