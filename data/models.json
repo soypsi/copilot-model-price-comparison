@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29T06:38:17Z",
+  "updated_at": "2026-10-29T10:03:07Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -632,11 +632,11 @@
       "_category_scores": {},
       "_coding_rank_diff": "",
       "_price_diffs": {
-        "Input": "",
-        "Cached input": "",
+        "Input": 0.0,
+        "Cached input": 0.0,
         "Cache write": "",
-        "Output": "",
-        "Total price": 46.25
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
