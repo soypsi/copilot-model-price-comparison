@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.update_models import build_columns, change_summary, normalize_rows, parse_price
+from scripts.update_models import build_columns, change_summary, normalize_rows
 
 
 class ChangeSummaryTests(unittest.TestCase):

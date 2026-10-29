@@ -13,7 +13,7 @@ import urllib.request
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Final
+from typing import Any, Final
 
 SOURCE_URL: Final = "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing"
 LEADERBOARD_URL: Final = "https://benchlm.ai/api/data/leaderboard?category=coding"
@@ -220,8 +220,8 @@ def build_columns(rows: list[dict[str, str]]) -> list[str]:
     return PREFERRED_COLUMNS + extras
 
 
-def sort_rows(rows: list[dict[str, str]], columns: list[str]) -> list[dict[str, str]]:
-    def row_key(row: dict[str, str]) -> tuple[str, ...]:
+def sort_rows(rows: list[dict[str, Any]], columns: list[str]) -> list[dict[str, Any]]:
+    def row_key(row: dict[str, Any]) -> tuple[str, ...]:
         return tuple(normalize_whitespace(row.get(column, "")).lower() for column in columns)
 
     return sorted(rows, key=row_key)
@@ -237,7 +237,7 @@ def parse_price(value: str, label: str = "") -> float:
         raise ValueError(f"Unparseable price {cleaned!r} in {label or 'unknown row'}") from None
 
 
-def row_key(row: dict[str, str]) -> tuple[str, ...]:
+def row_key(row: dict[str, Any]) -> tuple[str, ...]:
     tier = row.get("Tier", "")
     threshold = row.get("Threshold (input tokens)", "")
     # The pricing source started labeling formerly un-tiered rows as Default.
@@ -247,7 +247,7 @@ def row_key(row: dict[str, str]) -> tuple[str, ...]:
     return row.get("Provider", ""), row.get("Model", ""), tier, threshold
 
 
-def change_summary(previous: list[dict[str, str]], current: list[dict[str, str]]) -> list[str]:
+def change_summary(previous: list[dict[str, Any]], current: list[dict[str, Any]]) -> list[str]:
     old = {row_key(row): row for row in previous}
     new = {row_key(row): row for row in current}
     changes = []
@@ -278,7 +278,7 @@ def changelog_date(value: str) -> str:
     return value[:10]
 
 
-def write_rss(changelog: list[dict[str, object]]) -> None:
+def write_rss(changelog: list[dict[str, Any]]) -> None:
     entries = list(reversed(changelog))
     latest_date = entries[0]["updated_at"] if entries else datetime.now(timezone.utc).date().isoformat()
     latest_datetime = datetime.fromisoformat(f"{latest_date}T00:00:00+00:00")
@@ -315,11 +315,11 @@ def normalize_rows(
     rows: list[dict[str, str]],
     columns: list[str],
     leaderboard: list[dict],
-    previous_rows: dict[tuple[str, ...], dict[str, str]],
-) -> list[dict[str, str]]:
+    previous_rows: dict[tuple[str, ...], dict[str, Any]],
+) -> list[dict[str, Any]]:
     normalized_rows = []
     for row in rows:
-        normalized = {
+        normalized: dict[str, Any] = {
             column: normalize_whitespace(row.get(column, ""))
             for column in columns
             if column not in {"Total price", "Coding rank"}
