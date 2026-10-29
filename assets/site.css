@@ -236,6 +236,10 @@
       padding: 3px 6px;
     }
 
+    tbody tr.single-selected-row > td {
+      background-color: color-mix(in srgb, var(--accent) 18%, var(--bg));
+    }
+
     th:last-child, td:last-child {
       border-right: 0;
     }

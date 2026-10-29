@@ -363,7 +363,9 @@
 
       const bodyRows = rows.map((row) => {
         const modelId = modelIdFor(row);
-        const checked = state.selectedModels.has(modelId) ? " checked" : "";
+        const isSelected = state.selectedModels.has(modelId);
+        const checked = isSelected ? " checked" : "";
+        const rowClass = isSelected && state.selectedModels.size === 1 ? ' class="single-selected-row"' : "";
         const cells = [
           `<td><input class="model-select" type="checkbox" data-model-id="${escapeHtml(modelId)}"${checked} aria-label="Select ${escapeHtml(row.Model)}"></td>`,
           ...displayColumns.map((column) => {
@@ -417,7 +419,7 @@
             return `<td class="${numeric.trim()}" data-column="${name}">${escapeHtml(displayVal)}</td>`;
           }),
         ].join("");
-        return `<tr>${cells}</tr>`;
+        return `<tr${rowClass}>${cells}</tr>`;
       }).join("");
 
       table.innerHTML = `
