@@ -5,7 +5,14 @@
     <link>https://soypsi.github.io/copilot-model-price-comparison</link>
     <atom:link href="https://soypsi.github.io/copilot-model-price-comparison/important-changes.xml" rel="self" type="application/rss+xml" />
     <description>Daily important changes to Copilot model pricing and coding rankings.</description>
-    <lastBuildDate>Thu, 29 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 10 Nov 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Important changes - 2026-11-10</title>
+      <link>https://soypsi.github.io/copilot-model-price-comparison/#changelog</link>
+      <guid isPermaLink="false">https://soypsi.github.io/copilot-model-price-comparison/#changelog-2026-11-10-0</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+      <description>New models: Claude Fable 5.2</description>
+    </item>
     <item>
       <title>Important changes - 2026-10-29</title>
       <link>https://soypsi.github.io/copilot-model-price-comparison/#changelog</link>
