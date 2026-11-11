@@ -53,6 +53,10 @@
       color: var(--muted);
     }
 
+    #source .source-item + .source-item::before {
+      content: " · ";
+    }
+
     .actions {
       display: flex;
       align-items: center;
@@ -176,6 +180,14 @@
     @media (max-width: 560px) {
       th[data-column="Category"], td[data-column="Category"] {
         display: none;
+      }
+
+      #source .source-item {
+        display: block;
+      }
+
+      #source .source-item + .source-item::before {
+        content: none;
       }
     }
 

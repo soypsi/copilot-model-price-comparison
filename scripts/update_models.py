@@ -253,8 +253,8 @@ def render_static_page(template: str, payload: dict[str, Any]) -> str:
     regions = {
         "ROW_COUNT": f"{len(rows)} pricing rows",
         "SOURCE": (
-            f'Source: <a href="{source_url}" target="_blank" rel="noopener noreferrer">Pricing documentation</a>'
-            f' · <a href="{leaderboard_url}" target="_blank" rel="noopener noreferrer">Coding leaderboard</a>'
+            f'<span class="source-item">Price Source: <a href="{source_url}" target="_blank" rel="noopener noreferrer">Models and pricing for GitHub Copilot</a></span>'
+            f'<span class="source-item">Model Scores: Data from <a href="{leaderboard_url}" target="_blank" rel="noopener noreferrer">BenchLM.ai</a></span>'
         ),
         "UPDATED": f"Updated: {updated_at}",
         "TABLE": render_static_table(payload.get("columns", []), rows),

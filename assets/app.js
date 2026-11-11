@@ -610,13 +610,26 @@
         state.rows = data.rows || [];
         if (!state.columns.length) throw new Error("No columns in data file.");
         populateRankCategories(state.rows);
-        sourceEl.textContent = "Source: ";
+        sourceEl.textContent = "";
+        const priceItem = sourceEl.appendChild(document.createElement("span"));
+        priceItem.className = "source-item";
+        priceItem.textContent = "Price Source: ";
         if (/^https?:\/\//.test(data.source_url)) {
-          const link = sourceEl.appendChild(document.createElement("a"));
+          const link = priceItem.appendChild(document.createElement("a"));
           link.href = data.source_url;
           link.target = "_blank";
           link.rel = "noreferrer";
-          link.textContent = data.source_url;
+          link.textContent = "Models and pricing for GitHub Copilot";
+        }
+        const scoreItem = sourceEl.appendChild(document.createElement("span"));
+        scoreItem.className = "source-item";
+        scoreItem.textContent = "Model Scores: Data from ";
+        if (/^https?:\/\//.test(data.leaderboard_url)) {
+          const credit = scoreItem.appendChild(document.createElement("a"));
+          credit.href = data.leaderboard_url;
+          credit.target = "_blank";
+          credit.rel = "noreferrer";
+          credit.textContent = "BenchLM.ai";
         }
         updatedEl.textContent = data.updated_at ? `Updated: ${data.updated_at}` : "";
         renderChangelog(data.changelog);
