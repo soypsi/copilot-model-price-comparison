@@ -6,11 +6,13 @@
 
 ## Project overview
 
-This repository is a dependency-free static GitHub Pages site. The UI, styles, and client-side behavior live in `index.html`; it loads the generated `data/models.json` file at runtime and renders a sortable, filterable pricing table with two-model comparison links to BenchLM.
+This repository is a dependency-free static GitHub Pages site. The client-side behavior lives in `assets/app.js` (loaded as a module by `index.html`), the pure helpers shared with the tests live in `assets/model-utils.mjs`, and the styles live in `assets/site.css`; the app loads the generated `data/models.json` file at runtime and renders a sortable, filterable pricing table with two-model comparison links to BenchLM.
 
 `scripts/update_models.py` is the data pipeline. It fetches the GitHub Copilot pricing documentation and the BenchLM coding leaderboard, extracts pricing tables from the documentation's `__NEXT_DATA__` payload, normalizes rows, calculates `Total price`, matches coding ranks, and writes the JSON consumed by the site. The script uses only the Python standard library.
 
-`.github/workflows/pages.yml` packages and deploys the repository root to GitHub Pages on pushes to `main`, on a weekly Monday schedule, and via manual dispatch. Scheduled and manual runs refresh `data/models.json`, commit it when it changes, and then deploy the site.
+It also renders the no-JavaScript fallback: `index.html` is its own template, with five `<!-- STATIC:NAME:START -->` / `<!-- STATIC:NAME:END -->` regions (`ROW_COUNT`, `SOURCE`, `UPDATED`, `TABLE`, `CHANGELOG`) that the updater rewrites in place, alongside `important-changes.xml`. Treat all three files as generated output written by the updater, and never hand-edit the generated regions.
+
+`.github/workflows/pages.yml` packages and deploys the repository root to GitHub Pages on pushes to `main`, on a daily schedule (03:17 UTC), and via manual dispatch. Scheduled and manual runs refresh the generated files, commit them when they change, and then deploy the site; pushes deploy the committed state as-is.
 
 ## Commands
 
@@ -46,9 +48,9 @@ The updater unit tests live in `tests/test_update_models.py` and run with `just 
 
 ## Repository-specific conventions
 
-- Treat `data/models.json` as generated output. Change `scripts/update_models.py` or the source-processing logic, then run `just update`; do not hand-edit individual generated rows.
+- Treat `data/models.json`, `important-changes.xml`, and the generated regions of `index.html` as generated output. Change `scripts/update_models.py` or the source-processing logic, then run `just update`; do not hand-edit individual generated rows.
 - Keep the JSON schema compatible with the frontend. If pricing columns or row metadata change, update both the updater's `PREFERRED_COLUMNS`/normalization logic and the corresponding frontend special cases such as `priceColumns`, threshold sorting, model links, and coding-rank tooltips.
-- The frontend intentionally has no framework or external runtime dependency. Keep behavior in the existing inline JavaScript and preserve the current state-driven `renderTable()` flow unless a larger change clearly requires otherwise.
+- The frontend intentionally has no framework or external runtime dependency. Keep behavior in `assets/app.js` and preserve the current state-driven `renderTable()` flow unless a larger change clearly requires otherwise. Put pure, DOM-free logic in `assets/model-utils.mjs` so `just test` can cover it.
 - Table behavior is deliberately client-side: default sorting is ascending `Total price`, the default filter keeps rows with a non-empty `Coding rank`, text filters use substring matching, numeric filters accept operators such as `<10` and `>=5`, and exactly two selected models enable comparison. When filters hide rows, the UI shows a hoverable notice listing the hidden models and active filter reasons.
 - Model identity in the UI is the composite `${Provider}::${Model}::${Tier}::${Threshold (input tokens)}` value. Preserve all four components when changing selection or comparison behavior so similarly named pricing tiers remain distinct.
 - User-visible cell content is escaped before insertion into HTML. Preserve this boundary when adding rendered values, and keep external links using `target="_blank"` with an appropriate `rel` attribute.

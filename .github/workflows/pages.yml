@@ -54,7 +54,9 @@ jobs:
           git add data/models.json important-changes.xml index.html
           git commit -m "Update model pricing and coding rankings"
           auth_header=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
-          git -c http.extraheader="AUTHORIZATION: basic $auth_header" push
+          git_auth="http.extraheader=AUTHORIZATION: basic $auth_header"
+          git -c "$git_auth" pull --rebase origin main
+          git -c "$git_auth" push
         env:
           GH_TOKEN: ${{ github.token }}
 
