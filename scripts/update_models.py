@@ -6,10 +6,13 @@ from __future__ import annotations
 import json
 import math
 import re
+import sys
+import time
 from datetime import datetime, timezone
 from email.utils import format_datetime
 from html import escape
 import unicodedata
+import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
@@ -18,6 +21,9 @@ from typing import Any, Final
 
 ROOT: Final = Path(__file__).resolve().parents[1]
 CHANGELOG_LIMIT: Final = 60
+FETCH_TIMEOUT_SECONDS: Final = 60
+FETCH_RETRIES: Final = 4
+RETRY_DELAY_SECONDS: Final = 2.0
 SOURCE_URL: Final = "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing"
 LEADERBOARD_URL: Final = "https://benchlm.ai/api/data/leaderboard?category=coding"
 OUTPUT_PATH: Final = ROOT / "data/models.json"
@@ -387,16 +393,31 @@ class PricingTableParser(HTMLParser):
             self._cell_text += data
 
 
-def fetch_html(url: str) -> str:
+def fetch_url(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": "copilot-model-price-comparison/1.0"})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return response.read().decode("utf-8", errors="replace")
+    # One transient failure would cost the whole day's update, so back off and retry.
+    for attempt in range(1, FETCH_RETRIES + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=FETCH_TIMEOUT_SECONDS) as response:
+                return response.read()
+        except (urllib.error.URLError, OSError) as error:
+            if attempt == FETCH_RETRIES:
+                raise
+            print(
+                f"Fetch of {url} failed ({error}); retry {attempt} of {FETCH_RETRIES - 1} "
+                f"in {RETRY_DELAY_SECONDS * attempt:g}s.",
+                file=sys.stderr,
+            )
+            time.sleep(RETRY_DELAY_SECONDS * attempt)
+    raise AssertionError("unreachable")
+
+
+def fetch_html(url: str) -> str:
+    return fetch_url(url).decode("utf-8", errors="replace")
 
 
 def fetch_json(url: str) -> dict:
-    request = urllib.request.Request(url, headers={"User-Agent": "copilot-model-price-comparison/1.0"})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return parse_json(response.read().decode("utf-8", errors="replace"), f"JSON fetched from {url}")
+    return parse_json(fetch_url(url).decode("utf-8", errors="replace"), f"JSON fetched from {url}")
 
 
 def parse_json(text: str, context: str) -> Any:
@@ -474,6 +495,12 @@ def parse_tables(rendered_page: str) -> list[dict[str, str]]:
         headers = table.rows[0]
         if "Model" not in headers:
             continue
+        duplicates = sorted({name for name in headers if headers.count(name) > 1})
+        if duplicates:
+            raise RuntimeError(
+                f"Table for {table.heading!r} has duplicated column header(s) {duplicates}; "
+                "prices would land in the wrong columns."
+            )
 
         for raw_row in table.rows[1:]:
             padded = raw_row + [""] * (len(headers) - len(raw_row))

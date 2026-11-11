@@ -1,7 +1,10 @@
+import io
 import json
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
+from typing import Any
 from unittest import mock
 
 from scripts import update_models
@@ -156,6 +159,17 @@ class ParseTablesTests(unittest.TestCase):
             [{"Provider": "Anthropic", "Model": "Claude Fable 5", "Input": "$10.00"}],
         )
 
+    def test_duplicated_header_aborts_instead_of_shifting_prices(self):
+        rendered = (
+            "<h2>OpenAI</h2><table>"
+            "<tr><th>Model</th><th>Input</th><th>Input</th></tr>"
+            "<tr><td>GPT-6</td><td>$1.00</td><td>$9.00</td></tr>"
+            "</table>"
+        )
+        with self.assertRaises(RuntimeError) as failure:
+            parse_tables(rendered)
+        self.assertIn("Input", str(failure.exception))
+
 
 class LeaderboardGuardTests(unittest.TestCase):
     def test_empty_leaderboard_aborts_instead_of_blanking_the_site(self):
@@ -168,6 +182,32 @@ class LeaderboardGuardTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             require_ranked_rows([{"Model": "M", "Coding rank": ""}])
         require_ranked_rows([{"Model": "M", "Coding rank": "7"}])
+
+
+class FetchRetryTests(unittest.TestCase):
+    def test_a_transient_failure_is_retried(self) -> None:
+        attempts = {"count": 0}
+
+        def fake_urlopen(request: Any, timeout: int) -> io.BytesIO:
+            attempts["count"] += 1
+            if attempts["count"] < 3:
+                raise urllib.error.URLError("temporarily unavailable")
+            return io.BytesIO(b'{"models": []}')
+
+        with mock.patch.object(update_models.urllib.request, "urlopen", fake_urlopen), \
+                mock.patch.object(update_models.time, "sleep") as slept:
+            self.assertEqual(update_models.fetch_json("https://example.test/api"), {"models": []})
+        self.assertEqual(attempts["count"], 3)
+        self.assertEqual(slept.call_count, 2)
+
+    def test_a_persistent_failure_raises_after_the_last_retry(self) -> None:
+        urlopen = mock.patch.object(
+            update_models.urllib.request, "urlopen", side_effect=urllib.error.URLError("down")
+        )
+        with urlopen, mock.patch.object(update_models.time, "sleep") as slept:
+            with self.assertRaises(urllib.error.URLError):
+                update_models.fetch_html("https://example.test/page")
+        self.assertEqual(slept.call_count, update_models.FETCH_RETRIES - 1)
 
 
 RENDERED_PAGE: str = (
