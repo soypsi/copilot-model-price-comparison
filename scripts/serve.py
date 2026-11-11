@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 HOST: Final = "127.0.0.1"
 PORT: Final = 8000
 POLL_INTERVAL: Final = 0.5
+HEARTBEAT_SECONDS: Final = 15
 IGNORED_PARTS: Final = {".git", "__pycache__"}
 
 
@@ -80,8 +81,13 @@ class RequestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         try:
             while True:
-                client.get()
-                self.wfile.write(b"data: reload\n\n")
+                try:
+                    client.get(timeout=HEARTBEAT_SECONDS)
+                    payload = b"data: reload\n\n"
+                except queue.Empty:
+                    # An SSE comment line, so the browser stream stays open until the tab closes.
+                    payload = b": keep-alive\n\n"
+                self.wfile.write(payload)
                 self.wfile.flush()
         except (BrokenPipeError, ConnectionResetError):
             pass
