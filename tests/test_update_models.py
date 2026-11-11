@@ -1,13 +1,21 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
+from scripts import update_models
 from scripts.update_models import (
     build_columns,
     change_summary,
+    leaderboard_models,
     match_leaderboard_model,
     merge_price_columns,
     normalize_rows,
+    parse_tables,
     rank_number,
     render_static_page,
+    require_ranked_rows,
 )
 
 
@@ -132,6 +140,62 @@ class BuildColumnsTests(unittest.TestCase):
     def test_release_status_is_never_a_column(self):
         rows = [{"Provider": "Anthropic", "Model": "Claude Fable 5", "Release status": "GA", "Novel": "x"}]
         self.assertNotIn("Release status", build_columns(rows))
+
+
+class ParseTablesTests(unittest.TestCase):
+    def test_void_tag_inside_sup_does_not_shift_the_row_left(self):
+        rendered = (
+            "<h2>Anthropic</h2><table>"
+            "<tr><th>Model</th><th>Input</th></tr>"
+            "<tr><td>Claude Fable 5<sup>note<img src=x></sup></td><td>$10.00</td></tr>"
+            "</table>"
+        )
+        self.assertEqual(
+            parse_tables(rendered),
+            [{"Provider": "Anthropic", "Model": "Claude Fable 5", "Input": "$10.00"}],
+        )
+
+
+class LeaderboardGuardTests(unittest.TestCase):
+    def test_empty_leaderboard_aborts_instead_of_blanking_the_site(self):
+        with self.assertRaises(RuntimeError) as failure:
+            leaderboard_models({"data": []})
+        self.assertIn("leaderboard", str(failure.exception))
+        self.assertEqual(leaderboard_models({"models": [{"model": "M", "rank": 1}]}), [{"model": "M", "rank": 1}])
+
+    def test_rows_without_any_rank_aborts(self):
+        with self.assertRaises(RuntimeError):
+            require_ranked_rows([{"Model": "M", "Coding rank": ""}])
+        require_ranked_rows([{"Model": "M", "Coding rank": "7"}])
+
+
+class WriteOrderTests(unittest.TestCase):
+    def test_render_failure_leaves_committed_files_untouched(self):
+        rendered = (
+            "<h2>Anthropic</h2><table>"
+            "<tr><th>Model</th><th>Input</th></tr>"
+            "<tr><td>Claude Fable 5</td><td>$10.00</td></tr>"
+            "</table>"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            index_path = root / "index.html"
+            index_path.write_text("<!-- STATIC:ROW_COUNT:START --><!-- STATIC:ROW_COUNT:END -->")
+            output_path = root / "data" / "models.json"
+            output_path.parent.mkdir()
+            output_path.write_text(json.dumps({"rows": [], "changelog": []}))
+            before = (index_path.read_text(), output_path.read_text())
+            with mock.patch.object(update_models, "fetch_html", return_value=""), \
+                    mock.patch.object(update_models, "extract_rendered_page", return_value=rendered), \
+                    mock.patch.object(update_models, "fetch_json", return_value={
+                        "models": [{"model": "Claude Fable 5", "rank": 3, "categoryScores": {}}]
+                    }), \
+                    mock.patch.object(update_models, "INDEX_PATH", index_path), \
+                    mock.patch.object(update_models, "OUTPUT_PATH", output_path), \
+                    mock.patch.object(update_models, "RSS_PATH", root / "feed.xml"):
+                with self.assertRaises(RuntimeError):
+                    update_models.main()
+            self.assertEqual((index_path.read_text(), output_path.read_text()), before)
 
 
 class StaticPageTests(unittest.TestCase):

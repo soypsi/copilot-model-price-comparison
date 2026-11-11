@@ -55,6 +55,11 @@ MERGE_COLUMNS: Final = {
     "Image output": "Output",
 }
 PRICE_SOURCE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output")
+# Void elements have no end tag, so they must not add depth to a skipped region.
+VOID_ELEMENTS: Final = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+}
 PRICE_COLUMNS: Final = (*PRICE_SOURCE_COLUMNS, "Total price")
 STATIC_NUMERIC_COLUMNS: Final = {*PRICE_COLUMNS, "Coding rank", "Threshold (input tokens)"}
 
@@ -272,11 +277,6 @@ def render_static_page(template: str, payload: dict[str, Any]) -> str:
     return template
 
 
-def write_static_page(payload: dict[str, Any]) -> None:
-    template = INDEX_PATH.read_text(encoding="utf-8")
-    INDEX_PATH.write_text(render_static_page(template, payload), encoding="utf-8")
-
-
 def normalize_whitespace(value: str) -> str:
     return " ".join(value.split()).strip()
 
@@ -309,7 +309,8 @@ class PricingTableParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if self._ignored_depth:
-            self._ignored_depth += 1
+            if tag not in VOID_ELEMENTS:
+                self._ignored_depth += 1
             return
         if tag == "sup":
             self._ignored_depth = 1
@@ -549,7 +550,7 @@ def changelog_date(value: str) -> str:
     return value[:10]
 
 
-def write_rss(changelog: list[dict[str, Any]]) -> None:
+def render_rss(changelog: list[dict[str, Any]]) -> str:
     entries = list(reversed(changelog))
     latest_date = entries[0]["updated_at"] if entries else datetime.now(timezone.utc).date().isoformat()
     latest_datetime = datetime.fromisoformat(f"{latest_date}T00:00:00+00:00")
@@ -586,7 +587,19 @@ def write_rss(changelog: list[dict[str, Any]]) -> None:
   </channel>
 </rss>
 """
-    RSS_PATH.write_text(feed, encoding="utf-8")
+    return feed
+
+
+def leaderboard_models(payload: dict) -> list[dict]:
+    models = payload.get("models", [])
+    if not models:
+        raise RuntimeError(f"No leaderboard models in the {LEADERBOARD_URL} payload; coding ranks would be empty.")
+    return models
+
+
+def require_ranked_rows(rows: list[dict[str, Any]]) -> None:
+    if not any(row.get("Coding rank") for row in rows):
+        raise RuntimeError("No pricing row matched a leaderboard model; the site would hide every row.")
 
 
 def normalize_rows(
@@ -632,14 +645,14 @@ def main() -> None:
     html = fetch_html(SOURCE_URL)
     rendered_page = extract_rendered_page(html)
     parsed_rows = parse_tables(rendered_page)
-    leaderboard_payload = fetch_json(LEADERBOARD_URL)
-    leaderboard = leaderboard_payload.get("models", [])
+    leaderboard = leaderboard_models(fetch_json(LEADERBOARD_URL))
 
     columns = build_columns(parsed_rows)
     previous = parse_json(OUTPUT_PATH.read_text(encoding="utf-8"), f"Committed {OUTPUT_PATH}") if OUTPUT_PATH.exists() else {}
     previous_rows = {row_key(row): row for row in previous.get("rows", [])}
     rows = normalize_rows(parsed_rows, columns, leaderboard, previous_rows)
     rows = sort_rows(rows, columns)
+    require_ranked_rows(rows)
 
     updated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     changes = change_summary(previous.get("rows", []), rows)
@@ -662,10 +675,14 @@ def main() -> None:
         "rows": rows,
     }
 
+    # Render every output before writing any: a render failure must not consume the
+    # changelog entry from models.json, or that day's change is lost forever.
+    page = render_static_page(INDEX_PATH.read_text(encoding="utf-8"), payload)
+    feed = render_rss(changelog)
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
-    write_rss(changelog)
-    write_static_page(payload)
+    RSS_PATH.write_text(feed, encoding="utf-8")
+    INDEX_PATH.write_text(page, encoding="utf-8")
     print(f"Wrote {len(rows)} rows to {OUTPUT_PATH}")
 
 
