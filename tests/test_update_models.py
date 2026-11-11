@@ -1,6 +1,19 @@
 import unittest
 
-from scripts.update_models import build_columns, change_summary, normalize_rows, render_static_page
+from scripts.update_models import (
+    build_columns,
+    change_summary,
+    match_leaderboard_model,
+    merge_price_columns,
+    normalize_rows,
+    rank_number,
+    render_static_page,
+)
+
+
+def matched_model(model: str, leaderboard: list[dict]) -> str | None:
+    match = match_leaderboard_model(model, leaderboard)
+    return match["model"] if match else None
 
 
 class ChangeSummaryTests(unittest.TestCase):
@@ -59,6 +72,60 @@ class ParsePriceTests(unittest.TestCase):
         message = str(failure.exception)
         self.assertIn("'free'", message)
         self.assertIn("OpenAI GPT-5 Output", message)
+
+
+class MergePriceColumnsTests(unittest.TestCase):
+    def test_merged_price_adds_to_the_existing_target_column(self):
+        row = {
+            "Provider": "OpenAI",
+            "Model": "GPT-5",
+            "Text input": "$2.00",
+            "Image input": "$1.00",
+            "Input": "$5.00",
+        }
+        merge_price_columns(row)
+        self.assertEqual(row["Input"], "$8")
+        self.assertNotIn("Text input", row)
+
+    def test_merged_price_keeps_three_decimals(self):
+        row = {"Model": "M", "Image input": "$0.333", "Text input": "$0.111", "Input": "Not applicable"}
+        merge_price_columns(row)
+        self.assertEqual(row["Input"], "$0.444")
+
+
+class MatchLeaderboardModelTests(unittest.TestCase):
+    def test_parenthetical_qualifier_selects_the_variant_not_the_base(self):
+        leaderboard = [
+            {"model": "GPT-5 mini", "rank": 3},
+            {"model": "GPT-5 mini preview", "rank": 9},
+        ]
+        self.assertEqual(matched_model("GPT-5 mini (preview)", leaderboard), "GPT-5 mini preview")
+        self.assertEqual(matched_model("GPT-5 mini (preview)", list(reversed(leaderboard))), "GPT-5 mini preview")
+
+    def test_base_fallback_still_matches_a_suffixed_model(self):
+        self.assertEqual(matched_model("GPT-5 mini high", [{"model": "GPT-5 mini", "rank": 3}]), "GPT-5 mini")
+
+    def test_ambiguous_base_still_matches_nothing(self):
+        leaderboard = [
+            {"model": "GPT-5 mini", "rank": 3},
+            {"model": "GPT-5 mini preview", "rank": 9},
+        ]
+        self.assertIsNone(matched_model("GPT-5 mini high", leaderboard))
+
+
+class RankNumberTests(unittest.TestCase):
+    def test_non_ascii_digits_do_not_abort_the_update(self):
+        self.assertEqual(rank_number("12"), 12)
+        self.assertIsNone(rank_number("²"))
+        self.assertIsNone(rank_number(""))
+
+    def test_rank_diff_stays_empty_for_unparseable_previous_rank(self):
+        rows = [{"Provider": "P", "Model": "M", "Input": "$1"}]
+        leaderboard = [{"model": "M", "rank": 5, "categoryScores": {}}]
+        previous = {("P", "M", "Default", "Not applicable"): {"Coding rank": "²"}}
+        row = normalize_rows(rows, ["Provider", "Model", "Input", "Total price"], leaderboard, previous)[0]
+        self.assertEqual(row["_coding_rank_diff"], "")
+        self.assertEqual(row["Coding rank"], "5")
 
 
 class BuildColumnsTests(unittest.TestCase):

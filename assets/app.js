@@ -192,12 +192,12 @@
         .map((row) => cellValue(rowValue(row, column)))
         .filter(Boolean);
       const numericColumn = numericValues.length > 0 && numericValues.every((item) =>
-        /^\$?\s*[0-9]+(?:\.[0-9]+)?$/.test(item)
+        /^\$?\s*[0-9][0-9,]*(?:\.[0-9]+)?$/.test(item)
       );
       if (numericColumn) {
         return {
           kind: "number",
-          value: text ? Number.parseFloat(text.replace("$", "").trim()) : Number.NEGATIVE_INFINITY,
+          value: priceValue(text) ?? Number.NEGATIVE_INFINITY,
         };
       }
 

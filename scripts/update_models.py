@@ -54,7 +54,8 @@ MERGE_COLUMNS: Final = {
     "Text input": "Input",
     "Image output": "Output",
 }
-PRICE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output", "Total price")
+PRICE_SOURCE_COLUMNS: Final = ("Input", "Cached input", "Cache write", "Output")
+PRICE_COLUMNS: Final = (*PRICE_SOURCE_COLUMNS, "Total price")
 STATIC_NUMERIC_COLUMNS: Final = {*PRICE_COLUMNS, "Coding rank", "Threshold (input tokens)"}
 
 
@@ -395,9 +396,13 @@ def parse_json(text: str, context: str) -> Any:
         raise RuntimeError(f"{context} is not valid JSON: {exc}") from exc
 
 
-def model_key(value: str) -> str:
+def model_key(value: str, keep_parenthetical: bool = False) -> str:
     value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode().lower()
-    value = re.sub(r"\([^)]*\)", " ", value)
+    value = (
+        re.sub(r"\(([^)]*)\)", r" \1 ", value)
+        if keep_parenthetical
+        else re.sub(r"\([^)]*\)", " ", value)
+    )
     return re.sub(r"[^a-z0-9]+", "", value)
 
 
@@ -407,16 +412,19 @@ def base_model_key(value: str) -> str:
 
 
 def match_leaderboard_model(model: str, leaderboard: list[dict]) -> dict | None:
-    target = model_key(model)
-    exact = [item for item in leaderboard if model_key(item["model"]) == target]
-    if exact:
-        return exact[0]
-
-    target_base = base_model_key(model)
-    base_matches = [item for item in leaderboard if base_model_key(item["model"]) == target_base]
-    if len(base_matches) == 1:
-        return base_matches[0]
-
+    # Most specific first: some pricing rows qualify the model in parentheses, and that
+    # qualifier is part of the leaderboard name too ("GPT-5 mini (preview)" ~ "GPT-5 mini preview").
+    tiers: list[tuple[str, Any, bool]] = [
+        (model_key(model, keep_parenthetical=True), model_key, False),
+        (model_key(model), model_key, False),
+        (base_model_key(model), base_model_key, True),
+    ]
+    for target, key_fn, unique_only in tiers:
+        if not target:
+            continue
+        matches = [item for item in leaderboard if key_fn(item["model"]) == target]
+        if matches and (len(matches) == 1 or not unique_only):
+            return matches[0]
     return None
 
 
@@ -440,7 +448,9 @@ def merge_price_columns(item: dict[str, str]) -> None:
             label = f"{item.get('Model', '')} {source}"
             sums[target] = sums.get(target, 0.0) + parse_price(value, label)
     for target, total in sums.items():
-        item[target] = f"${total:.2f}"
+        label = f"{item.get('Model', '')} {target}"
+        total += parse_price(item.get(target, ""), label)
+        item[target] = f"${total:.3f}".rstrip("0").rstrip(".")
 
 
 def parse_tables(rendered_page: str) -> list[dict[str, str]]:
@@ -488,6 +498,14 @@ def parse_price(value: str, label: str = "") -> float:
         return float(cleaned)
     except ValueError:
         raise ValueError(f"Unparseable price {cleaned!r} in {label or 'unknown row'}") from None
+
+
+def rank_number(value: Any) -> int | None:
+    # str.isdigit() is true for '²' and friends, which int() rejects.
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
 
 
 def row_key(row: dict[str, Any]) -> tuple[str, ...]:
@@ -587,7 +605,7 @@ def normalize_rows(
         label = f"{normalized.get('Provider', '')} {normalized.get('Model', '')}"
         total = sum(
             parse_price(normalized[column], f"{label} {column}")
-            for column in PRICE_COLUMNS[:-1]
+            for column in PRICE_SOURCE_COLUMNS
             if normalized.get(column)
         )
         normalized["Total price"] = f"${total:.3f}".rstrip("0").rstrip(".")
@@ -595,17 +613,14 @@ def normalize_rows(
         normalized["Coding rank"] = str(match["rank"]) if match else ""
         normalized["_coding_model"] = match["model"] if match else ""
         normalized["_category_scores"] = match.get("categoryScores", {}) if match else {}
-        previous_rank = previous_rows.get(row_key(row), {}).get("Coding rank", "")
-        normalized["_coding_rank_diff"] = (
-            int(normalized["Coding rank"]) - int(previous_rank)
-            if normalized["Coding rank"].isdigit() and previous_rank.isdigit()
-            else ""
-        )
+        previous = previous_rows.get(row_key(row), {})
+        rank, previous_rank = rank_number(normalized["Coding rank"]), rank_number(previous.get("Coding rank", ""))
+        normalized["_coding_rank_diff"] = rank - previous_rank if rank is not None and previous_rank is not None else ""
         normalized["_price_diffs"] = {
-            column: round(parse_price(normalized.get(column, ""), f"{label} {column}") - parse_price(previous_rows.get(row_key(row), {}).get(column, ""), f"committed {label} {column}"), 6)
-            if normalized.get(column) and previous_rows.get(row_key(row), {}).get(column)
+            column: round(parse_price(normalized.get(column, ""), f"{label} {column}") - parse_price(previous.get(column, ""), f"committed {label} {column}"), 6)
+            if normalized.get(column) and previous.get(column)
             and normalized.get(column, "").lower() != "not applicable"
-            and previous_rows.get(row_key(row), {}).get(column, "").lower() != "not applicable"
+            and previous.get(column, "").lower() != "not applicable"
             else ""
             for column in PRICE_COLUMNS
         }

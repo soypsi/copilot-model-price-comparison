@@ -8,10 +8,8 @@ export function contextValue(row) {
 }
 
 export function priceValue(value) {
-  const text = cellValue(value);
-  if (!text) return null;
-  const number = Number.parseFloat(text.replace("$", "").trim());
-  return Number.isFinite(number) ? number : null;
+  const text = cellValue(value).replace(/[$,]/g, "");
+  return /^(?:\d+(?:\.\d+)?|\.\d+)$/.test(text) ? Number(text) : null;
 }
 
 export function cachePriceValue(row) {

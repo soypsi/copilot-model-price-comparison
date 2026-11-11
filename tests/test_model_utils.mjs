@@ -24,6 +24,12 @@ test("Price parser rejects empty and non-numeric prices", () => {
   assert.equal(priceValue("unknown"), null);
 });
 
+test("Grouped prices parse and junk prices are not silently truncated", () => {
+  assert.equal(priceValue("$1,000"), 1000);
+  assert.equal(priceValue("$0.15 per 1M tokens"), null);
+  assert.equal(cachePriceValue({ "Cached input": "$1,200", "Cache write": "$0.125" }), "$1200.125");
+});
+
 test("Selection toggles models and limits the set to two", () => {
   const selected = new Set();
   toggleModelSelection(selected, "one");
