@@ -372,5 +372,20 @@ class StaticPageTests(unittest.TestCase):
         self.assertNotIn("Loading…", page)
 
 
+class CategoryLabelParityTests(unittest.TestCase):
+    def test_python_labels_match_the_client_labels_for_every_real_category(self) -> None:
+        expected = {
+            "agentic": "Agentic",
+            "coding": "Coding",
+            "instructionFollowing": "Instruction Following",
+            "knowledge": "Knowledge",
+            "math": "Math",
+            "multilingual": "Multilingual",
+            "multimodalGrounded": "Multimodal Grounded",
+            "reasoning": "Reasoning",
+        }
+        self.assertEqual({name: update_models.category_label(name) for name in expected}, expected)
+
+
 if __name__ == "__main__":
     unittest.main()

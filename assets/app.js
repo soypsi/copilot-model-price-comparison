@@ -1,4 +1,4 @@
-    import { cachePriceValue, cellValue, contextValue, priceValue, toggleModelSelection } from "./model-utils.mjs";
+    import { benchlmCompareUrl, benchlmModelUrl, cachePriceValue, categoryLabel, categoryScoreValue, cellValue, contextValue, escapeHtml, heatStyle, modelIdFor, priceValue, shortCategoryLabel, thresholdTuple, toggleModelSelection } from "./model-utils.mjs";
 
     const state = {
       columns: [],
@@ -48,31 +48,6 @@
       toggleRowSelection(event.target);
     });
 
-    function categoryLabel(category) {
-      return category
-        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-        .replace(/[_-]+/g, " ")
-        .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
-    }
-
-    function categoryScoreValue(score) {
-      if (score == null) return "";
-      const text = String(score).trim();
-      if (!text || text.toLowerCase() === "n/a") return "";
-      const value = Number(text);
-      return Number.isFinite(value) ? String(Math.round(value)) : text;
-    }
-
-    function heatStyle(value, range, reverse = false) {
-      const number = Number(value);
-      if (!Number.isFinite(number) || !range) return "";
-      const normalized = range[0] === range[1]
-        ? 0.5
-        : (Math.max(range[0], Math.min(range[1], number)) - range[0]) / (range[1] - range[0]);
-      const hue = (reverse ? 1 - normalized : normalized) * 120;
-      return ` style="--score-hue:${hue}deg"`;
-    }
-
     function scoreHeatStyle(score, category) {
       return categoryScoreValue(score)
         ? heatStyle(score, state.categoryRanges[category])
@@ -91,10 +66,6 @@
       const logPrice = state.totalPriceRange?.[0] > 0 ? Math.log : Math.log1p;
       const priceRange = state.totalPriceRange?.map(logPrice) ?? null;
       return heatStyle(logPrice(price), priceRange, true);
-    }
-
-    function shortCategoryLabel(category) {
-      return categoryLabel(category).split(/\s+/)[0];
     }
 
     function populateRankCategories(rows) {
@@ -120,10 +91,18 @@
       state.codingRankRange = ranks.length ? [Math.min(...ranks), Math.max(...ranks)] : null;
       const prices = rows.map((row) => priceValue(row["Total price"])).filter((price) => price !== null);
       state.totalPriceRange = prices.length ? [Math.min(...prices), Math.max(...prices)] : null;
-      rankCategorySelect.innerHTML = categories
-        .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`)
-        .join("");
-      rankCategorySelect.insertAdjacentHTML("afterbegin", '<option value="coding">Coding</option>');
+      const codingOption = document.createElement("option");
+      codingOption.value = "coding";
+      codingOption.textContent = "Coding";
+      rankCategorySelect.replaceChildren(
+        codingOption,
+        ...categories.map((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = categoryLabel(category);
+          return option;
+        }),
+      );
       rankCategorySelect.value = state.rankCategory;
       rankCategorySelect.closest("label").hidden = false;
     }
@@ -167,25 +146,12 @@
         : categoryScoreValue(row._category_scores?.[state.rankCategory]);
     }
 
-    function toThresholdTuple(value) {
-      const text = (value || "").trim();
-      if (!text || /not applicable/i.test(text)) return [3, Number.POSITIVE_INFINITY];
-      const match = text.match(/^(<=|>=|<|>|≤|≥)?\s*([0-9]+(?:\.[0-9]+)?)\s*([KMB])?/i);
-      if (!match) return [4, Number.POSITIVE_INFINITY];
-      const op = match[1] || "=";
-      const num = Number.parseFloat(match[2]);
-      const unit = (match[3] || "").toUpperCase();
-      const mult = unit === "K" ? 1_000 : unit === "M" ? 1_000_000 : unit === "B" ? 1_000_000_000 : 1;
-      const rank = op === "<=" || op === "≤" || op === "<" ? 0 : op === "=" ? 1 : 2;
-      return [rank, num * mult];
-    }
-
     function toComparable(column, value) {
       const text = cellValue(value);
 
       if (column.toLowerCase().includes("threshold")) {
         if (!text) return { kind: "text", value: "" };
-        return { kind: "threshold", value: toThresholdTuple(text) };
+        return { kind: "threshold", value: thresholdTuple(text) };
       }
 
       const numericValues = state.rows
@@ -451,7 +417,7 @@
             const priceHeat = column === "Total price" ? totalPriceHeatStyle(row) : "";
             const priceCellClass = `${numeric.trim()}${priceHeat ? " score-heat-cell" : ""}`;
             if (column === "Model") {
-              const url = `https://benchlm.ai/models/${slugify(val)}`;
+              const url = benchlmModelUrl(val);
               return `<td data-column="${name}"><a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(val)}</a></td>`;
             }
             if (column === "Coding rank" && row._coding_model) {
@@ -549,21 +515,6 @@
       renderTable();
     }
 
-    function modelIdFor(row) {
-      return `${row.Provider}::${row.Model}::${row.Tier || ""}::${row["Threshold (input tokens)"] || ""}`;
-    }
-
-    function slugify(value) {
-      return value
-        .normalize("NFKD")
-        .replace(/\./g, "-")
-        .replace(/[^\w\s-]/g, "")
-        .trim()
-        .toLowerCase()
-        .replace(/[\s_]+/g, "-")
-        .replace(/-+/g, "-");
-    }
-
     function updateCompareControls() {
       const count = state.selectedModels.size;
       selectionCount.textContent = count === 2 ? "Ready to compare" : `Select ${2 - count} more model${count === 1 ? "" : "s"}`;
@@ -574,7 +525,8 @@
       const selected = state.rows.filter((row) => state.selectedModels.has(modelIdFor(row)));
       if (selected.length !== 2) return;
       const [first, second] = selected;
-      const url = `https://benchlm.ai/compare/${slugify(first.Model)}-vs-${slugify(second.Model)}`;
+      // slugify keeps each path segment to [a-z0-9-], so this URL can never leave benchlm.ai.
+      const url = benchlmCompareUrl(first.Model, second.Model);
       window.open(url, "_blank", "noopener,noreferrer");
     });
 
@@ -582,14 +534,6 @@
       state.rankCategory = rankCategorySelect.value;
       renderTable();
     });
-
-    function escapeHtml(value) {
-      return value
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;");
-    }
 
     function fail(message) {
       const error = document.createElement("p");
