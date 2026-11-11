@@ -24,6 +24,11 @@ test("Price parser rejects empty and non-numeric prices", () => {
   assert.equal(priceValue("unknown"), null);
 });
 
+test("An empty cell has no numeric value, so a numeric filter cannot match it", () => {
+  assert.equal(priceValue(""), null);
+  assert.equal(priceValue("   "), null);
+});
+
 test("Grouped prices parse and junk prices are not silently truncated", () => {
   assert.equal(priceValue("$1,000"), 1000);
   assert.equal(priceValue("$0.15 per 1M tokens"), null);

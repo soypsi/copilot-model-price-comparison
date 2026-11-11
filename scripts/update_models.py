@@ -16,11 +16,13 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Final
 
+ROOT: Final = Path(__file__).resolve().parents[1]
+CHANGELOG_LIMIT: Final = 60
 SOURCE_URL: Final = "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing"
 LEADERBOARD_URL: Final = "https://benchlm.ai/api/data/leaderboard?category=coding"
-OUTPUT_PATH: Final = Path("data/models.json")
-RSS_PATH: Final = Path("important-changes.xml")
-INDEX_PATH: Final = Path("index.html")
+OUTPUT_PATH: Final = ROOT / "data/models.json"
+RSS_PATH: Final = ROOT / "important-changes.xml"
+INDEX_PATH: Final = ROOT / "index.html"
 SITE_URL: Final = "https://soypsi.github.io/copilot-model-price-comparison"
 SHORT_COLUMN_NAMES: Final = {
     "Total price": "Price",
@@ -275,6 +277,13 @@ def render_static_page(template: str, payload: dict[str, Any]) -> str:
         end = template.index(end_marker, start)
         template = template[:start] + content + template[end:]
     return template
+
+
+def write_text(path: Path, text: str) -> None:
+    # Replace atomically: a killed run must not leave a truncated index.html behind.
+    tmp = path.with_name(f"{path.name}.tmp")
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(path)
 
 
 def normalize_whitespace(value: str) -> str:
@@ -650,6 +659,8 @@ def main() -> None:
     columns = build_columns(parsed_rows)
     previous = parse_json(OUTPUT_PATH.read_text(encoding="utf-8"), f"Committed {OUTPUT_PATH}") if OUTPUT_PATH.exists() else {}
     previous_rows = {row_key(row): row for row in previous.get("rows", [])}
+    if len(previous_rows) != len(previous.get("rows", [])):
+        raise RuntimeError("Two committed pricing rows share one row_key; price trends would use the wrong baseline.")
     rows = normalize_rows(parsed_rows, columns, leaderboard, previous_rows)
     rows = sort_rows(rows, columns)
     require_ranked_rows(rows)
@@ -665,6 +676,7 @@ def main() -> None:
     ]
     if changes:
         changelog.append({"updated_at": updated_at[:10], "changes": changes})
+    changelog = changelog[-CHANGELOG_LIMIT:]
 
     payload = {
         "updated_at": updated_at,
@@ -680,9 +692,9 @@ def main() -> None:
     page = render_static_page(INDEX_PATH.read_text(encoding="utf-8"), payload)
     feed = render_rss(changelog)
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
-    RSS_PATH.write_text(feed, encoding="utf-8")
-    INDEX_PATH.write_text(page, encoding="utf-8")
+    write_text(OUTPUT_PATH, json.dumps(payload, indent=2, ensure_ascii=True) + "\n")
+    write_text(RSS_PATH, feed)
+    write_text(INDEX_PATH, page)
     print(f"Wrote {len(rows)} rows to {OUTPUT_PATH}")
 
 

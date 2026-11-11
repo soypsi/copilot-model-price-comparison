@@ -16,6 +16,7 @@ from scripts.update_models import (
     rank_number,
     render_static_page,
     require_ranked_rows,
+    write_text,
 )
 
 
@@ -169,33 +170,63 @@ class LeaderboardGuardTests(unittest.TestCase):
         require_ranked_rows([{"Model": "M", "Coding rank": "7"}])
 
 
+RENDERED_PAGE: str = (
+    "<h2>Anthropic</h2><table>"
+    "<tr><th>Model</th><th>Input</th></tr>"
+    "<tr><td>Claude Fable 5</td><td>$10.00</td></tr>"
+    "</table>"
+)
+
+
+def run_main(root: Path, index_text: str, previous: dict) -> None:
+    """Run the updater against a temporary tree, with every network call stubbed out."""
+    index_path = root / "index.html"
+    index_path.write_text(index_text)
+    output_path = root / "data" / "models.json"
+    output_path.parent.mkdir()
+    output_path.write_text(json.dumps(previous))
+    with mock.patch.object(update_models, "fetch_html", return_value=""), \
+            mock.patch.object(update_models, "extract_rendered_page", return_value=RENDERED_PAGE), \
+            mock.patch.object(update_models, "fetch_json", return_value={
+                "models": [{"model": "Claude Fable 5", "rank": 3, "categoryScores": {}}]
+            }), \
+            mock.patch.object(update_models, "INDEX_PATH", index_path), \
+            mock.patch.object(update_models, "OUTPUT_PATH", output_path), \
+            mock.patch.object(update_models, "RSS_PATH", root / "feed.xml"):
+        update_models.main()
+
+
 class WriteOrderTests(unittest.TestCase):
     def test_render_failure_leaves_committed_files_untouched(self):
-        rendered = (
-            "<h2>Anthropic</h2><table>"
-            "<tr><th>Model</th><th>Input</th></tr>"
-            "<tr><td>Claude Fable 5</td><td>$10.00</td></tr>"
-            "</table>"
-        )
+        # index.html has only the ROW_COUNT pair, so rendering the SOURCE region fails.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            index_path = root / "index.html"
-            index_path.write_text("<!-- STATIC:ROW_COUNT:START --><!-- STATIC:ROW_COUNT:END -->")
             output_path = root / "data" / "models.json"
-            output_path.parent.mkdir()
-            output_path.write_text(json.dumps({"rows": [], "changelog": []}))
-            before = (index_path.read_text(), output_path.read_text())
-            with mock.patch.object(update_models, "fetch_html", return_value=""), \
-                    mock.patch.object(update_models, "extract_rendered_page", return_value=rendered), \
-                    mock.patch.object(update_models, "fetch_json", return_value={
-                        "models": [{"model": "Claude Fable 5", "rank": 3, "categoryScores": {}}]
-                    }), \
-                    mock.patch.object(update_models, "INDEX_PATH", index_path), \
-                    mock.patch.object(update_models, "OUTPUT_PATH", output_path), \
-                    mock.patch.object(update_models, "RSS_PATH", root / "feed.xml"):
-                with self.assertRaises(RuntimeError):
-                    update_models.main()
-            self.assertEqual((index_path.read_text(), output_path.read_text()), before)
+            with self.assertRaises(RuntimeError):
+                run_main(root, "<!-- STATIC:ROW_COUNT:START --><!-- STATIC:ROW_COUNT:END -->", {
+                    "rows": [], "changelog": [],
+                })
+            self.assertEqual(output_path.read_text(), json.dumps({"rows": [], "changelog": []}))
+            self.assertEqual((root / "index.html").read_text(), "<!-- STATIC:ROW_COUNT:START --><!-- STATIC:ROW_COUNT:END -->")
+
+    def test_row_key_collision_aborts_before_writing(self):
+        row = {"Provider": "Anthropic", "Model": "Claude Fable 5", "Tier": "", "Threshold (input tokens)": "", "Input": "$1"}
+        previous = {"rows": [row, dict(row)], "changelog": []}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_path = root / "data" / "models.json"
+            with self.assertRaises(RuntimeError) as failure:
+                run_main(root, "", previous)
+            self.assertIn("row_key", str(failure.exception))
+            self.assertEqual(output_path.read_text(), json.dumps(previous))
+
+    def test_write_text_replaces_the_file_without_leaving_a_temp(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "index.html"
+            path.write_text("old")
+            write_text(path, "new")
+            self.assertEqual(path.read_text(), "new")
+            self.assertEqual([child.name for child in path.parent.iterdir()], ["index.html"])
 
 
 class StaticPageTests(unittest.TestCase):

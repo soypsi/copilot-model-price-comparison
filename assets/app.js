@@ -195,10 +195,9 @@
         /^\$?\s*[0-9][0-9,]*(?:\.[0-9]+)?$/.test(item)
       );
       if (numericColumn) {
-        return {
-          kind: "number",
-          value: priceValue(text) ?? Number.NEGATIVE_INFINITY,
-        };
+        const number = priceValue(text);
+        // An empty cell is not a number, so it must not satisfy a numeric filter.
+        return number === null ? { kind: "text", value: "" } : { kind: "number", value: number };
       }
 
       return { kind: "text", value: text.toLowerCase() };
@@ -412,7 +411,7 @@
         ...displayColumns.map((column) => {
         if (column === "Mobile cache") return "<th class=\"mobile-cache\"></th>";
         const value = state.filters[column] || "";
-        const escapedValue = value.replace(/\"/g, "&quot;");
+        const escapedValue = escapeHtml(value);
         const disabled = value ? "" : " disabled";
         const active = value.trim() ? " active" : "";
         const numeric = isNumericColumn(column) ? " numeric-column" : "";
@@ -600,6 +599,9 @@
     }
 
     window.addEventListener("resize", updateChangelogSpace);
+    // Crossing the compact breakpoint swaps which rank column is rendered, so re-render
+    // to keep state.sortColumn pointing at a visible column.
+    compactRankColumns.addEventListener("change", renderTable);
 
     async function init() {
       try {
@@ -608,7 +610,7 @@
         const data = await response.json();
         state.columns = data.columns || [];
         state.rows = data.rows || [];
-        if (!state.columns.length) throw new Error("No columns in data file.");
+        if (!state.columns.length || !state.rows.length) throw new Error("No columns or rows in data file.");
         populateRankCategories(state.rows);
         sourceEl.textContent = "";
         const priceItem = sourceEl.appendChild(document.createElement("span"));
