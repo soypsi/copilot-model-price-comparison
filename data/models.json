@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-11T11:03:46Z",
+  "updated_at": "2026-11-12T11:22:33Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -317,7 +317,7 @@
         "instructionFollowing": null,
         "math": 74.3
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -349,7 +349,7 @@
         "instructionFollowing": null,
         "math": 74.3
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -683,13 +683,13 @@
         "instructionFollowing": null,
         "math": 93.3
       },
-      "_coding_rank_diff": "",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
-        "Input": "",
-        "Cached input": "",
+        "Input": 0.0,
+        "Cached input": 0.0,
         "Cache write": "",
-        "Output": "",
-        "Total price": ""
+        "Output": 0.0,
+        "Total price": 0.0
       }
     },
     {
@@ -698,10 +698,10 @@
       "Category": "",
       "Tier": "",
       "Threshold (input tokens)": "",
-      "Input": "$13.00",
+      "Input": "$13",
       "Cached input": "$3.25",
       "Cache write": "",
-      "Output": "$30.00",
+      "Output": "$30",
       "Total price": "$46.25",
       "Coding rank": "",
       "_coding_model": "",
@@ -1104,7 +1104,7 @@
         "instructionFollowing": null,
         "math": 78.7
       },
-      "_coding_rank_diff": 1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1136,7 +1136,7 @@
         "instructionFollowing": null,
         "math": 78.7
       },
-      "_coding_rank_diff": 1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
