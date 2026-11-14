@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T11:05:35Z",
+  "updated_at": "2026-11-14T10:32:31Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -157,6 +157,12 @@
       "changes": [
         "New models: Gemini 4 Carbon"
       ]
+    },
+    {
+      "updated_at": "2026-11-14",
+      "changes": [
+        "New models: Gemini 4 Hydrogen"
+      ]
     }
   ],
   "source_url": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
@@ -198,7 +204,7 @@
         "instructionFollowing": 77.1,
         "math": 90.4
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -230,7 +236,7 @@
         "instructionFollowing": null,
         "math": 92
       },
-      "_coding_rank_diff": 2,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -317,7 +323,7 @@
         "instructionFollowing": null,
         "math": 74.3
       },
-      "_coding_rank_diff": -23,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -349,7 +355,7 @@
         "instructionFollowing": null,
         "math": 74.3
       },
-      "_coding_rank_diff": -23,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -381,7 +387,7 @@
         "instructionFollowing": 75.4,
         "math": 79.3
       },
-      "_coding_rank_diff": 7,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -413,7 +419,7 @@
         "instructionFollowing": 75.4,
         "math": 79.3
       },
-      "_coding_rank_diff": 7,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -445,7 +451,7 @@
         "instructionFollowing": null,
         "math": 86.2
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -477,7 +483,7 @@
         "instructionFollowing": null,
         "math": 93.3
       },
-      "_coding_rank_diff": 1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -555,7 +561,7 @@
         "instructionFollowing": null,
         "math": 64.9
       },
-      "_coding_rank_diff": 13,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -587,7 +593,7 @@
         "instructionFollowing": null,
         "math": 89.7
       },
-      "_coding_rank_diff": 1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -619,7 +625,7 @@
         "instructionFollowing": null,
         "math": 65.4
       },
-      "_coding_rank_diff": 8,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -651,7 +657,7 @@
         "instructionFollowing": null,
         "math": 87.4
       },
-      "_coding_rank_diff": 2,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -683,13 +689,45 @@
         "instructionFollowing": null,
         "math": 93.3
       },
-      "_coding_rank_diff": -2,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
         "Cache write": "",
         "Output": 0.0,
         "Total price": 0.0
+      }
+    },
+    {
+      "Provider": "Google",
+      "Model": "Gemini 4 Hydrogen",
+      "Category": "Versatile",
+      "Tier": "Default",
+      "Threshold (input tokens)": "Not applicable",
+      "Input": "$1.50",
+      "Cached input": "$0.075",
+      "Cache write": "",
+      "Output": "$7.50",
+      "Total price": "$9.075",
+      "Coding rank": "6",
+      "_coding_model": "Gemini 4 Hydrogen",
+      "_category_scores": {
+        "agentic": null,
+        "coding": 75.86,
+        "reasoning": null,
+        "multimodalGrounded": null,
+        "knowledge": null,
+        "multilingual": null,
+        "instructionFollowing": null,
+        "math": null
+      },
+      "_coding_rank_diff": "",
+      "_price_diffs": {
+        "Input": "",
+        "Cached input": "",
+        "Cache write": "",
+        "Output": "",
+        "Total price": ""
       }
     },
     {
@@ -761,7 +799,7 @@
         "instructionFollowing": null,
         "math": null
       },
-      "_coding_rank_diff": 2,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -793,7 +831,7 @@
         "instructionFollowing": 92.6,
         "math": null
       },
-      "_coding_rank_diff": 1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -848,7 +886,7 @@
         "instructionFollowing": null,
         "math": 78.9
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -880,7 +918,7 @@
         "instructionFollowing": null,
         "math": 78.9
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -912,7 +950,7 @@
         "instructionFollowing": 89.1,
         "math": 90.3
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -944,7 +982,7 @@
         "instructionFollowing": 89.1,
         "math": 90.3
       },
-      "_coding_rank_diff": 4,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -976,7 +1014,7 @@
         "instructionFollowing": 87.1,
         "math": 84.8
       },
-      "_coding_rank_diff": 5,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1008,7 +1046,7 @@
         "instructionFollowing": 87.1,
         "math": 84.8
       },
-      "_coding_rank_diff": 5,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1040,7 +1078,7 @@
         "instructionFollowing": null,
         "math": 93.8
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1072,7 +1110,7 @@
         "instructionFollowing": null,
         "math": 93.8
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1104,7 +1142,7 @@
         "instructionFollowing": null,
         "math": 78.7
       },
-      "_coding_rank_diff": -6,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1136,7 +1174,7 @@
         "instructionFollowing": null,
         "math": 78.7
       },
-      "_coding_rank_diff": -6,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1168,7 +1206,7 @@
         "instructionFollowing": null,
         "math": 92.1
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1200,7 +1238,7 @@
         "instructionFollowing": null,
         "math": 92.1
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1232,7 +1270,7 @@
         "instructionFollowing": null,
         "math": 93.8
       },
-      "_coding_rank_diff": -3,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1264,7 +1302,7 @@
         "instructionFollowing": null,
         "math": 93.8
       },
-      "_coding_rank_diff": -3,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1296,7 +1334,7 @@
         "instructionFollowing": null,
         "math": 92.9
       },
-      "_coding_rank_diff": "",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1328,7 +1366,7 @@
         "instructionFollowing": null,
         "math": 92.9
       },
-      "_coding_rank_diff": "",
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1360,7 +1398,7 @@
         "instructionFollowing": null,
         "math": 58.5
       },
-      "_coding_rank_diff": 17,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1392,7 +1430,7 @@
         "instructionFollowing": null,
         "math": 58.5
       },
-      "_coding_rank_diff": 17,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1424,7 +1462,7 @@
         "instructionFollowing": null,
         "math": 65.6
       },
-      "_coding_rank_diff": 9,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -1456,7 +1494,7 @@
         "instructionFollowing": null,
         "math": 65.6
       },
-      "_coding_rank_diff": 9,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
