@@ -5,7 +5,14 @@
     <link>https://soypsi.github.io/copilot-model-price-comparison</link>
     <atom:link href="https://soypsi.github.io/copilot-model-price-comparison/important-changes.xml" rel="self" type="application/rss+xml" />
     <description>Daily important changes to Copilot model pricing and coding rankings.</description>
-    <lastBuildDate>Tue, 17 Nov 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 18 Nov 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Important changes - 2026-11-18</title>
+      <link>https://soypsi.github.io/copilot-model-price-comparison/#changelog</link>
+      <guid isPermaLink="false">https://soypsi.github.io/copilot-model-price-comparison/#changelog-2026-11-18-0</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+      <description>New models: GPT-6.2 Astra, GPT-6.2 Sol, MAI Code 2, MAI Code 2 Flash</description>
+    </item>
     <item>
       <title>Important changes - 2026-11-17</title>
       <link>https://soypsi.github.io/copilot-model-price-comparison/#changelog</link>
