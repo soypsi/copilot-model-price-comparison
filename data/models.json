@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T11:31:22Z",
+  "updated_at": "2026-11-23T12:56:18Z",
   "changelog": [
     {
       "updated_at": "2026-07-10",
@@ -341,7 +341,7 @@
         "instructionFollowing": 58.3,
         "math": 62.1
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
@@ -373,7 +373,7 @@
         "instructionFollowing": 58.3,
         "math": 62.1
       },
-      "_coding_rank_diff": -1,
+      "_coding_rank_diff": 0,
       "_price_diffs": {
         "Input": 0.0,
         "Cached input": 0.0,
